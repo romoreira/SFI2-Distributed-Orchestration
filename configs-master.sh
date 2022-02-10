@@ -48,6 +48,9 @@ sudo tee /etc/docker/daemon.json <<EOF
 }
 EOF
 
+#Installing Kubectl 
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
 # Start and enable Services
 sudo systemctl daemon-reload
 sudo systemctl restart docker
@@ -73,6 +76,7 @@ sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
+kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
 kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
 
