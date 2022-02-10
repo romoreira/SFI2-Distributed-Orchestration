@@ -8,8 +8,8 @@ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt
 
 sudo apt -y install vim git curl wget kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
-sudo apt-get -y install kubeadm kubectl
-sudo apt-get -y install net-tools
+sudo apt -y install kubeadm kubectl
+sudo apt -y install net-tools
 
 # Enable kernel modules
 sudo modprobe overlay
@@ -68,7 +68,7 @@ sudo kubeadm config images pull
 #sudo kubeadm config images pull --cri-socket /var/run/docker.sock
 
 sudo kubeadm init \
-  --pod-network-cidr=10.0.0.0/24 \
+  --pod-network-cidr=192.168.0.0/24 \
   --upload-certs \
   --control-plane-endpoint=master
 
@@ -80,7 +80,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 #kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
 kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
-
+kubectl apply -f calico.yaml
 
 watch kubectl get pods --all-namespaces
 
