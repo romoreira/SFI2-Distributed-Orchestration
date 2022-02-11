@@ -10,3 +10,5 @@ https://github.com/IBM/Scalable-Cassandra-deployment-on-Kubernetes
   * kubectl get statefulsets
   * kubectl get pods -o wide
   * kubectl exec -ti cassandra-0 -- nodetool status
+
+  * ./cassandra-stress write n=1000 cl=ONE -node 10.0.0.4
