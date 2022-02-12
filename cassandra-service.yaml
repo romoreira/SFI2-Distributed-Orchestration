@@ -11,5 +11,3 @@ spec:
     - port: 9042
   selector:
     app: cassandra
-  externalIPs:
-    - 10.0.0.7

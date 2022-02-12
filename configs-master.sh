@@ -68,7 +68,7 @@ sudo kubeadm config images pull
 #sudo kubeadm config images pull --cri-socket /var/run/docker.sock
 
 sudo kubeadm init \
-  --pod-network-cidr=192.168.0.0/24 \
+  --pod-network-cidr=192.168.0.0/16 \
   --upload-certs \
   --control-plane-endpoint=master
 
