@@ -1,4 +1,4 @@
-# k8sfi2 Use Case 1:
+# SFI2 Project: Use Case 1: Cassandra Kubernetes on top of RNP Network
 
 https://github.com/IBM/Scalable-Cassandra-deployment-on-Kubernetes
 
