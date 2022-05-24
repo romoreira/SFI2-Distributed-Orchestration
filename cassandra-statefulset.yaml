@@ -43,17 +43,5 @@ spec:
             - name: CASSANDRA_ENDPOINT_SNITCH
               value: GossipingPropertyFileSnitch
           volumeMounts:
-            - name: cassandra-data
+            - name: cassandra-persistent
               mountPath: /var/lib/cassandra/data
-  volumeClaimTemplates:
-    - metadata:
-        name: cassandra-data
-        annotations:  # comment line if you want to use a StorageClass
-          # or specify which StorageClass
-          volume.beta.kubernetes.io/storage-class: ""   # comment line if you
-          # want to use a StorageClass or specify which StorageClass
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 1Gi
