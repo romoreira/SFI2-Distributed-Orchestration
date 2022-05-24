@@ -5,7 +5,7 @@ metadata:
   name: cassandra
 spec:
   serviceName: cassandra
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
      app: cassandra
@@ -14,6 +14,10 @@ spec:
       labels:
         app: cassandra
     spec:
+      volumes:
+        - name: pvc-cassandra                 
+          persistentVolumeClaim:
+            claimName: cassandra-storage
       containers:
         - name: cassandra
           image: cassandra:3
@@ -43,5 +47,13 @@ spec:
             - name: CASSANDRA_ENDPOINT_SNITCH
               value: GossipingPropertyFileSnitch
           volumeMounts:
-            - name: cassandra-persistent
+            - name: cassandra-storage
               mountPath: /var/lib/cassandra/data
+  volumeClaimTemplates:
+  - metadata:
+      name: cassandra-storage
+    spec:
+      accessModes: [ "ReadWriteMany" ]
+      resources:
+        requests:
+          storage: 5Gi
