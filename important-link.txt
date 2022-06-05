@@ -1,0 +1,1 @@
+https://medium.com/geekculture/kubernetes-distributing-pods-evenly-across-cluster-c6bdc9b49699

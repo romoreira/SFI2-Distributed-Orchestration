@@ -5,12 +5,12 @@ metadata:
   labels:
     app: cassandra
     type: local
+    sfi2-uc1: cassandra
   name: cassandra-storage
   namespace: sfi2-uc1
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: [ ReadWriteOnce ]
   resources:
     requests:
-      storage: 500Mi
+      storage: 1Gi
   storageClassName: local-path

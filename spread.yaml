@@ -5,7 +5,7 @@ metadata:
   name: cassandra
 spec:
   serviceName: cassandra
-  replicas: 3
+  replicas: 2 
   selector:
     matchLabels:
      app: cassandra
@@ -13,10 +13,20 @@ spec:
     spec:
       nodeSelector:
         sfi2-uc1: cassandra
+        type: cassandra
     metadata:
       labels:
+        type: cassandra
+        #sfi2-uc1: cassandra
         app: cassandra
     spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: sfi2-uc1
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            sfi2-uc1: cassandra    
       containers:
         - name: cassandra
           image: cassandra:3

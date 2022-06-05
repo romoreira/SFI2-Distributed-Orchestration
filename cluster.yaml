@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassandra
+  namespace: sfi2-uc1
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      #type: dummy
+      sfi2-uc1: cassandra
+  template:
+    metadata:
+      labels:
+        type: cassandra
+        sfi2-uc1: cassandra
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          #topologyKey: kubernetes.io/unisinos-edge1
+          topologyKey: sfi2-uc1
+          #topologyKey: teste
+          #topologyKey: cassandra
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              sfi2-uc1: cassandra
+      containers:
+      - name: pause
+        image: k8s.gcr.io/pause:3.1
