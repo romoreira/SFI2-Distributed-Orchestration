@@ -10,4 +10,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN \
   apt-get update -y \
   && apt-get install cassandra -y
+RUN \
+  apt-get install iputils-ping -y
 ADD  cassandra_loadgen.py /home/cassandra_loadgen.py
