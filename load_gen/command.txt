@@ -1,0 +1,1 @@
+cassandra-stress mixed ratio\(write=50,read=50\) duration=1m cl=one -pop dist=UNIFORM\(1..100000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3 -node 10.50.99.38
