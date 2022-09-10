@@ -1,7 +1,5 @@
 # SFI2 Project
-## Use Case 1: Cassandra Kubernetes on top of RNP Network
-
-https://github.com/IBM/Scalable-Cassandra-deployment-on-Kubernetes
+## Use Case 1: Cassandra Kubernetes on top of FIBRE-NG
 
 
   * kubectl create -f cassandra-service.yaml
@@ -12,11 +10,6 @@ https://github.com/IBM/Scalable-Cassandra-deployment-on-Kubernetes
   * kubectl get pods -o wide
   * kubectl exec -ti cassandra-0 -- nodetool status
 
-  * ./cassandra-stress write n=1000 cl=ONE -node 10.0.0.4
+### To run Cassandra Stress follow this [steps](https://github.com/romoreira/k8sfi2/tree/main/load_gen)
 
-  * sudo apt-get install apt-transport-https gnupg2 -y
-  * wget -q -O - https://www.apache.org/dist/cassandra/KEYS | sudo  apt-key add -
-  * sudo sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 311x main" > /etc/apt/sources.list.d/cassandra.list'
-  * sudo apt-get install openjdk-8-jdk -y
-  * sudo apt-get install cassandra -y
 
