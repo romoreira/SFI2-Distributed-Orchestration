@@ -91,6 +91,8 @@ spec:
             value: "K8Demo"
           - name: CASSANDRA_START_RPC
             value: "true"
+          - name: RPC_ADDRESS
+            value: "0.0.0.0"
           - name: START_NATIVE_TRANSPORT
             value: "true"
           - name: PROTOCOL_VERSION
