@@ -10,3 +10,4 @@ spec:
      imagePullPolicy: IfNotPresent
      ports:
      - containerPort: 6379
+   terminationGracePeriodSeconds: 60

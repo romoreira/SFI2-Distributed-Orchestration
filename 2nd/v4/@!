@@ -93,10 +93,9 @@ spec:
             value: "true"
           - name: START_NATIVE_TRANSPORT
             value: "true"
-          - name: PROTOCOL_VERSION
-            value: "3"
           - name: CASSANDRA_NUM_TOKENS
             value: "256"
+          - na
           - name: CASSANDRA_DC
             value: "DC1-K8Demo"
           - name: CASSANDRA_RACK

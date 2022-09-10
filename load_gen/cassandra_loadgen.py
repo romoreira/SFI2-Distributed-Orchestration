@@ -34,7 +34,7 @@ DEBUG = 0
 #	   '--zoom=0.15'
 #           ]
 #command = ['termit']
-command = ['./bin/cassandra-stress', 'mixed','ratio(write=1,read=999)','duration=125m','cl=ONE','-pop','dist=UNIFORM(1..1000000)','-rate','threads=100','fixed=1100/s','-node','192.168.0.104','-mode','native','cql3','user=cassandra','password=cassandra']
+command = ['./bin/cassandra-stress', 'mixed','ratio(write=50,read=50)','duration=5m','cl=ONE','-pop','dist=UNIFORM(1..1000000)','-rate','threads=10','fixed=500/s','-node','192.168.0.104','-mode','native','cql3', 'protocolVersion=3','user=cassandra','password=cassandra']
 
 num_client = 0
 
