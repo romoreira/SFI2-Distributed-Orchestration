@@ -11,5 +11,5 @@
   * kubectl exec -ti cassandra-0 -- nodetool status
 
 ### To run Cassandra Stress follow this [steps](https://github.com/romoreira/k8sfi2/tree/main/load_gen)
-
+SFI2 Project Site available [here](https://sites.google.com/view/sfi2/home)
 
