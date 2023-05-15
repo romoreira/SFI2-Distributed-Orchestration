@@ -11,6 +11,7 @@
 * Run cassandra-stress `kubectl exec -it loadgen -- /bin/bash`
 * Run cassandra-stress `cassandra-stress write n=1000 cl=ONE -node cassandra -mode native cql3 protocolVersion=3`
 
+TIP: You need to Write before Read. (Warmup).
 
 ### To run cassandra-stress outside container
   * `./cassandra-stress write n=1000 cl=ONE -node 10.0.0.4`
