@@ -9,7 +9,7 @@
 * Deploy cassandra-loadgen on Kubernetes `kubectl create -f stress.yaml`
 * Open Pod bash `kubectl exec -it loadgen -- /bin/bash`
 * Run cassandra-stress `kubectl exec -it loadgen -- /bin/bash`
-* Run cassandra-stress `cassandra-stress write n=1000 cl=ONE -node cassandra -mode native cql3 protocolVersion=3`
+* Run cassandra-stress `cassandra-stress write n=1000 cl=ONE -node cassandra -pop dist=UNIFORM\(1..1000000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3`
 
 TIP: You need to Write before Read. (Warmup).
 
