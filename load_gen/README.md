@@ -10,6 +10,7 @@
 * Open Pod bash `kubectl exec -it loadgen -- /bin/bash`
 * Run cassandra-stress `kubectl exec -it loadgen -- /bin/bash`
 * Run cassandra-stress `cassandra-stress write n=1000 cl=ONE -node cassandra -pop dist=UNIFORM\(1..1000000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3`
+* Other option `cassandra-stress mixed ratio\(write=50, read=50\) cl=ONE -node cassandra -pop dist=UNIFORM\(1..1000000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3  user=cassandra password=cassandra`
 
 TIP: You need to Write before Read. (Warmup).
 
