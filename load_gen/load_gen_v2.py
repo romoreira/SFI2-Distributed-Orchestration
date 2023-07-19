@@ -34,7 +34,7 @@ DEBUG = 0
 #	   '--zoom=0.15'
 #           ]
 #command = ['termit']
-command = ['cassandra-stress', 'write', 'cl=ONE','-pop','dist=UNIFORM(1..1000000)','-rate','threads=10','fixed=500/s','-node','cassandra','-mode','native','cql3', 'protocolVersion=3','user=cassandra','password=cassandra']
+command = ['cassandra-stress', 'write', 'no-warmup','cl=ONE', 'duration=5m','-pop','dist=UNIFORM(1..1000000)','-rate','threads=10','fixed=500/s','-node','cassandra','-mode','native','cql3', 'protocolVersion=3','user=cassandra','password=cassandra']
 
 num_client = 0
 
@@ -65,7 +65,9 @@ def terminate_process(pid, FNULL):
     logger = logging.getLogger("terminate")
     logger.info('Terminating process pid = %s' % (pid.pid))
 
-    os.rename(FNULL, str(datetime.now().timestamp())+"_output_stdout.txt")
+
+    print("FNULL: "+str(FNULL))
+    os.rename(FNULL.name, str(datetime.datetime.now().timestamp())+"_output_stdout.txt")
     
     os.system('pkill -9 -P '+str(pid.pid))
     os.system('kill -9 '+str(pid.pid))    #pid.kill()
@@ -140,7 +142,7 @@ def run(args):
         if num_client < math.ceil(lambd):
             logger.info("Generating new process")
         
-            output_file_name = str(datetime.now().timestamp())+"_output_stdout.txt"
+            output_file_name = str(datetime.datetime.now().timestamp())+"_output_stdout.txt"
             FILE = open(output_file_name, 'w')
             reports.append(FILE)
             
@@ -149,7 +151,8 @@ def run(args):
             #last_pid.wait()
 
         if num_client > math.ceil(lambd):
-	    logger.info("Killing a process")
+	    
+            logger.info("Killing a process")
             terminate_process(alive[0], reports[0])
             alive.popleft()
             reports.popleft()
@@ -196,8 +199,10 @@ def main():
     # main loop
     run(args)
 
+    i = 0
     for pids in alive:
-        terminate_process(pids)
+        terminate_process(pids,reports[i])
+        i = i + 1
 
 
 # hook for the main function 
