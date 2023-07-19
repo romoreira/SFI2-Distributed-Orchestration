@@ -90,6 +90,24 @@ def apply_mean_by_date(input_file):
 
     df_final.to_csv('cassandra-stress.csv', index=True)
 
+def merge_csvs(cassandra,netflow):
+    # Leitura dos arquivos CSV
+    df1 = pd.read_csv(cassandra)
+    df2 = pd.read_csv(netflow)
+
+    #Change column name
+    df2 = df2.rename(columns={'TimeStamp': 'time'})
+
+    # Mescla dos dataframes com base na coluna 'data_hora'
+    merged_df = pd.merge(df1, df2, on='time', how='inner')
+
+    # Visualizar o resultado
+    #print(merged_df)
+
+    # Caso queira salvar o resultado em um novo arquivo CSV
+    merged_df.to_csv('arquivo_final.csv', index=False)
+    print("Files merged successfully.")
+
 def combine_csvs():
     # Directory containing the CSV files
     directory = './csvs'
@@ -118,10 +136,11 @@ phrase_pattern = "Failed to connect over JMX; not collecting these stats"
 input_directory = "./txts/"
 output_directory = "./csvs"
 
-csv_pattern = extract_csv_pattern(input_directory, phrase_pattern, output_directory)
-combine_csvs()
-apply_mean_by_date("combined.csv")
+#csv_pattern = extract_csv_pattern(input_directory, phrase_pattern, output_directory)
+#combine_csvs()
+#apply_mean_by_date("combined.csv")
 
+merge_csvs("cassandra-stress.csv","flows_infrastructure.csv")
 
 
 
