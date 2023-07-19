@@ -23,7 +23,7 @@ __version__ = 0.1
 __updated__ = '2018-09-21'
 DEBUG = 0
 
-#command = [
+# command = [
 #           'cassandra-stress',
 ##          '--no-video',
 #           '--no-qt-privacy',
@@ -33,27 +33,30 @@ DEBUG = 0
 #           'dummy',
 #	   '--zoom=0.15'
 #           ]
-#command = ['termit']
-command = ['cassandra-stress', 'write', 'no-warmup','cl=ONE', 'duration=5m','-pop','dist=UNIFORM(1..1000000)','-rate','threads=10','fixed=500/s','-node','cassandra','-mode','native','cql3', 'protocolVersion=3','user=cassandra','password=cassandra']
+# command = ['termit']
+command = ['cassandra-stress', 'write', 'no-warmup', 'cl=ONE', 'duration=10m', '-pop', 'dist=UNIFORM(1..1000000)',
+           '-rate', 'threads=10', 'fixed=500/s', '-node', 'cassandra', '-mode', 'native', 'cql3', 'protocolVersion=3',
+           'user=cassandra', 'password=cassandra']
 
-num_client = 0
+num_client = 0  # Setted to one fo the sinusoid starts with at least one (1) client
 
 alive = deque([])
-reports = deque([])# List containing the file name at it start
+reports = deque([])  # List containing the file name at it start
+
 
 # Start a process and stop it after args.length minutes
 def start_process(args, FNULL):
-    logger = logging.getLogger("start")
-    
-    # Start a new process    
-#    logger.info('Starting new process')
+    # logger = logging.getLogger("start")
+
+    # Start a new process
+    # logger.info('Starting new process')
 
     global command
-    #eff_command = command + [args.playlist]
+    # eff_command = command + [args.playlist]
     eff_command = command
 
     pid = subprocess.Popen(eff_command, stdout=FNULL, stderr=subprocess.STDOUT)
-    logger.info('Starting new process pid = %s' % (pid))
+    # logger.info('Starting new process pid = %s' % (pid))
     global num_client
     num_client += 1
     return pid
@@ -63,25 +66,24 @@ def start_process(args, FNULL):
 def terminate_process(pid, FNULL):
     # setup logger
     logger = logging.getLogger("terminate")
-    logger.info('Terminating process pid = %s' % (pid.pid))
+    # logger.info('Terminating process pid = %s' % (pid.pid))
 
+    # print("FNULL: "+str(FNULL))
+    os.rename(FNULL.name, str(datetime.datetime.now().timestamp()) + "_output_stdout.txt")
 
-    print("FNULL: "+str(FNULL))
-    os.rename(FNULL.name, str(datetime.datetime.now().timestamp())+"_output_stdout.txt")
-    
-    os.system('pkill -9 -P '+str(pid.pid))
-    os.system('kill -9 '+str(pid.pid))    #pid.kill()
+    os.system('pkill -9 -P ' + str(pid.pid))
+    os.system('kill -9 ' + str(pid.pid))  # pid.kill()
     global num_client
     num_client -= 1
-    #pid.wait()
+    # pid.wait()
+
 
 def run(args):
-
     # setup logger
     logger = logging.getLogger("run")
     # set the boundaries
     start = now = datetime.datetime.now()
-    end   = now + datetime.timedelta(minutes=args.duration)
+    end = now + datetime.timedelta(minutes=args.duration)
 
     # Null file, just open it for future use
     # output_file_name = str(end.timestamp())+"_output_stdout.txt"
@@ -96,10 +98,10 @@ def run(args):
         # T is the period (measured in seconds),
         omega = 2.0 * math.pi / (float(T) * 60.0)
         A = float(A)
-#        logger.info('Using sine wave function with A=%f period=%f' % (A, omega))
+        # logger.info('Using sine wave function with A=%f period=%f' % (A, omega))
 
-        # the amplitude must be smaller than the lambda 
-        assert(A < args.lambd)
+        # the amplitude must be smaller than the lambda
+        assert (A < args.lambd)
 
     # general lambda
     lambd = args.lambd
@@ -111,13 +113,13 @@ def run(args):
     global alive
     global reports
 
-    #used to define poisson interarrival times - time to sleep in between processes
+    # used to define poisson interarrival times - time to sleep in between processes
     global sleep_secs
 
     logger.info("timestamp,clients")
     # until we finish
     while (now < end):
-    
+
         if args.sinusoid:
             # The sine wave or sinusoid is a mathematical curve that describes
             # a smooth repetitive oscillation.
@@ -126,53 +128,57 @@ def run(args):
             # where:
             #  -  is the phase (equal to 0)
             #  -  is evaluated at the previous step
-            lambd = args.lambd + A * math.sin(omega * (now - start).total_seconds()) 
+            lambd = args.lambd + A * math.sin(omega * (now - start).total_seconds())
 
-        # Poisson process:
+            # Poisson process:
         # The time between each pair of consecutive events has an exponential
         # distribution with parameter  and each of these inter-arrival times
         # is assumed to be independent of other inter-arrival times.
         if args.poisson:
             sleep_secs = random.expovariate(lambd / 60.0)
 
-        logger.debug('%s - Will sleep for %s sec' % (now, sleep_secs))
-        logger.debug('Clients active = %s - lambda = %s' % (num_client, math.ceil(lambd)))
+        # logger.debug('%s - Will sleep for %s sec' % (now, sleep_secs))
+        # logger.debug('Clients active = %s - lambda = %s' % (num_client, math.ceil(lambd)))
         time.sleep(sleep_secs)
-    
+
+        print("Status of Reports: " + str(len(reports)))
+
         if num_client < math.ceil(lambd):
-            logger.info("Generating new process")
-        
-            output_file_name = str(datetime.datetime.now().timestamp())+"_output_stdout.txt"
+            # logger.info("Generating new process")
+
+            output_file_name = str(datetime.datetime.now().timestamp()) + "_output_stdout.txt"
             FILE = open(output_file_name, 'w')
             reports.append(FILE)
-            
+
             last_pid = start_process(args, FILE)
             alive.append(last_pid)
-            #last_pid.wait()
+            # last_pid.wait()
 
         if num_client > math.ceil(lambd):
-	    
-            logger.info("Killing a process")
+            # logger.info("Killing a process")
             terminate_process(alive[0], reports[0])
             alive.popleft()
             reports.popleft()
 
         # refresh the timer
         now = datetime.datetime.now()
-        logger.info(str(int(time.time()))+","+str(num_client))
+        logger.info(str(int(time.time())) + "," + str(num_client))
 
 
 def main():
-    
     logger = logging.getLogger("main")
 
     parser = argparse.ArgumentParser()
     program_version = "v%s" % __version__
     program_build_date = str(__updated__)
-    parser.add_argument('-V', '--version', action='version', version='%%(prog)s %s (%s)' % (program_version, program_build_date))
-    parser.add_argument("-v", "--verbose", dest="verbose", action="count", help="set verbosity level [default: %(default)s]")
-    parser.add_argument("-s", "--sinusoid", dest="sinusoid", metavar='A,P', help="set the sinusoidal lambda behavior, that varies with amplitude A on period P minutes around the lambda")
-    parser.add_argument("-c", "--constant", dest="constant", action="count", help="set the constant load at lambda rate along total duration", required = False)
+    parser.add_argument('-V', '--version', action='version',
+                        version='%%(prog)s %s (%s)' % (program_version, program_build_date))
+    parser.add_argument("-v", "--verbose", dest="verbose", action="count",
+                        help="set verbosity level [default: %(default)s]")
+    parser.add_argument("-s", "--sinusoid", dest="sinusoid", metavar='A,P',
+                        help="set the sinusoidal lambda behavior, that varies with amplitude A on period P minutes around the lambda")
+    parser.add_argument("-c", "--constant", dest="constant", action="count",
+                        help="set the constant load at lambda rate along total duration", required=False)
     parser.add_argument("-l", "--playlist", dest="playlist", help="Set the playlist for the clients", required=False)
 
     parser.add_argument('--poisson', dest='poisson', action='store_true')
@@ -182,7 +188,8 @@ def main():
 
     # positional arguments (duration, lambda)
     parser.add_argument("duration", type=float, help="set the duration of the experiment in minutes")
-    parser.add_argument("lambd", type=float, help="set the (average) arrival rate of lambda clients/minute or normal level of functioning Rnorm for flash crowd")
+    parser.add_argument("lambd", type=float,
+                        help="set the (average) arrival rate of lambda clients/minute or normal level of functioning Rnorm for flash crowd")
 
     # Process arguments
     args = parser.parse_args()
@@ -201,10 +208,11 @@ def main():
 
     i = 0
     for pids in alive:
-        terminate_process(pids,reports[i])
+        terminate_process(pids, reports[i])
         i = i + 1
 
 
-# hook for the main function 
+# hook for the main function
 if __name__ == '__main__':
     main()
+
