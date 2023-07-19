@@ -132,6 +132,29 @@ def combine_csvs():
 
     print("CSV files combined successfully.")
 
+def process_flows_infrastructure(input_file):
+    # Carregar o arquivo CSV
+    df = pd.read_csv(input_file)
+
+    # Remove some columns
+    columns_to_remove = ['Src IP', 'Src Port', 'Dst IP', 'Dst Port','Protocol', 'Label']
+    df = df.drop(columns=columns_to_remove)
+
+    # Converter as colunas de data para o tipo datetime
+    df['time'] = pd.to_datetime(df['time'])
+
+    # Identificar as colunas numéricas
+    colunas_numericas = df.select_dtypes(include='number').columns
+
+    # Agrupar por data e calcular a média das colunas numéricas
+    df_agrupado = df.groupby('time')[colunas_numericas].mean()
+
+    # Output file path for the combined CSV
+    output_file = './flows_infrastructure_mean.csv'
+
+    # Save the combined DataFrame to a CSV file
+    df_agrupado.to_csv(output_file, index=True)
+
 phrase_pattern = "Failed to connect over JMX; not collecting these stats"
 input_directory = "./txts/"
 output_directory = "./csvs"
@@ -140,7 +163,8 @@ output_directory = "./csvs"
 #combine_csvs()
 #apply_mean_by_date("combined.csv")
 
-merge_csvs("cassandra-stress.csv","flows_infrastructure.csv")
+process_flows_infrastructure("flows_infrastructure.csv")
+merge_csvs("cassandra-stress.csv","flows_infrastructure_mean.csv")
 
 
 
