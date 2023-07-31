@@ -12,6 +12,7 @@
 * Run cassandra-stress `cassandra-stress write n=1000000 cl=ONE -log file=write_output.txt -node cassandra -pop dist=UNIFORM\(1..1000000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3`
 * Other option `cassandra-stress mixed ratio\(write=50, read=50\) cl=ONE duration=5m -log file=mixed_output.txt -node cassandra -pop dist=UNIFORM\(1..1000000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3  user=cassandra password=cassandra`
 * Changing the replica factor `cassandra-stress write n=500000 no-warmup -log file=write_output.txt -node cassandra -schema "replication(strategy=SimpleStrategy, factor=2)" -mode native cql3 protocolVersion=3`
+* Reading operations: `cassandra-stress read duration=60m -node cassandra -mode native cql3 protocolVersion=3`
 
 TIP: You need to Write before Read. (Warmup).
 
