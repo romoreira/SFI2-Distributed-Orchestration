@@ -17,7 +17,7 @@
 TIP: You need to Write before Read. (Warmup).
 
 ### Parameters of cassandra-stress command in Python
-
+* Warmup: `cassandra-stress write n=500000 no-warmup -log file=write_output.txt -node cassandra -schema "replication(strategy=SimpleStrategy, factor=2)" -mode native cql3 protocolVersion=3`
 * Sinusuidal: `python3 load_gen_v2.py --logfile output.txt 50 51 -s 50,10 --poisson`
 * Flashcrowd: `python3 load_gen_v2.py --logfile output.txt 50 100`
 
