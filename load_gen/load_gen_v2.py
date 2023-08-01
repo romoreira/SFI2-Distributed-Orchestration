@@ -38,6 +38,8 @@ command = ['cassandra-stress', 'write', 'no-warmup', 'cl=ONE', 'duration=10m', '
            '-rate', 'threads=10', 'fixed=500/s', '-node', 'cassandra', '-mode', 'native', 'cql3', 'protocolVersion=3',
            'user=cassandra', 'password=cassandra']
 
+command = "./runner.sh"
+
 num_client = 0  # Setted to one fo the sinusoid starts with at least one (1) client
 
 alive = deque([])

@@ -16,6 +16,11 @@
 
 TIP: You need to Write before Read. (Warmup).
 
+### Parameters of cassandra-stress command in Python
+
+* Sinusuidal: `python3 load_gen_v2.py --logfile output.txt 50 51 -s 50,10 --poisson`
+* Flashcrowd: `python3 load_gen_v2.py --logfile output.txt 50 100`
+
 ### To run cassandra-stress outside container
   * `./cassandra-stress write n=1000 cl=ONE -node 10.0.0.4`
 
