@@ -14,6 +14,6 @@ This repository contains the code (part) for the SFI2 project. The rationale beh
 
 This repository contains the following files and directory:
 
-* [`README.md`][https://github.com/romoreira/SFI2-Distributed-Orchestration/blob/main/README.md]: this current file
+* [`README.md`](https://github.com/romoreira/SFI2-Distributed-Orchestration/blob/main/README.md): this current file
 * 
 
