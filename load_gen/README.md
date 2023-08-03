@@ -33,6 +33,8 @@ This project aims to deploy a Cassandra Load Generator on Kubernetes. The Cassan
 * Sinusuidal: `python3 cassandra_loadgen.py --logfile output.txt 50 25 -s 20,10 --poisson`
 * Flashcrowd: `python3 load_gen_v2.py --logfile output.txt 50 100`
 
+---
+
 ### 4. To run cassandra-stress outside container
   * `./cassandra-stress write n=1000 cl=ONE -node 10.0.0.4`
 
@@ -41,3 +43,5 @@ This project aims to deploy a Cassandra Load Generator on Kubernetes. The Cassan
   * `sudo sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 311x main" > /etc/apt/sources.list.d/cassandra.list'`
   * `sudo apt-get install openjdk-8-jdk -y`
   * `sudo apt-get install cassandra -y`
+
+---
