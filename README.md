@@ -14,6 +14,9 @@ This repository contains the code (part) for the SFI2 project. The rationale beh
 
 This repository contains the following files and directory:
 
-* [`README.md`](https://github.com/romoreira/SFI2-Distributed-Orchestration/blob/main/README.md): this current file
-* 
+* File
+  * [`README.md`](https://github.com/romoreira/SFI2-Distributed-Orchestration/blob/main/README.md): this current file
+* Directory
+  * [`v2`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd/v2): contains the files to deploy Cassandra on top of Kubernetes and Azure.
+  * [`v4`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd/v4): contains the files to deploy Cassandra on top of Kubernetes and FIBRE-NG.
 
