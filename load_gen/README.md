@@ -71,4 +71,9 @@ This project aims to deploy a Cassandra Load Generator on Kubernetes. The Cassan
   * `sudo apt-get install openjdk-8-jdk -y`
   * `sudo apt-get install cassandra -y`
 
+###  5. To configure [https://github.com/daud99/FlowGenerator.git](FlowGenerator)
+  * `git clone https://github.com/daud99/FlowGenerator.git`
+  * `sudo apt-get install python3-pip`
+  * `pip3 install scapy numpy scipy`
+
 ---
