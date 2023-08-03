@@ -1,1 +1,12 @@
 cassandra-stress mixed ratio\(write=50,read=50\) duration=1m cl=one -pop dist=UNIFORM\(1..100000\) -rate threads=10 fixed=500/s -mode native cql3 protocolVersion=3 -node 10.50.99.38
+
+### To capture flows for each Cassandra Pod
+kubectl sniff -n sfi2-uc1 cassandra-0 -p -i eth0 -o 0-captura.pcap
+kubectl sniff -n sfi2-uc1 cassandra-1 -p -i eth0 -o 1-captura.pcap
+kubectl sniff -n sfi2-uc1 cassandra-2 -p -i eth0 -o 2-captura.pcap
+kubectl sniff -n sfi2-uc1 cassandra-3 -p -i eth0 -o 3-captura.pcap
+kubectl sniff -n sfi2-uc1 cassandra-4 -p -i eth0 -o 4-captura.pcap
+
+#### To start benchmark
+
+python3 cassandra_loadgen.py --logfile output.txt 50 25 -s 20,10 --poisson

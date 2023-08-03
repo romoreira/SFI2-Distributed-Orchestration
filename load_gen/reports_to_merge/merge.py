@@ -2,14 +2,22 @@ import csv
 import os
 import pandas as pd
 from datetime import datetime, timedelta
+import time
+import numpy as np
+
+working_dir = "./write_sinusuidal"
+phrase_pattern = "Failed to connect over JMX; not collecting these stats"
+input_directory = working_dir+"/txts/"
+output_directory = working_dir+"/csvs/"
 
 def write_to_csv(df, output_file):
     df.to_csv(output_file, index=False)
 def extract_csv_pattern(input_directory, phrase_pattern, output_directory):
-    amout_files = 0
+    print("Extracting CSVs from TXTs...")
+    amount_files = 0
     for filename in os.listdir(input_directory):
         if filename.endswith(".txt"):
-            print("FILE NAME: "+str(filename))
+            #print("FILE NAME: "+str(filename))
             with open(str(input_directory)+str("/")+filename, 'r') as file:
                 content = file.readlines()
 
@@ -65,16 +73,23 @@ def extract_csv_pattern(input_directory, phrase_pattern, output_directory):
 
 
                 write_to_csv(df, str(output_directory)+str("/")+filename+str(".csv"))
-                amout_files = amout_files + 1
-    print("CSV files created successfully: "+str(amout_files))
+                amount_files = amount_files + 1
+    print(f"TXTs converted to CSV successfully: "+str(amount_files)+str(" at: "),{str(output_directory)})
 
 
 def apply_mean_by_date(input_file):
-    # Carregar o arquivo CSV
-    df = pd.read_csv(input_file)
+    arquivo_flows = os.path.join(working_dir, './cassandra_stress.csv')
+    if os.path.exists(arquivo_flows):
+        # Remove o arquivo "flows.csv" caso ele exista
+        os.remove(arquivo_flows)
+    else:
+        print("File not found. cassandra_stress.csv")
+        print("Applying mean by date into cassandra-stress CSV..")
 
-    # Converter as colunas de data para o tipo datetime
-    df['time'] = pd.to_datetime(df['time'])
+
+    # Carregar o arquivo CSV
+    df = pd.read_csv(working_dir+str("/")+input_file)
+
 
     # Identificar as colunas numéricas
     colunas_numericas = df.select_dtypes(include='number').columns
@@ -85,18 +100,19 @@ def apply_mean_by_date(input_file):
     # Reunir o DataFrame agrupado com a coluna textual mantida
     df_final = df_agrupado.join(df['type total'])
 
+
     df_final['type total'] = df_final['type total'].fillna('total')
 
+    df_final.to_csv(working_dir+'/cassandra_stress.csv', index=False)
+    print(f"Mean applied successfully in cassandra-stress CSV at:",{working_dir+'/cassandra_stress.csv'})
 
-    df_final.to_csv('cassandra-stress.csv', index=True)
-
-def merge_csvs(cassandra,netflow):
+def merge_csvs(cassandra, netflow):
     # Leitura dos arquivos CSV
-    df1 = pd.read_csv(cassandra)
-    df2 = pd.read_csv(netflow)
+    df1 = pd.read_csv(working_dir+"/"+cassandra)
+    df2 = pd.read_csv(working_dir+"/"+netflow)
 
     #Change column name
-    df2 = df2.rename(columns={'TimeStamp': 'time'})
+    df2 = df2.rename(columns={'Timestamp': 'time'})
 
     # Mescla dos dataframes com base na coluna 'data_hora'
     merged_df = pd.merge(df1, df2, on='time', how='inner')
@@ -105,12 +121,20 @@ def merge_csvs(cassandra,netflow):
     #print(merged_df)
 
     # Caso queira salvar o resultado em um novo arquivo CSV
-    merged_df.to_csv('arquivo_final.csv', index=False)
+    merged_df.to_csv(working_dir+'/arquivo_final.csv', index=False)
     print("Files merged successfully.")
 
 def combine_csvs():
+    arquivo_flows = os.path.join(working_dir, './cassandra-stress_combined.csv')
+    if os.path.exists(arquivo_flows):
+        # Remove o arquivo "flows.csv" caso ele exista
+        os.remove(arquivo_flows)
+    else:
+        print("File not found. cassandra-stress_combined.csv")
+        print("Combining CSVs from cassandra-stress..")
+
     # Directory containing the CSV files
-    directory = './csvs'
+    directory = working_dir+"/csvs"
 
     # Get a list of all CSV files in the directory
     csv_files = [file for file in os.listdir(directory) if file.endswith('.csv')]
@@ -124,47 +148,65 @@ def combine_csvs():
         df = pd.read_csv(file_path)
         combined_data = combined_data.append(df, ignore_index=True)
 
+    combined_data['time'] = pd.to_datetime(combined_data['time']).astype(int) // 10 ** 9
+
     # Output file path for the combined CSV
-    output_file = './combined.csv'
+    output_file = working_dir+'/cassandra-stress_combined.csv'
+
+
 
     # Save the combined DataFrame to a CSV file
     combined_data.to_csv(output_file, index=False)
 
-    print("CSV files combined successfully.")
+    print(f"CSV of cassandra-stress combined successfully at:",{output_file})
 
-def process_flows_infrastructure(input_file):
-    # Carregar o arquivo CSV
-    df = pd.read_csv(input_file)
+def convert_to_unix_epoch(timestamp_str):
+    timestamp_obj = time.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
+    unix_epoch = int(time.mktime(timestamp_obj))
+    return unix_epoch
 
-    # Remove some columns
-    columns_to_remove = ['Src IP', 'Src Port', 'Dst IP', 'Dst Port','Protocol', 'Label']
-    df = df.drop(columns=columns_to_remove)
+def combine_flows_csvs():
+    arquivo_flows = os.path.join(working_dir, './cassandra_flows.csv')
+    if os.path.exists(arquivo_flows):
+        # Remove o arquivo "flows.csv" caso ele exista
+        os.remove(arquivo_flows)
+    else:
+        print("File not found. cassandra_flows.csv")
+        print("Creating file..")
 
-    # Converter as colunas de data para o tipo datetime
-    df['time'] = pd.to_datetime(df['time'])
 
-    # Identificar as colunas numéricas
-    colunas_numericas = df.select_dtypes(include='number').columns
+    print("Combining CSVs from Cassandra Flows..")
+    dataframes_list = []
+    merged_df = ""
+    for filename in os.listdir(working_dir+'/csvs/cassandra_flows'):
+        if filename.endswith('.csv'):
+            file_path = os.path.join(working_dir+'/csvs/cassandra_flows', filename)
+            df = pd.read_csv(file_path)
+            dataframes_list.append(df)
 
-    # Agrupar por data e calcular a média das colunas numéricas
-    df_agrupado = df.groupby('time')[colunas_numericas].mean()
+    if len(dataframes_list) > 0:
+        merged_df = dataframes_list[0]
 
-    # Output file path for the combined CSV
-    output_file = './flows_infrastructure_mean.csv'
+        for df in dataframes_list[1:]:
+            merged_df = pd.concat([merged_df, df.loc[df['Timestamp'] != merged_df['Timestamp'].iloc[-1]]])
+    else:
+        return None
 
-    # Save the combined DataFrame to a CSV file
-    df_agrupado.to_csv(output_file, index=True)
 
-phrase_pattern = "Failed to connect over JMX; not collecting these stats"
-input_directory = "./txts/"
-output_directory = "./csvs"
+    output_file = working_dir+'/cassandra_flows.csv'
+    #merged_df['Timestamp'] = merged_df['Timestamp'].apply(convert_to_unix_epoch)
+    columns=['Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Label']
+    merged_df = merged_df.groupby('Timestamp').mean().reset_index()
+    merged_df[columns] = np.nan
+    merged_df['Timestamp'] = pd.to_datetime(merged_df['Timestamp']).astype(int) // 10 ** 9
+    merged_df.to_csv(output_file, index=False)
+    print(f"Final file (cassandra_flows.csv) created at: {output_file}")
 
-#csv_pattern = extract_csv_pattern(input_directory, phrase_pattern, output_directory)
-#combine_csvs()
-#apply_mean_by_date("combined.csv")
-
-process_flows_infrastructure("flows_infrastructure.csv")
-merge_csvs("cassandra-stress.csv","flows_infrastructure_mean.csv")
+combine_flows_csvs()
+extract_csv_pattern(input_directory, phrase_pattern, output_directory)
+combine_csvs()
+apply_mean_by_date("cassandra-stress_combined.csv")
+merge_csvs("cassandra_stress.csv","cassandra_flows.csv")
 
 
 
