@@ -1,4 +1,5 @@
-# This directory contains files to deploy a Cassandra Cluster on top of FIBRE-NG cluster v4
+# Cassandra Cluster on top of FIBRE-NG
+This directory contains files to deploy a Cassandra Cluster on top of FIBRE-NG cluster v4. 
 
 ### About this repository :octocat:
 This repository contains the files to deploy a Cassandra Cluster on top of FIBRE-NG cluster v4. 
