@@ -11,13 +11,13 @@ Files:
 
 ---
 
-## 0. Prerequisites
+## 0. Prerequisites :rocket:
 - A running FIBRE-NG cluster v4
 - A running Kubernetes cluster
 
 ---
 
-## 1. Deploying the Cassandra Cluster
+## 1. Deploying the Cassandra Cluster :roller_coaster:
 - Deploy the Cassandra Cluster
 1. ```kubectl apply -f cassandra-statefulset.yaml```
    - Check the status of the Cassandra Cluster
