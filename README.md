@@ -12,7 +12,8 @@ This repository contains the following files and directory:
   * [`2nd`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd) : contains the files to deploy Cassandra on top of Kubernetes and FIBRE-NG and Azure
     * [`v2`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd/v2): contains the files to deploy Cassandra on top of Kubernetes and Azure.
     * [`v4`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd/v4): contains the files to deploy Cassandra on top of Kubernetes and FIBRE-NG.
-    
+  * [`load_gen`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/load_gen) : contains the files to deploy Cassandra Stress on top of Kubernetes and FIBRE-NG and Azure
+
 ---
 
 ### 1. Prerequisites :rocket:
