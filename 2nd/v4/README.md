@@ -1,4 +1,4 @@
-## This directory contains files to deploy a Cassandra Cluster on top of FIBRE-NG cluster v4
+This directory contains files to deploy a Cassandra Cluster on top of FIBRE-NG cluster v4
 
 ## Prerequisites
 - A running FIBRE-NG cluster v4
