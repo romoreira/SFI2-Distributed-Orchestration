@@ -10,3 +10,7 @@ kubectl sniff -n sfi2-uc1 cassandra-4 -p -i eth0 -o 4-captura.pcap
 #### To start benchmark
 
 python3 cassandra_loadgen.py --logfile output.txt 50 25 -s 20,10 --poisson
+
+
+### Warm-up Cassandra-stress
+READ: cassandra-stress read n=500000 -log file=read_output.txt -node cassandra -schema "replication(strategy=SimpleStrategy, factor=2)" -mode native cql3 protocolVersion=3
