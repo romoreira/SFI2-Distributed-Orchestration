@@ -23,8 +23,8 @@ This project aims to deploy a Cassandra Load Generator on Kubernetes. The Cassan
 * Changing the replica factor `cassandra-stress write n=500000 no-warmup -log file=write_output.txt -node cassandra -schema "replication(strategy=SimpleStrategy, factor=2)" -mode native cql3 protocolVersion=3`
 * Reading operations: `cassandra-stress read duration=60m -node cassandra -mode native cql3 protocolVersion=3`
 
-:thermometer:  
-> TIP: You need to Write before Read. (Warmup).
+
+> TIP: You need to Write before Read. (Warmup). :thermometer:  :fire:
 
 ---
 
