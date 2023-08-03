@@ -1,15 +1,19 @@
 # SFI2 Project
-## Use Case 1: Cassandra Kubernetes on top of FIBRE-NG
 
+This repository contains the code (part) for the SFI2 project. The rationale behind this project is to provide a framework to run experiments (Cassandra) on top of Kubernetes and stress the system with a load generator (Cassandra Stress).
 
-  * kubectl create -f cassandra-service.yaml
-  * kubectl get svc cassandra
-  * kubectl create -f local-volumes.yaml
-  * kubectl create -f cassandra-statefulset.yaml
-  * kubectl get statefulsets
-  * kubectl get pods -o wide
-  * kubectl exec -ti cassandra-0 -- nodetool status
+### 0. Prerequisites
+1. Deploy Cassandra Kubernetes on top of FIBRE-NG
+    * Steps available [here](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd/v4)
+2. Deploy Cassandra Stress on top of FIBRE-NG
+   * Steps available [here](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/load_gen)
+ 
+---
 
-### To run Cassandra Stress follow this [steps](https://github.com/romoreira/k8sfi2/tree/main/load_gen)
-SFI2 Project Site available [here](https://sites.google.com/view/sfi2/home)
+### 1. About this repository :octocat:
+
+This repository contains the following files and directory:
+
+* [`README.md`][https://github.com/romoreira/SFI2-Distributed-Orchestration/blob/main/README.md]: this current file
+* 
 
