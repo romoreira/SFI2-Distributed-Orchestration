@@ -34,11 +34,12 @@ DEBUG = 0
 #	   '--zoom=0.15'
 #           ]
 # command = ['termit']
-command = ['cassandra-stress', 'write', 'no-warmup', 'cl=ONE', 'duration=10m', '-pop', 'dist=UNIFORM(1..1000000)',
-           '-rate', 'threads=10', 'fixed=500/s', '-node', 'cassandra', '-mode', 'native', 'cql3', 'protocolVersion=3',
-           'user=cassandra', 'password=cassandra']
 
-command = "./runner.sh"
+#command = ['cassandra-stress', 'write', 'no-warmup', 'cl=ONE', 'duration=60m', '-log', 'file=write_sinusuidal_output.txt', '-node', 'cassandra', '-schema', 'replication(strategy=SimpleStrategy, factor=2)', '-pop', 'dist=UNIFORM(1..1000000)', '-rate','threads=15','fixed=500/s', '-mode', 'native', 'cql3', 'protocolVersion=3', 'user=cassandra', 'password=cassandra']
+
+command = ['cassandra-stress', 'read', 'n=500000', 'no-warmup', '-log', 'file=read_output.txt', '-node', 'cassandra', '-schema', 'replication(strategy=SimpleStrategy, factor=2)', '-mode', 'native', 'cql3', 'protocolVersion=3']
+
+#command = "./runner.sh"
 
 num_client = 0  # Setted to one fo the sinusoid starts with at least one (1) client
 
@@ -217,4 +218,3 @@ def main():
 # hook for the main function
 if __name__ == '__main__':
     main()
-
