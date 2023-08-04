@@ -44,5 +44,10 @@ def plot_coef():
 
     # Exibir a tabela com os valores numéricos das correlações
     print(correlation_matrix)
+    # Criar um ranking das colunas com base na correlação com uma coluna de interesse (por exemplo, a primeira coluna do DataFrame)
+    target_column = df.columns['mean']  # Substitua '0' pelo índice da coluna que você deseja correlacionar com as outras
+    correlation_ranking = correlation_matrix[target_column].abs().sort_values(ascending=False)
+
+    print(correlation_ranking)
 
 plot_coef()

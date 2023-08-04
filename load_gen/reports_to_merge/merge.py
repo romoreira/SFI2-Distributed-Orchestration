@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import time
 import numpy as np
 
-working_dir = "./write_sinusuidal"
+working_dir = "./read_sinusoidal"
 phrase_pattern = "Failed to connect over JMX; not collecting these stats"
 input_directory = working_dir+"/txts/"
 output_directory = working_dir+"/csvs/"
