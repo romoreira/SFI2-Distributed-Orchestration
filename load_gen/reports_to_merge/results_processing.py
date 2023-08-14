@@ -25,13 +25,19 @@ def create_experiments_dir(directory, model_name):
     if not os.path.exists(str(directory)+str(model_name)):
         os.makedirs(str(directory)+str(model_name))
         print(f"Diretório '{directory}' criado.")
+
+        if not os.path.exists(str(directory)+str(model_name)+'/models'):
+            os.makedirs(str(directory)+str(model_name)+'/models')
+            print(f'Diretório models criado com sucesso!')
+        else:
+            print(f'Diretório models já existe.')
         return str(directory)+str(model_name)+'/'
     else:
         print(f"Diretório '{directory}' já existe.")
         return str(directory)+str(model_name)+'/'
 
 #######Some customizations below here######
-model_name = 'FCN'
+model_name = 'InceptionTime'
 operation = '/write'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
@@ -44,6 +50,24 @@ elif model_name == 'FCNPlus':
     arch = FCNPlus
 elif model_name == 'ResNet':
     arch = ResNet
+elif model_name == 'ResNetPlus':
+    arch = ResNetPlus
+elif model_name == 'ResCNN':
+    arch = ResCNN
+elif model_name == 'TCN':
+    arch = TCN
+elif model_name == 'InceptionTime':
+    arch = InceptionTime
+elif model_name == 'InceptionTimePlus':
+    arch = InceptionTimePlus
+elif model_name == 'OmniScaleCNN':
+    arch = OmniScaleCNN
+elif model_name == 'XCM':
+    arch = XCM
+elif model_name == 'XCMPlus':
+    arch = XCMPlus
+
+
 
 #######End of customizations#############
 
@@ -131,14 +155,14 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 data.rename(columns={'mean': 'target'}, inplace=True)
 columns = ['ops', 'row/s', '.95', 'max', 'target']
 df = data[columns]
-print(df)
+#print(df)
 n_vars = 5
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
 X, y = SlidingWindow(5, stride=1, horizon=0, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TrainValidTestSplitter(valid_size=.2, shuffle=False)(y)
-print(X.shape)
-print(y.shape)
-print(splits)
+#print(X.shape)
+#print(y.shape)
+#print(splits)
 plot_splits(splits)
 X.shape, y.shape, splits
 
@@ -187,21 +211,16 @@ def save_default_metrics(learn, index):
             f.write(line)  # Escreve a linha no arquivo
 
 def save_metrics_plot(learn, X, y):
-    plt.clf()
     learn.plot_metrics()
-    plt.show()
-    plt.figure(figsize=(10, 6))
-    plt.savefig(directory + f'metrics_plot.png', bbox_inches='tight')  # Salva a imagem como 'metrics_plot.png'
-    plt.close()
-    exit()
-    #learn.plot_confusion_matrix()
     learn.plot_top_losses(X[splits[1]], y[splits[1]], largest=True)
     learn.top_losses(X[splits[1]], y[splits[1]], largest=True)
     learn.show_probas()
     learn.feature_importance()
-    plt.figure(figsize=(10, 6))
-    plt.savefig(directory+f'metrics_plot.png')  # Salva a imagem como 'metrics_plot.png'
-    plt.close()
+
+def save_trained_model(learn, i):
+    learn.export(directory+str("models/")+str(i)+str("_")+str(model_name)+f'.pth')
+
+
 
 search_space = {
     'batch_size': hp.choice('bs', [16, 32, 64, 128]),
@@ -282,7 +301,7 @@ def create_model_hypopt(params):
 #    f.write(str(space_eval(search_space, best)))
 
 
-params = {'batch_size': 16, 'bidirectional': False, 'epochs': 5, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
+params = {'batch_size': 16, 'bidirectional': False, 'epochs': 50, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
 
 for i in range(1):
     batch_size = params["batch_size"]
@@ -300,9 +319,11 @@ for i in range(1):
     start = time.time()
     learn.fit_one_cycle(params['epochs'], lr_max=params['lr'], cbs=EarlyStoppingCallback(monitor='valid_loss', min_delta=0.0, patience=params['patience']))
     training_time = time.time() - start
+
     save_training_time(i, training_time)
     save_metrics_plot(learn, X, y)
     save_default_metrics(learn, i)
+    save_trained_model(learn, i)
 
     #Prediction
 
