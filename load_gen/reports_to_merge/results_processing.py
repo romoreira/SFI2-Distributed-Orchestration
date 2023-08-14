@@ -31,11 +31,20 @@ def create_experiments_dir(directory, model_name):
         return str(directory)+str(model_name)+'/'
 
 #######Some customizations below here######
-model_name = 'ResNet'
-arch = ResNet
+model_name = 'FCN'
 operation = '/write'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
+
+#######Adjustments#######
+
+if model_name == 'FCN':
+    arch = FCN
+elif model_name == 'FCNPlus':
+    arch = FCNPlus
+elif model_name == 'ResNet':
+    arch = ResNet
+
 #######End of customizations#############
 
 
@@ -154,16 +163,45 @@ def check_error(orig, pred, name_col='', index_name=''):
     mae = mean_absolute_error(orig, pred)
     mae = "{:.2f}".format(mae)
 
-    mape = np.mean(np.abs((orig - pred) / orig)) * 100
+    mape = np.mean(np.abs((orig - pred) / orig))
     mape = "{:.2f}".format(mape)
 
     error_group = [bias, mse, rmse, mae, mape]
     result = pd.DataFrame(error_group, index=['BIAS', 'MSE', 'RMSE', 'MAE', 'MAPE'], columns=[name_col])
     result.index.name = index_name
     print("Result: " + str(result))
-    with open(directory+str(model_name)+'_REPORTS.txt', 'w') as f:
+    with open(directory+str(model_name)+'_FINAL_REPORTS.txt', 'w') as f:
         f.write(str(i)+'\n'+str(result))
 
+def save_default_metrics(learn, index):
+    #[mae, mse, rmse, mape]
+    #print("Metrics: "+str(learn.recorder.final_record))
+    #print("Metrics Names: "+str(learn.recorder.metric_names))
+    metrics = learn.recorder.final_record[2:]
+    metrics_names = learn.recorder.metric_names[3:-1]
+
+    with open(directory+str(index)+str("_")+str(model_name)+f'_FINAL_METRICS_last_epoch.txt', 'w') as f:
+        # Itera sobre as métricas e seus respectivos nomes e escreve no arquivo
+        for name, value in zip(metrics_names, metrics):
+            line = f'{name}: {value:.2f}\n'  # Formata a linha
+            f.write(line)  # Escreve a linha no arquivo
+
+def save_metrics_plot(learn, X, y):
+    plt.clf()
+    learn.plot_metrics()
+    plt.show()
+    plt.figure(figsize=(10, 6))
+    plt.savefig(directory + f'metrics_plot.png', bbox_inches='tight')  # Salva a imagem como 'metrics_plot.png'
+    plt.close()
+    exit()
+    #learn.plot_confusion_matrix()
+    learn.plot_top_losses(X[splits[1]], y[splits[1]], largest=True)
+    learn.top_losses(X[splits[1]], y[splits[1]], largest=True)
+    learn.show_probas()
+    learn.feature_importance()
+    plt.figure(figsize=(10, 6))
+    plt.savefig(directory+f'metrics_plot.png')  # Salva a imagem como 'metrics_plot.png'
+    plt.close()
 
 search_space = {
     'batch_size': hp.choice('bs', [16, 32, 64, 128]),
@@ -194,7 +232,7 @@ def create_model_hypopt(params):
         dls = TSDataLoaders.from_dsets(dsets.train, dsets.valid, bs=[batch_size, batch_size], num_workers=0)
 
         # Create model
-        arch = LSTM
+        global arch
         k = {
             'n_layers': params['n_layers'],
             'hidden_size': params['hidden_size'],
@@ -207,7 +245,7 @@ def create_model_hypopt(params):
         model = nn.Sequential(model, nn.Sigmoid())
 
         # Training the model
-        learn = Learner(dls, model, metrics=[mae, rmse], opt_func=params['optimizer'])
+        learn = Learner(dls, model, metrics=[mae, rmse, mse, mape], opt_func=params['optimizer'])
         start = time.time()
         learn.fit_one_cycle(params['epochs'], lr_max=params['lr'],
                             cbs=EarlyStoppingCallback(monitor='valid_loss', min_delta=0.0, patience=params['patience']))
@@ -230,42 +268,41 @@ def create_model_hypopt(params):
         return {'loss': None, 'status': STATUS_FAIL}
 
 
-trials = Trials()
-best = fmin(create_model_hypopt,
-    space=search_space,
-    algo=tpe.suggest,
-    max_evals=max_evals,  # test trials
-    trials=trials)
-print("Best parameters:")
-print(space_eval(search_space, best))
-params = space_eval(search_space, best)
+#trials = Trials()
+#best = fmin(create_model_hypopt,
+#    space=search_space,
+#    algo=tpe.suggest,
+#    max_evals=max_evals,  # test trials
+#    trials=trials)
+#print("Best parameters:")
+#print(space_eval(search_space, best))
+#params = space_eval(search_space, best)
 
-with open(directory+f'best_params.txt', 'w') as f:
-    f.write(str(space_eval(search_space, best)))
+#with open(directory+f'best_params.txt', 'w') as f:
+#    f.write(str(space_eval(search_space, best)))
 
 
-#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 5, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
+params = {'batch_size': 16, 'bidirectional': False, 'epochs': 5, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
 
-for i in range(10):
+for i in range(1):
     batch_size = params["batch_size"]
     tfms = [None, [TSRegression()]]
     dsets = TSDatasets(X, y, tfms=tfms, splits=splits, inplace=True)
     dls = TSDataLoaders.from_dsets(dsets.train, dsets.valid, bs=[batch_size, batch_size], num_workers=0)
-    arch = ResNet
     k = {
         'n_layers': params['n_layers'],
         'hidden_size': params['hidden_size'],
         'bidirectional': params['bidirectional']
     }
     model = create_model(arch, d=False, dls=dls)
-    learn = Learner(dls, model, metrics=[mae, mse, rmse], opt_func=params['optimizer'])
+    print(str("\n### ")+model.__class__.__name__+str(" ###"))
+    learn = Learner(dls, model, metrics=[mae, mse, rmse, mape], opt_func=params['optimizer'])
     start = time.time()
     learn.fit_one_cycle(params['epochs'], lr_max=params['lr'], cbs=EarlyStoppingCallback(monitor='valid_loss', min_delta=0.0, patience=params['patience']))
     training_time = time.time() - start
     save_training_time(i, training_time)
-    learn.plot_metrics()
-    learn.export(directory+str("models/")+str(i)+str("_")+str(model_name)+f'.pkl')
-
+    save_metrics_plot(learn, X, y)
+    save_default_metrics(learn, i)
 
     #Prediction
 
