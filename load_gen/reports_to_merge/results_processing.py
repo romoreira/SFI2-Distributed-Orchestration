@@ -165,7 +165,7 @@ splits = TrainValidTestSplitter(valid_size=.2, shuffle=False)(y)
 #print(X.shape)
 #print(y.shape)
 #print(splits)
-plot_splits(splits)
+#plot_splits(splits)
 X.shape, y.shape, splits
 
 
@@ -217,10 +217,10 @@ def save_default_metrics(learn, index):
 
 def save_metrics_plot(learn, X, y, index):
     learn.plot_metrics(path=directory+str(index)+str("_")+str(model_name)+str("_")+f'FINAL_METRICS.pdf')
-    learn.plot_top_losses(X[splits[1]], y[splits[1]], largest=True)
-    learn.top_losses(X[splits[1]], y[splits[1]], largest=True)
-    learn.show_probas()
-    learn.feature_importance()
+    #learn.plot_top_losses(X[splits[1]], y[splits[1]], largest=True)
+    #learn.top_losses(X[splits[1]], y[splits[1]], largest=True)
+    #learn.show_probas()
+    #learn.feature_importance()
 
 def save_trained_model(learn, i):
     learn.export(directory+str("models/")+str(i)+str("_")+str(model_name)+f'.pth')
@@ -273,7 +273,7 @@ def create_model_hypopt(params):
         start = time.time()
         learn.fit_one_cycle(params['epochs'], lr_max=params['lr'],
                             cbs=EarlyStoppingCallback(monitor='valid_loss', min_delta=0.0, patience=params['patience']))
-        learn.plot_metrics()
+        #learn.plot_metrics()
         elapsed = time.time() - start
         print(elapsed)
 
