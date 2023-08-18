@@ -38,7 +38,10 @@ def create_experiments_dir(directory, model_name):
         return str(directory)+str(model_name)+'/'
 
 #######Some customizations below here######
-model_name = str(sys.argv[1])
+if len(sys.argv) > 1:
+    model_name = str(sys.argv[1])
+else:
+    model_name = "ResNet"
 operation = '/write'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
@@ -122,6 +125,7 @@ data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
 
+
 #print(data)
 
 #divide data into train and test
@@ -168,6 +172,13 @@ splits = TrainValidTestSplitter(valid_size=.2, shuffle=False)(y)
 #plot_splits(splits)
 X.shape, y.shape, splits
 
+def check_feature_importance(df):
+    colunas_desejadas = ['ops', 'op/s', 'pk/s', 'row/s', 'mean', 'med',
+                         '.95', '.99', '.999', 'max', 'time', 'stderr',
+                         'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
+
+    novo_df = df[colunas_desejadas].copy()
+    print(df)
 
 def save_training_time(i, training_time):
     with open(directory+str(i)+'_training_time'+str(model_name)+'.txt', 'w') as f:
@@ -292,21 +303,21 @@ def create_model_hypopt(params):
         return {'loss': None, 'status': STATUS_FAIL}
 
 
-trials = Trials()
-best = fmin(create_model_hypopt,
-    space=search_space,
-    algo=tpe.suggest,
-    max_evals=max_evals,  # test trials
-    trials=trials)
-print("Best parameters:")
-print(space_eval(search_space, best))
-params = space_eval(search_space, best)
+#trials = Trials()
+#best = fmin(create_model_hypopt,
+#    space=search_space,
+#    algo=tpe.suggest,
+#    max_evals=max_evals,  # test trials
+#    trials=trials)
+#print("Best parameters:")
+#print(space_eval(search_space, best))
+#params = space_eval(search_space, best)
 
-with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
-    f.write(str(space_eval(search_space, best)))
+#with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
+#    f.write(str(space_eval(search_space, best)))
 
 
-#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 50, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
+params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 50, 'lr': 0.001, 'n_layers': 5, 'optimizer': Adam, 'patience': 10}
 
 
 for i in range(10):
@@ -330,6 +341,8 @@ for i in range(10):
     save_metrics_plot(learn, X, y, i)
     save_default_metrics(learn, i)
     save_trained_model(learn, i)
+    check_feature_importance(X, y)
+    exit()
 
     #Prediction
 
