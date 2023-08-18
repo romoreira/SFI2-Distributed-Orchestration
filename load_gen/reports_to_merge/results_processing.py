@@ -19,6 +19,7 @@ from matplotlib import ticker
 from datetime import datetime, timedelta
 import statsmodels.api as sm
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+import sys
 
 
 def create_experiments_dir(directory, model_name):
@@ -37,7 +38,7 @@ def create_experiments_dir(directory, model_name):
         return str(directory)+str(model_name)+'/'
 
 #######Some customizations below here######
-model_name = 'InceptionTime'
+model_name = str(sys.argv[1])
 operation = '/write'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
@@ -291,23 +292,24 @@ def create_model_hypopt(params):
         return {'loss': None, 'status': STATUS_FAIL}
 
 
-#trials = Trials()
-#best = fmin(create_model_hypopt,
-#    space=search_space,
-#    algo=tpe.suggest,
-#    max_evals=max_evals,  # test trials
-#    trials=trials)
-#print("Best parameters:")
-#print(space_eval(search_space, best))
-#params = space_eval(search_space, best)
+trials = Trials()
+best = fmin(create_model_hypopt,
+    space=search_space,
+    algo=tpe.suggest,
+    max_evals=max_evals,  # test trials
+    trials=trials)
+print("Best parameters:")
+print(space_eval(search_space, best))
+params = space_eval(search_space, best)
 
-#with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
-#    f.write(str(space_eval(search_space, best)))
+with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
+    f.write(str(space_eval(search_space, best)))
 
 
-params = {'batch_size': 16, 'bidirectional': False, 'epochs': 50, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
+#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 50, 'hidden_size': 200, 'lr': 0.1, 'n_layers': 5, 'optimizer': Adam, 'patience': 300}
 
-for i in range(1):
+
+for i in range(10):
     batch_size = params["batch_size"]
     tfms = [None, [TSRegression()]]
     dsets = TSDatasets(X, y, tfms=tfms, splits=splits, inplace=True)
