@@ -103,7 +103,7 @@ import pickle
 from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_error
 
-file_name = '/home/rodrigo/PycharmProjects/SFI2-Distributed-Orchestration/load_gen/reports_to_merge/write_sinusuidal/arquivo_final_bkp.csv'
+file_name = './write_sinusuidal/arquivo_final_bkp.csv'
 
 history = 24  # input historical time steps
 horizon = 1  # output predicted time steps
@@ -147,6 +147,7 @@ plt.axvspan(data.index[train_length:][0], data.index[train_length:][-1],  faceco
 plt.xlabel('Time')
 plt.ylabel('Cassandra Write (Latency)')
 plt.legend(loc='best')
+plt.grid(False)
 # plt.show()
 plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 'tight', pad_inches = 0.1)
 #print(data)
@@ -171,7 +172,10 @@ def save_training_time(i, training_time):
     with open(directory+str(i)+'_training_time'+str(model_name)+'.txt', 'w') as f:
         f.write(str(i)+'\n'+str(training_time))
 
-def check_error(orig, pred, name_col='', index_name=''):
+def check_error(orig, pred, index):
+    name_col = ''
+    index_name = ''
+
     orig = np.array(orig)
     pred = np.ravel(np.array(pred))
 
@@ -194,7 +198,7 @@ def check_error(orig, pred, name_col='', index_name=''):
     result = pd.DataFrame(error_group, index=['BIAS', 'MSE', 'RMSE', 'MAE', 'MAPE'], columns=[name_col])
     result.index.name = index_name
     print("Result: " + str(result))
-    with open(directory+str(model_name)+'_FINAL_REPORTS.txt', 'w') as f:
+    with open(directory+str(index)+str("_")+str(model_name)+'_FINAL_REPORTS.txt', 'w') as f:
         f.write(str(i)+'\n'+str(result))
 
 def save_default_metrics(learn, index):
@@ -210,8 +214,8 @@ def save_default_metrics(learn, index):
             line = f'{name}: {value:.2f}\n'  # Formata a linha
             f.write(line)  # Escreve a linha no arquivo
 
-def save_metrics_plot(learn, X, y):
-    learn.plot_metrics()
+def save_metrics_plot(learn, X, y, index):
+    learn.plot_metrics(path=directory+str(index)+str("_")+str(model_name)+str("_")+f'FINAL_METRICS.pdf')
     learn.plot_top_losses(X[splits[1]], y[splits[1]], largest=True)
     learn.top_losses(X[splits[1]], y[splits[1]], largest=True)
     learn.show_probas()
@@ -297,7 +301,7 @@ def create_model_hypopt(params):
 #print(space_eval(search_space, best))
 #params = space_eval(search_space, best)
 
-#with open(directory+f'best_params.txt', 'w') as f:
+#with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
 #    f.write(str(space_eval(search_space, best)))
 
 
@@ -321,7 +325,7 @@ for i in range(1):
     training_time = time.time() - start
 
     save_training_time(i, training_time)
-    save_metrics_plot(learn, X, y)
+    save_metrics_plot(learn, X, y, i)
     save_default_metrics(learn, i)
     save_trained_model(learn, i)
 
@@ -338,7 +342,6 @@ for i in range(1):
     plt.ylabel('Cassandra Write (Latency) ms')
     plt.title('Cassandra Latency Estimation (ms)')
     plt.legend()
-    plt.grid(True)
+    plt.grid(False)
     #plt.show()
-    plt.savefig(directory+str(i)+str("_")+str(model_name)+'_real_predict.pdf', bbox_inches = 'tight', pad_inches = 0.1)
-    check_error(target, preds, model_name)
+    check_error(target, preds, index=i)
