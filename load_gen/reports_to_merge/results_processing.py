@@ -8,7 +8,7 @@ print('fastcore   :', fastcore.__version__)
 print('torch      :', torch.__version__)
 print('matplotlib :', matplotlib.__version__)
 
-print(torch.cuda.get_device_name(0))
+#print(torch.cuda.get_device_name(0))
 
 import pandas as pd
 import numpy as np
@@ -160,7 +160,19 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
 #columns = ['FWD Init Win Bytes', 'Flow Duration', 'med', 'ops', '.95', '.99', 'max', 'target']
-columns = ['FWD Init Win Bytes', 'Flow Duration', 'Bwd IAT Total', 'Fwd IAT Total', 'target']
+columns = ['FWD Init Win Bytes', 'Flow Duration', 'Bwd IAT Total', 'Fwd IAT Total', 'Flow Packets/s',
+           'Fwd Packets/s', 'Fwd Packet Length Max', 'Fwd Packet Length Max', 'Bwd Packets/s',
+           'Flow IAT Mean', 'Bwd IAT Mean', 'Fwd Header Length','Total Fwd Packet','Fwd IAT Mean',
+           'Fwd Packet Length Std','Fwd Act Data Pkts','Bwd Header Length','Total Bwd packets',
+           'Active Max','Bwd Packet Length Min','Bwd Packet/Bulk Avg','Active Mean',
+           'Bwd Bytes/Bulk Avg','Packet Length Max','Flow IAT Std', 'Bwd IAT Std', 'Bwd IAT Min',
+           'Total Length of Fwd Packet','Active Std','Flow Bytes/s','Idle Max','Packet Length Std',
+           'Packet Length Variance','Fwd IAT Std','Bwd Packet Length Max','Packet Length Mean',
+           'Average Packet Size','Total Length of Bwd Packet','Fwd Packet/Bulk Avg','Idle Mean',
+           'Fwd Packet Length Mean','Idle Std','Bwd Init Win Bytes','Bwd Packet Length Std',
+           'Fwd Bytes/Bulk Avg','Flow IAT Min','Active Min','Bwd Bulk Rate Avg','Bwd Packet Length Mean',
+           'Fwd Bulk Rate Avg','Fwd IAT Min','Packet Length Min','Fwd Packet Length Min','Down/Up Ratio',
+           'Flow IAT Max','Bwd IAT Max','Fwd IAT Max','Idle Min','target']
 df = data[columns]
 #print(df)
 n_vars = len(columns)
