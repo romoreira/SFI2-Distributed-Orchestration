@@ -159,10 +159,11 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
-columns = ['ops', 'row/s', '.95', 'max', 'target']
+#columns = ['FWD Init Win Bytes', 'Flow Duration', 'med', 'ops', '.95', '.99', 'max', 'target']
+columns = ['FWD Init Win Bytes', 'Flow Duration', 'Bwd IAT Total', 'Fwd IAT Total', 'target']
 df = data[columns]
 #print(df)
-n_vars = 5
+n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
 X, y = SlidingWindow(5, stride=1, horizon=0, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TrainValidTestSplitter(valid_size=.2, shuffle=False)(y)
@@ -172,13 +173,35 @@ splits = TrainValidTestSplitter(valid_size=.2, shuffle=False)(y)
 #plot_splits(splits)
 X.shape, y.shape, splits
 
-def check_feature_importance(df):
-    colunas_desejadas = ['ops', 'op/s', 'pk/s', 'row/s', 'mean', 'med',
-                         '.95', '.99', '.999', 'max', 'time', 'stderr',
+def check_feature_importance(df, X, y):
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_rows', None)
+    colunas_desejadas_cassandra = ['ops', 'op/s', 'pk/s', 'row/s', 'target', 'med',
+                         '.95', '.99', '.999', 'max', 'stderr',
                          'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
 
-    novo_df = df[colunas_desejadas].copy()
-    print(df)
+    df_cassandra = df[colunas_desejadas_cassandra].copy()
+    correlation_matrix = df_cassandra.corr()
+    correlation_with_target = correlation_matrix['target']
+    # Ordenando as colunas por relevância (correlação com o alvo)
+    sorted_correlation_cassandra = correlation_with_target.abs().sort_values(ascending=False)
+    print("Cassandra Features Most Relevant: "+str(sorted_correlation_cassandra))
+    # Supondo que 'df' seja o seu DataFrame original
+    colunas_a_ignorar = ['ops', 'op/s', 'pk/s', 'row/s', 'med',
+                        '.95', '.99', '.999', 'max', 'stderr',
+                        'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
+
+    novas_colunas = [coluna for coluna in df.columns if coluna not in colunas_a_ignorar]
+    df_flowmeter = df[novas_colunas].copy()  # Cria uma cópia com as colunas desejadas
+    correlation_matrix = df_flowmeter.corr()
+    correlation_with_target_flowmeter = correlation_matrix['target']
+    sorted_correlation_flowmeter = correlation_with_target_flowmeter.abs().sort_values(ascending=False)
+    print("\nFlowmeter Features Most Relevant:\n " + str(sorted_correlation_flowmeter))
+
+    with open(f'FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
+        f.write(str(sorted_correlation_cassandra))
+        f.write(str(sorted_correlation_flowmeter))
+
 
 def save_training_time(i, training_time):
     with open(directory+str(i)+'_training_time'+str(model_name)+'.txt', 'w') as f:
@@ -241,8 +264,8 @@ def save_trained_model(learn, i):
 search_space = {
     'batch_size': hp.choice('bs', [16, 32, 64, 128]),
     "lr": hp.choice('lr', [0.1, 0.01, 0.001]),
-    "epochs": hp.choice('epochs', [20, 50, 100]),  # we would also use early stopping
-    "patience": hp.choice('patience', [5, 10]),  # early stopping patience
+    "epochs": hp.choice('epochs', [20, 50, 100, 200]),  # we would also use early stopping
+    "patience": hp.choice('patience', [5, 10, 50]),  # early stopping patience
     # "optimizer": hp.choice('optimizer', [Adam, SGD, RMSProp]),  # https://docs.fast.ai/optimizer
     "optimizer": hp.choice('optimizer', [Adam]),
     # model parameters
@@ -303,21 +326,21 @@ def create_model_hypopt(params):
         return {'loss': None, 'status': STATUS_FAIL}
 
 
-#trials = Trials()
-#best = fmin(create_model_hypopt,
-#    space=search_space,
-#    algo=tpe.suggest,
-#    max_evals=max_evals,  # test trials
-#    trials=trials)
-#print("Best parameters:")
-#print(space_eval(search_space, best))
-#params = space_eval(search_space, best)
+trials = Trials()
+best = fmin(create_model_hypopt,
+    space=search_space,
+    algo=tpe.suggest,
+    max_evals=max_evals,  # test trials
+    trials=trials)
+print("Best parameters:")
+print(space_eval(search_space, best))
+params = space_eval(search_space, best)
 
-#with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
-#    f.write(str(space_eval(search_space, best)))
+with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
+    f.write(str(space_eval(search_space, best)))
 
 
-params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 50, 'lr': 0.001, 'n_layers': 5, 'optimizer': Adam, 'patience': 10}
+#params = {'batch_size': 32, 'bidirectional': False, 'epochs': 2, 'hidden_size': 50, 'lr': 0.001, 'n_layers': 5, 'optimizer': Adam, 'patience': 10}
 
 
 for i in range(10):
@@ -341,13 +364,13 @@ for i in range(10):
     save_metrics_plot(learn, X, y, i)
     save_default_metrics(learn, i)
     save_trained_model(learn, i)
-    check_feature_importance(X, y)
-    exit()
+    #check_feature_importance(data, X, y)
+
+
 
     #Prediction
 
     raw_preds, target, preds = learn.get_X_preds(X[splits[1]], y[splits[1]])
-
 
     # Plot the target and predicted values
     plt.figure(figsize=(10, 6))
@@ -358,5 +381,6 @@ for i in range(10):
     plt.title('Cassandra Latency Estimation (ms)')
     plt.legend()
     plt.grid(False)
+    plt.savefig(directory+str(i)+str("_")+str(model_name)+str("_")+f'FINAL_PREDICTION.pdf', bbox_inches = 'tight', pad_inches = 0.1)
     #plt.show()
     check_error(target, preds, index=i)
