@@ -1,1 +1,1 @@
-{'batch_size': 16, 'bidirectional': True, 'epochs': 20, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 4, 'optimizer': <function Adam at 0x7fc0fcf973a0>, 'patience': 5}
+{'batch_size': 16, 'bidirectional': True, 'epochs': 100, 'hidden_size': 100, 'lr': 0.01, 'n_layers': 3, 'optimizer': <function Adam at 0x7ff43bf99670>, 'patience': 5}

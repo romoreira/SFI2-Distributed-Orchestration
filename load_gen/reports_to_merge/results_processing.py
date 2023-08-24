@@ -8,7 +8,7 @@ print('fastcore   :', fastcore.__version__)
 print('torch      :', torch.__version__)
 print('matplotlib :', matplotlib.__version__)
 
-print(torch.cuda.get_device_name(0))
+#print(torch.cuda.get_device_name(0))
 
 import pandas as pd
 import numpy as np
@@ -21,6 +21,59 @@ import statsmodels.api as sm
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import sys
 
+def normalize_all_dataframe(df):
+    df_normalized = (df - df.min()) / (df.max() - df.min())
+    return df_normalized
+
+def normalize_target(df):
+    # Calculando os valores normalizados
+    normalized_values = (df['target'] - df['target'].min()) / (df['target'].max() - df['target'].min())
+
+    # Atribuindo os valores normalizados à coluna 'target' usando .loc
+    df.loc[:, 'target'] = normalized_values
+    return df
+
+def feature_importance(df, X, y):
+    colunas_a_ignorar = ['pk/s', 'row/s',  '.95', '.99', '.999', 'max', 'stderr',
+       'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms', 'Protocol']
+
+    novas_colunas = [coluna for coluna in df.columns if coluna not in colunas_a_ignorar]
+    df_flowmeter = df[novas_colunas].copy()  # Cria uma cópia com as colunas desejadas
+    correlation_matrix = df_flowmeter.corr()
+    correlation_with_target_flowmeter = correlation_matrix['med']
+    sorted_correlation_flowmeter = correlation_with_target_flowmeter.abs().sort_values(ascending=False)
+    print("\nFlowmeter Features Most Relevant:\n " + str(sorted_correlation_flowmeter))
+
+def check_feature_importance(df, X, y):
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_rows', None)
+    print(df.columns)
+    exit()
+    colunas_desejadas_cassandra = ['ops', 'op/s', 'pk/s', 'row/s', 'target', 'med',
+                         '.95', '.99', '.999', 'max', 'stderr',
+                         'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
+
+    df_cassandra = df[colunas_desejadas_cassandra].copy()
+    correlation_matrix = df_cassandra.corr()
+    correlation_with_target = correlation_matrix['target']
+    # Ordenando as colunas por relevância (correlação com o alvo)
+    sorted_correlation_cassandra = correlation_with_target.abs().sort_values(ascending=False)
+    print("Cassandra Features Most Relevant: "+str(sorted_correlation_cassandra))
+    # Supondo que 'df' seja o seu DataFrame original
+    colunas_a_ignorar = ['ops', 'op/s', 'pk/s', 'row/s', 'med',
+                        '.95', '.99', '.999', 'max', 'stderr',
+                        'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
+
+    novas_colunas = [coluna for coluna in df.columns if coluna not in colunas_a_ignorar]
+    df_flowmeter = df[novas_colunas].copy()  # Cria uma cópia com as colunas desejadas
+    correlation_matrix = df_flowmeter.corr()
+    correlation_with_target_flowmeter = correlation_matrix['target']
+    sorted_correlation_flowmeter = correlation_with_target_flowmeter.abs().sort_values(ascending=False)
+    print("\nFlowmeter Features Most Relevant:\n " + str(sorted_correlation_flowmeter))
+
+    with open(f'FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
+        f.write(str(sorted_correlation_cassandra))
+        f.write(str(sorted_correlation_flowmeter))
 
 def create_experiments_dir(directory, model_name):
     if not os.path.exists(str(directory)+str(model_name)):
@@ -111,8 +164,8 @@ file_name = './write_sinusuidal/arquivo_final_bkp.csv'
 
 history = 24  # input historical time steps
 horizon = 1  # output predicted time steps
-test_ratio = 0.2  # testing data ratio
-max_evals = 100  # maximal trials for hyper parameter tuning
+test_ratio = 0.1  # testing data ratio
+max_evals = 50  # maximal trials for hyper parameter tuning
 
 
 # Save the results
@@ -126,10 +179,9 @@ data.index = data['time']
 data.set_index('time', inplace=True)
 
 
-#print(data)
 
 #divide data into train and test
-train_ind = int(len(data)*0.8)
+train_ind = int(len(data)*0.9)
 train = data[:train_ind]
 test = data[train_ind:]
 #print(train.head())
@@ -160,47 +212,31 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
 #columns = ['FWD Init Win Bytes', 'Flow Duration', 'med', 'ops', '.95', '.99', 'max', 'target']
-columns = ['FWD Init Win Bytes', 'Flow Duration', 'Bwd IAT Total', 'Fwd IAT Total', 'target']
+columns = ['Bwd IAT Total', 'Flow Duration', 'Fwd IAT Total', 'Fwd Packets/s',
+           'Flow Packets/s', 'Fwd Packet Length Max', 'Bwd Packets/s', 'Flow IAT Mean',
+           'Bwd IAT Mean', 'Fwd Header Length', 'Total Fwd Packet', 'Fwd IAT Mean',
+           'Fwd Packet Length Std', 'Fwd Act Data Pkts', 'Bwd Header Length',
+           'Total Bwd packets', 'Active Max', 'Bwd Packet Length Min', 'Bwd Packet/Bulk Avg', 'target']
+
+#columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
+
 df = data[columns]
+
+df = normalize_all_dataframe(df)
+#df = normalize_target(df)
+
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(5, stride=1, horizon=0, get_x=columns[:-1], get_y='target', seq_first=True)(df)
-splits = TrainValidTestSplitter(valid_size=.2, shuffle=False)(y)
+X, y = SlidingWindow(50, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+splits = TrainValidTestSplitter(valid_size=.1, shuffle=False)(y)
 #print(X.shape)
 #print(y.shape)
 #print(splits)
 #plot_splits(splits)
 X.shape, y.shape, splits
 
-def check_feature_importance(df, X, y):
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    colunas_desejadas_cassandra = ['ops', 'op/s', 'pk/s', 'row/s', 'target', 'med',
-                         '.95', '.99', '.999', 'max', 'stderr',
-                         'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
 
-    df_cassandra = df[colunas_desejadas_cassandra].copy()
-    correlation_matrix = df_cassandra.corr()
-    correlation_with_target = correlation_matrix['target']
-    # Ordenando as colunas por relevância (correlação com o alvo)
-    sorted_correlation_cassandra = correlation_with_target.abs().sort_values(ascending=False)
-    print("Cassandra Features Most Relevant: "+str(sorted_correlation_cassandra))
-    # Supondo que 'df' seja o seu DataFrame original
-    colunas_a_ignorar = ['ops', 'op/s', 'pk/s', 'row/s', 'med',
-                        '.95', '.99', '.999', 'max', 'stderr',
-                        'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
-
-    novas_colunas = [coluna for coluna in df.columns if coluna not in colunas_a_ignorar]
-    df_flowmeter = df[novas_colunas].copy()  # Cria uma cópia com as colunas desejadas
-    correlation_matrix = df_flowmeter.corr()
-    correlation_with_target_flowmeter = correlation_matrix['target']
-    sorted_correlation_flowmeter = correlation_with_target_flowmeter.abs().sort_values(ascending=False)
-    print("\nFlowmeter Features Most Relevant:\n " + str(sorted_correlation_flowmeter))
-
-    with open(f'FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
-        f.write(str(sorted_correlation_cassandra))
-        f.write(str(sorted_correlation_flowmeter))
 
 
 def save_training_time(i, training_time):
@@ -262,12 +298,12 @@ def save_trained_model(learn, i):
 
 
 search_space = {
-    'batch_size': hp.choice('bs', [16, 32, 64, 128]),
+    'batch_size': hp.choice('bs', [8, 16, 32,]),
     "lr": hp.choice('lr', [0.1, 0.01, 0.001]),
-    "epochs": hp.choice('epochs', [20, 50, 100, 200]),  # we would also use early stopping
+    "epochs": hp.choice('epochs', [20, 50, 100]),  # we would also use early stopping
     "patience": hp.choice('patience', [5, 10, 50]),  # early stopping patience
-    # "optimizer": hp.choice('optimizer', [Adam, SGD, RMSProp]),  # https://docs.fast.ai/optimizer
-    "optimizer": hp.choice('optimizer', [Adam]),
+    #"optimizer": hp.choice('optimizer', [Adam, SGD, RMSProp]),  # https://docs.fast.ai/optimizer
+    "optimizer": hp.choice('optimizer', [Adam, SGD]),
     # model parameters
     "n_layers": hp.choice('n_layers', [1, 2, 3, 4, 5]),
     "hidden_size": hp.choice('hidden_size', [50, 100, 200]),
@@ -300,7 +336,7 @@ def create_model_hypopt(params):
         print(model.__class__.__name__)
 
         # Add a Sigmoid layer
-        model = nn.Sequential(model, nn.Sigmoid())
+        #model = nn.Sequential(model, nn.Sigmoid())
 
         # Training the model
         learn = Learner(dls, model, metrics=[mae, rmse, mse, mape], opt_func=params['optimizer'])
@@ -339,8 +375,7 @@ params = space_eval(search_space, best)
 with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
     f.write(str(space_eval(search_space, best)))
 
-
-#params = {'batch_size': 32, 'bidirectional': False, 'epochs': 2, 'hidden_size': 50, 'lr': 0.001, 'n_layers': 5, 'optimizer': Adam, 'patience': 10}
+#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 20, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': SGD, 'patience': 50}
 
 
 for i in range(10):
@@ -368,6 +403,7 @@ for i in range(10):
 
 
 
+
     #Prediction
 
     raw_preds, target, preds = learn.get_X_preds(X[splits[1]], y[splits[1]])
@@ -384,3 +420,4 @@ for i in range(10):
     plt.savefig(directory+str(i)+str("_")+str(model_name)+str("_")+f'FINAL_PREDICTION.pdf', bbox_inches = 'tight', pad_inches = 0.1)
     #plt.show()
     check_error(target, preds, index=i)
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cnns=("FCN" "FCNPlus" "ResNet" "ResNetPlus" "ResCNN" "TCN" "InceptionTime" "InceptionTimePlus" "OmniScaleCNN" "XCM" "XCMPlus")
+cnns=("InceptionTime" "OmniScaleCNN" "FCN" "FCNPlus" "ResNet" "ResNetPlus" "ResCNN" "TCN" "InceptionTimePlus" "XCM" "XCMPlus")
 
 for cnn in "${cnns[@]}"; do
    echo "Training CNNs: $cnn"
