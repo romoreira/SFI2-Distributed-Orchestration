@@ -186,7 +186,7 @@ data.index = data['time']
 data.set_index('time', inplace=True)
 
 data = data.head(1000).copy()
-data = data.interpolate(method='linear')
+#data = data.interpolate(method='linear')
 
 
 #data =  reduce_dataframe(data)
