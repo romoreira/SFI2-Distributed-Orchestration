@@ -185,7 +185,7 @@ data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
 
-data = data.head(1500).copy()
+data = data.head(1000).copy()
 
 #data =  reduce_dataframe(data)
 #print("SIZE> "+str(data.shape))
@@ -239,7 +239,7 @@ df = normalize_all_dataframe(df)
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(10, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+X, y = SlidingWindow(100, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TrainValidTestSplitter(valid_size=.1, shuffle=False)(y)
 #print(X.shape)
 #print(y.shape)
