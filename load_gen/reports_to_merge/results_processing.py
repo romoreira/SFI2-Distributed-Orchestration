@@ -187,9 +187,10 @@ data.set_index('time', inplace=True)
 
 data = data.head(1500).copy()
 
-window_size = 5  # Defina o tamanho da janela móvel
-data = data.rolling(window=window_size).mean()
-data = data.interpolate(method='linear')
+window_size = 3  # Defina o tamanho da janela móvel
+data_smoothed = data.rolling(window=window_size).mean()
+data_smoothed = data_smoothed.interpolate(method='linear')
+data = data_smoothed.fillna(method='bfill')  # Preenche valores ausentes restantes com backward fill
 
 
 
