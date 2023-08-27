@@ -21,6 +21,13 @@ import statsmodels.api as sm
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import sys
 
+def reduce_dataframe(df):
+    # Resample para obter uma linha a cada 30 segundos
+    print("DF SHAPE: ANTES "+str(df.shape))
+    df_1_seconds = df.resample('10S').mean()  # Você pode escolher outras funções de agregação além de 'mean'
+    df_interp = df_1_seconds.resample('s').asfreq().interpolate()
+    return df_interp
+
 def normalize_all_dataframe(df):
     df_normalized = (df - df.min()) / (df.max() - df.min())
     return df_normalized
@@ -95,7 +102,7 @@ if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
     model_name = "ResNet"
-operation = '/write'
+operation = '/read'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
@@ -160,7 +167,7 @@ import pickle
 from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_error
 
-file_name = './write_sinusuidal/arquivo_final_bkp.csv'
+file_name = '.'+str(operation)+'_sinusoidal/arquivo_final.csv'
 
 history = 24  # input historical time steps
 horizon = 1  # output predicted time steps
@@ -178,7 +185,10 @@ data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
 
+data = data.head(2000).copy()
 
+#data =  reduce_dataframe(data)
+#print("SIZE> "+str(data.shape))
 
 #divide data into train and test
 train_ind = int(len(data)*0.9)
@@ -205,9 +215,10 @@ plt.xlabel('Time')
 plt.ylabel('Cassandra Write (Latency)')
 plt.legend(loc='best')
 plt.grid(False)
-# plt.show()
+#plt.show()
 plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 'tight', pad_inches = 0.1)
 #print(data)
+
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
@@ -375,7 +386,7 @@ params = space_eval(search_space, best)
 with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
     f.write(str(space_eval(search_space, best)))
 
-#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 20, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': SGD, 'patience': 50}
+#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 20, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 50}
 
 
 for i in range(10):
@@ -420,4 +431,5 @@ for i in range(10):
     plt.savefig(directory+str(i)+str("_")+str(model_name)+str("_")+f'FINAL_PREDICTION.pdf', bbox_inches = 'tight', pad_inches = 0.1)
     #plt.show()
     check_error(target, preds, index=i)
+
 
