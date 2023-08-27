@@ -101,7 +101,7 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "ResNet"
+    model_name = "OmniScaleCNN"
 operation = '/read'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
@@ -185,10 +185,11 @@ data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
 
-data = data.head(1000).copy()
+data = data.head(1500).copy()
 
 window_size = 5  # Defina o tamanho da janela móvel
 data = data.rolling(window=window_size).mean()
+data = data.interpolate(method='linear')
 
 
 
@@ -245,7 +246,7 @@ df = normalize_all_dataframe(df)
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(100, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+X, y = SlidingWindow(1, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TrainValidTestSplitter(valid_size=.1, shuffle=False)(y)
 #print(X.shape)
 #print(y.shape)
