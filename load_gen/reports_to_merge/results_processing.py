@@ -187,7 +187,7 @@ data.set_index('time', inplace=True)
 
 data = data.head(1000).copy()
 
-window_size = 2  # Defina o tamanho da janela móvel
+window_size = 5  # Defina o tamanho da janela móvel
 data = data.rolling(window=window_size).mean()
 
 
@@ -223,6 +223,8 @@ plt.grid(False)
 #plt.show()
 plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 'tight', pad_inches = 0.1)
 #print(data)
+
+
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
