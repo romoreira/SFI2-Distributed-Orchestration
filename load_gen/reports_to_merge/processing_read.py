@@ -229,7 +229,7 @@ df = data[columns]
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(25, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+X, y = SlidingWindow(100, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TimeSplitter(test_length)(y)
 print("X_shape: "+str(X.shape))
 print("Y_shape: "+str(y.shape))
