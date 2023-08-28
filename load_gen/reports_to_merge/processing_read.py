@@ -223,7 +223,7 @@ columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle
 
 df = data[columns]
 
-#df = normalize_all_dataframe(df)
+df = normalize_all_dataframe(df)
 #df = normalize_target(df)
 
 #print(df)
@@ -377,7 +377,7 @@ def create_model_hypopt(params):
 #with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
 #    f.write(str(space_eval(search_space, best)))
 
-params = {'batch_size': 16, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.01, 'n_layers': 3, 'optimizer': SGD, 'patience': 10}
+params = {'batch_size': 16, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 10}
 
 
 for i in range(10):
