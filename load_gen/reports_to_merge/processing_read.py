@@ -99,7 +99,7 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "OmniScaleCNN"
+    model_name = "XCMPlus"
 operation = '/read'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
