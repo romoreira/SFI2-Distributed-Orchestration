@@ -377,7 +377,7 @@ def create_model_hypopt(params):
 #with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
 #    f.write(str(space_eval(search_space, best)))
 
-params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 10}
+params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 100}
 
 
 for i in range(10):
