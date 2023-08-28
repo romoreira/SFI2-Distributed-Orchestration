@@ -223,13 +223,13 @@ columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle
 
 df = data[columns]
 
-df = normalize_all_dataframe(df)
+#df = normalize_all_dataframe(df)
 #df = normalize_target(df)
 
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(50, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+X, y = SlidingWindow(25, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TimeSplitter(test_length)(y)
 print("X_shape: "+str(X.shape))
 print("Y_shape: "+str(y.shape))
@@ -377,7 +377,7 @@ def create_model_hypopt(params):
 #with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
 #    f.write(str(space_eval(search_space, best)))
 
-params = {'batch_size': 16, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 10}
+params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.01, 'n_layers': 3, 'optimizer': Adam, 'patience': 10}
 
 
 for i in range(10):

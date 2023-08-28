@@ -1,8 +1,8 @@
 0
-           
-           
-BIAS  -0.01
-MSE    0.00
-RMSE   0.03
-MAE    0.02
-MAPE   1.01
+             
+             
+BIAS   -35.19
+MSE   1870.38
+RMSE    43.25
+MAE     36.16
+MAPE     0.87
