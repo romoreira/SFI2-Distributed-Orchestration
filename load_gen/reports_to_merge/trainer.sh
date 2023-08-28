@@ -4,5 +4,5 @@ cnns=("ResNet" "InceptionTime" "OmniScaleCNN" "FCN" "FCNPlus" "ResNetPlus" "ResC
 
 for cnn in "${cnns[@]}"; do
    echo "Training CNNs: $cnn"
-   python3 results_processing.py "$cnn"
+   python3 processing_read.py "$cnn"
 done
