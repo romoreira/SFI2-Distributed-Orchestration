@@ -99,7 +99,7 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "ResCNN"
+    model_name = "ResNet"
 operation = '/read'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
@@ -167,15 +167,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolu
 
 file_name = '.'+str(operation)+'_sinusoidal/arquivo_final.csv'
 
-history = 24  # input historical time steps
-horizon = 1  # output predicted time steps
+
 test_ratio = 0.1  # testing data ratio
 max_evals = 50  # maximal trials for hyper parameter tuning
 
 
-# Save the results
-y_true_fn = '%s_true-%d-%d.pkl' % (model_name, history, horizon)
-y_pred_fn = '%s_pred-%d-%d.pkl' % (model_name, history, horizon)
 
 data = pd.read_csv(file_name)
 data = data.drop(columns=['type total', 'Src IP', 'Dst IP', 'Label', 'Src Port', 'Dst Port'])
@@ -233,7 +229,7 @@ df = data[columns]
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(200, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+X, y = SlidingWindow(100, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
 splits = TimeSplitter(test_length)(y)
 print("X_shape: "+str(X.shape))
 print("Y_shape: "+str(y.shape))
