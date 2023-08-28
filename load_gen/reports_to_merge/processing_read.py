@@ -99,7 +99,7 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "ResNet"
+    model_name = "ResCNN"
 operation = '/read'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
@@ -381,7 +381,7 @@ def create_model_hypopt(params):
 #with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
 #    f.write(str(space_eval(search_space, best)))
 
-params = {'batch_size': 16, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.01, 'n_layers': 3, 'optimizer': SGD, 'patience': 10}
+params = {'batch_size': 16, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.01, 'n_layers': 3, 'optimizer': Adam, 'patience': 10}
 
 
 for i in range(10):
