@@ -188,7 +188,7 @@ data.set_index('time', inplace=True)
 print("Dataset SIZE> "+str(data.shape))
 
 #divide data into train and test
-train_ind = int(len(data)*0.8)
+train_ind = int(len(data)*0.9)
 train = data[:train_ind]
 test = data[train_ind:]
 #print(train.head())
