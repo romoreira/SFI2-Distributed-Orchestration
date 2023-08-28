@@ -1,0 +1,89 @@
+target    1.000000
+.95       0.855364
+med       0.819885
+op/s      0.743444
+pk/s      0.743444
+row/s     0.743444
+.99       0.712418
+.999      0.659971
+max       0.659971
+ops       0.488474
+stderr    0.021439
+errors         NaN
+gc: #          NaN
+max ms         NaN
+sum ms         NaN
+sdv ms         NaN
+Name: target, dtype: float64target                        1.000000
+Fwd Bulk Rate Avg             0.168805
+FWD Init Win Bytes            0.102542
+Idle Mean                     0.094181
+Idle Std                      0.094161
+Idle Max                      0.093644
+Bwd Init Win Bytes            0.091512
+Fwd Packet Length Mean        0.082738
+Fwd Act Data Pkts             0.079313
+Total Length of Fwd Packet    0.070351
+Fwd Packet Length Max         0.063628
+Fwd Packet Length Std         0.058863
+Fwd Bytes/Bulk Avg            0.057602
+Down/Up Ratio                 0.056636
+Fwd Packet/Bulk Avg           0.055519
+Idle Min                      0.052721
+Bwd Packet/Bulk Avg           0.043417
+Bwd Bytes/Bulk Avg            0.041505
+Active Min                    0.039903
+Total Fwd Packet              0.038126
+Fwd Header Length             0.038126
+Fwd Packet Length Min         0.037010
+Bwd Header Length             0.035722
+Total Bwd packets             0.035722
+Packet Length Min             0.034795
+Bwd IAT Total                 0.032265
+Bwd Packet Length Max         0.028598
+Bwd Packet Length Std         0.027734
+Bwd IAT Min                   0.027180
+Bwd Bulk Rate Avg             0.026275
+Bwd Packet Length Mean        0.025573
+Bwd Packets/s                 0.024975
+Flow Packets/s                0.024975
+Fwd Packets/s                 0.024974
+Flow Bytes/s                  0.024940
+Packet Length Max             0.024529
+Packet Length Std             0.023237
+Flow IAT Min                  0.023214
+Fwd IAT Std                   0.022998
+Bwd IAT Max                   0.019346
+Bwd IAT Std                   0.018249
+Packet Length Mean            0.016765
+Average Packet Size           0.016765
+Fwd IAT Min                   0.015773
+Packet Length Variance        0.015582
+Fwd IAT Max                   0.014825
+Flow Duration                 0.012509
+Bwd Packet Length Min         0.012358
+Flow IAT Max                  0.012299
+Active Mean                   0.011702
+Fwd IAT Total                 0.011536
+Flow IAT Std                  0.010964
+Active Std                    0.007832
+Total Length of Bwd Packet    0.007116
+Fwd IAT Mean                  0.006402
+Active Max                    0.002989
+Flow IAT Mean                 0.001034
+Bwd IAT Mean                  0.000579
+mb                                 NaN
+Protocol                           NaN
+Fwd PSH Flags                      NaN
+Bwd PSH Flags                      NaN
+Fwd URG Flags                      NaN
+Bwd URG Flags                      NaN
+FIN Flag Count                     NaN
+SYN Flag Count                     NaN
+RST Flag Count                     NaN
+PSH Flag Count                     NaN
+ACK Flag Count                     NaN
+URG Flag Count                     NaN
+ECE Flag Count                     NaN
+Fwd Seg Size Min                   NaN
+Name: target, dtype: float64

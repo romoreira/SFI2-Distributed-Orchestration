@@ -78,7 +78,7 @@ def check_feature_importance(df, X, y):
     sorted_correlation_flowmeter = correlation_with_target_flowmeter.abs().sort_values(ascending=False)
     print("\nFlowmeter Features Most Relevant:\n " + str(sorted_correlation_flowmeter))
 
-    with open(f'FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
+    with open(str(".") + str(operation) + f'_FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
         f.write(str(sorted_correlation_cassandra))
         f.write(str(sorted_correlation_flowmeter))
 
@@ -101,8 +101,8 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "OmniScaleCNN"
-operation = '/read'
+    model_name = "ResNet"
+operation = '/write'
 directory = './results_paper'+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
