@@ -368,23 +368,23 @@ def create_model_hypopt(params):
         return {'loss': None, 'status': STATUS_FAIL}
 
 
-#trials = Trials()
-#best = fmin(create_model_hypopt,
-#    space=search_space,
-#    algo=tpe.suggest,
-#    max_evals=max_evals,  # test trials
-#    trials=trials)
-#print("Best parameters:")
-#print(space_eval(search_space, best))
-#params = space_eval(search_space, best)
+trials = Trials()
+best = fmin(create_model_hypopt,
+    space=search_space,
+    algo=tpe.suggest,
+    max_evals=max_evals,  # test trials
+    trials=trials)
+print("Best parameters:")
+print(space_eval(search_space, best))
+params = space_eval(search_space, best)
 
-#with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
-#    f.write(str(space_eval(search_space, best)))
+with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
+    f.write(str(space_eval(search_space, best)))
 
-params = {'batch_size': 16, 'bidirectional': False, 'epochs': 10, 'hidden_size': 100, 'lr': 0.0001, 'n_layers': 3, 'optimizer': Adam, 'patience': 50}
+#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 50}
 
 
-for i in range(1):
+for i in range(10):
     tfms = [None, TSRegression()]
     dsets = TSDatasets(X, y, tfms=tfms, splits=splits, inplace=True)
 
