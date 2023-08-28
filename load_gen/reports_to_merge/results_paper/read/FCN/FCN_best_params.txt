@@ -1,1 +1,1 @@
-{'batch_size': 8, 'bidirectional': False, 'epochs': 20, 'hidden_size': 50, 'lr': 0.1, 'n_layers': 5, 'optimizer': <function SGD at 0x7f25fcb1a310>, 'patience': 5}
+{'batch_size': 8, 'bidirectional': False, 'epochs': 20, 'hidden_size': 200, 'lr': 0.001, 'n_layers': 4, 'optimizer': <function SGD at 0x7f9d6301e280>, 'patience': 5}
