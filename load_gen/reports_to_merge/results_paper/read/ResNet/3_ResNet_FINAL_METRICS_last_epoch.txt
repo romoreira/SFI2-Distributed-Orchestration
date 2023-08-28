@@ -1,4 +1,4 @@
-mae: 0.03
+mae: 0.00
 mse: 0.00
-_rmse: 0.04
-mape: 0.37
+_rmse: 0.00
+mape: 0.07
