@@ -218,7 +218,7 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
-columns = ['med', 'ops', '.95', '.99', 'max', 'target']
+columns = ['med', 'ops', '.95', '.99', 'stderr', 'max', 'target']
 #columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
 #columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
 
