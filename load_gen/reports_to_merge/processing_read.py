@@ -100,8 +100,10 @@ if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
     model_name = "XCMPlus"
+
+experiment = '/cassandra'
 operation = '/read'
-directory = './results_paper'+str(operation)+'/'
+directory = './results_paper'+str(experiment)+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
 #######Adjustments#######
@@ -216,9 +218,8 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
-#columns = ['FWD Init Win Bytes', 'Flow Duration', 'med', 'ops', '.95', '.99', 'max', 'target']
-columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
-
+columns = ['med', 'ops', '.95', '.99', 'max', 'target']
+#columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
 #columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
 
 df = data[columns]
