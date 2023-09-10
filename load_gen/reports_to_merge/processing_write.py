@@ -102,8 +102,10 @@ if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
     model_name = "ResNet"
+
+experiment = '/cassandra'
 operation = '/write'
-directory = './results_paper'+str(operation)+'/'
+directory = './results_paper'+str(experiment)+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
 #######Adjustments#######

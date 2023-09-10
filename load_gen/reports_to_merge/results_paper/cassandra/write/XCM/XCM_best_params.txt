@@ -1,0 +1,1 @@
+{'batch_size': 8, 'bidirectional': False, 'epochs': 100, 'hidden_size': 50, 'lr': 0.1, 'n_layers': 2, 'optimizer': <function Adam at 0x7fd221e8e670>, 'patience': 10}
