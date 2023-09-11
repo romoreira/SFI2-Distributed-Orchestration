@@ -171,15 +171,10 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolu
 
 file_name = '.'+str(operation)+'_sinusoidal/arquivo_final.csv'
 
-history = 24  # input historical time steps
-horizon = 1  # output predicted time steps
 test_ratio = 0.1  # testing data ratio
 max_evals = 50  # maximal trials for hyper parameter tuning
 
 
-# Save the results
-y_true_fn = '%s_true-%d-%d.pkl' % (model_name, history, horizon)
-y_pred_fn = '%s_pred-%d-%d.pkl' % (model_name, history, horizon)
 
 data = pd.read_csv(file_name)
 data = data.drop(columns=['type total', 'Src IP', 'Dst IP', 'Label', 'Src Port', 'Dst Port'])
@@ -187,17 +182,9 @@ data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
 
-data = data.head(1500).copy()
-
-window_size = 3  # Defina o tamanho da janela móvel
-data_smoothed = data.rolling(window=window_size).mean()
-data_smoothed = data_smoothed.interpolate(method='linear')
-data = data_smoothed.fillna(method='bfill')  # Preenche valores ausentes restantes com backward fill
-
-
 
 #data =  reduce_dataframe(data)
-#print("SIZE> "+str(data.shape))
+print("Dataset SIZE> "+str(data.shape))
 
 #divide data into train and test
 train_ind = int(len(data)*0.9)
@@ -231,14 +218,10 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 
 
-data.rename(columns={'mean': 'target'}, inplace=True)
-#columns = ['FWD Init Win Bytes', 'Flow Duration', 'med', 'ops', '.95', '.99', 'max', 'target']
-columns = ['Bwd IAT Total', 'Flow Duration', 'Fwd IAT Total', 'Fwd Packets/s',
-           'Flow Packets/s', 'Fwd Packet Length Max', 'Bwd Packets/s', 'Flow IAT Mean',
-           'Bwd IAT Mean', 'Fwd Header Length', 'Total Fwd Packet', 'Fwd IAT Mean',
-           'Fwd Packet Length Std', 'Fwd Act Data Pkts', 'Bwd Header Length',
-           'Total Bwd packets', 'Active Max', 'Bwd Packet Length Min', 'Bwd Packet/Bulk Avg', 'target']
 
+data.rename(columns={'mean': 'target'}, inplace=True)
+columns = ['med', 'ops', '.95', '.99', 'stderr', 'max', 'target']
+#columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
 #columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
 
 df = data[columns]
