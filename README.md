@@ -15,8 +15,11 @@ This repository contains the following files and directory:
   * [`load_gen`](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/load_gen) : contains the files to deploy Cassandra Stress on top of Kubernetes and FIBRE-NG and Azure
 
 ---
+### 2. Rocks :rocket:
+1. Deploy Cassandra Kubernetes on top of Fabric Testbed
+ * Steps available [here]()
 
-### 1. Prerequisites :rocket:
+### 2. Rocks :rocket:
 1. Deploy Cassandra Kubernetes on top of FIBRE-NG
     * Steps available [here](https://github.com/romoreira/SFI2-Distributed-Orchestration/tree/main/2nd/v4)
 2. Deploy Cassandra Stress on top of FIBRE-NG
