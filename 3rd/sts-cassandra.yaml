@@ -35,7 +35,7 @@ spec:
             - name: MAX_HEAP_SIZE
               value: 256M
             - name: CASSANDRA_SEEDS
-              value: "cassandra-0.default.svc.cluster.local"
+              value: "cassandra-0.kubernetes.default.svc.cluster.local"
             - name: HEAP_NEWSIZE
               value: 100M
             - name: CASSANDRA_START_RPC
