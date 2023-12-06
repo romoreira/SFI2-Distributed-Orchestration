@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo apt-get -y install libpcap-dev
+
 command=$(cat <<'EOM'
 (
   set -x; cd "$(mktemp -d)" &&
@@ -21,3 +23,5 @@ echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> ~/.bashrc
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 kubectl krew install sniff
+
+kubectl sniff -n default ubuntu -p -o captura.pcap
