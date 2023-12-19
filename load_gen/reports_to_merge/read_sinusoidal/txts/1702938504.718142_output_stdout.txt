@@ -1,0 +1,752 @@
+******************** Stress Settings ********************
+Command:
+  Type: read
+  Count: 50,000
+  No Warmup: true
+  Consistency Level: LOCAL_ONE
+  Target Uncertainty: not applicable
+  Key Size (bytes): 10
+  Counter Increment Distibution: add=fixed(1)
+Rate:
+  Auto: true
+  Min Threads: 4
+  Max Threads: 1000
+Population:
+  Distribution: Gaussian:  min=1,max=50000,mean=25000.500000,stdev=8333.166667
+  Order: ARBITRARY
+  Wrap: false
+Insert:
+  Revisits: Uniform:  min=1,max=1000000
+  Visits: Fixed:  key=1
+  Row Population Ratio: Ratio: divisor=1.000000;delegate=Fixed:  key=1
+  Batch Type: not batching
+Columns:
+  Max Columns Per Key: 5
+  Column Names: [C0, C1, C2, C3, C4]
+  Comparator: AsciiType
+  Timestamp: null
+  Variable Column Count: false
+  Slice: false
+  Size Distribution: Fixed:  key=34
+  Count Distribution: Fixed:  key=5
+Errors:
+  Ignore: false
+  Tries: 10
+Log:
+  No Summary: false
+  No Settings: false
+  File: read_output.txt
+  Interval Millis: 1000
+  Level: NORMAL
+Mode:
+  API: JAVA_DRIVER_NATIVE
+  Connection Style: CQL_PREPARED
+  CQL Version: CQL3
+  Protocol Version: V3
+  Username: null
+  Password: null
+  Auth Provide Class: null
+  Max Pending Per Connection: 128
+  Connections Per Host: 8
+  Compression: NONE
+Node:
+  Nodes: [cassandra]
+  Is White List: false
+  Datacenter: null
+Schema:
+  Keyspace: keyspace1
+  Replication Strategy: org.apache.cassandra.locator.SimpleStrategy
+  Replication Strategy Options: {replication_factor=2}
+  Table Compression: null
+  Table Compaction Strategy: null
+  Table Compaction Strategy Options: {}
+Transport:
+  truststore=null; truststore-password=null; keystore=null; keystore-password=null; ssl-protocol=TLS; ssl-alg=null; ssl-ciphers=TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA; 
+Port:
+  Native Port: 9042
+  JMX Port: 7199
+Graph:
+  File: null
+  Revision: unknown
+  Title: null
+  Operation: READ
+TokenRange:
+  Wrap: false
+  Split Factor: 1
+
+Sleeping 2s...
+Thread count was not specified
+
+Running with 4 threadCount
+Running READ with 4 threads for 50000 iteration
+Connected to cluster: Cassandra, max pending requests per connection 128, max connections per host 8
+Datacenter: DC1; Host: /192.168.104.2:9042; Rack: Rack1
+Datacenter: DC1; Host: cassandra/192.168.135.2:9042; Rack: Rack1
+Datacenter: DC1; Host: /192.168.104.3:9042; Rack: Rack1
+Datacenter: DC1; Host: /192.168.3.67:9042; Rack: Rack1
+WARN  19:21:36,920 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,921 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,919 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,921 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,920 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,920 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,921 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,921 Error creating connection to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.TransportException: [/192.168.3.67:9042] Cannot connect
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:226)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: com.datastax.shaded.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /192.168.3.67:9042
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at com.datastax.shaded.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:225)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:291)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	... 11 common frames omitted
+WARN  19:21:36,968 Error creating pool to /192.168.3.67:9042
+com.datastax.driver.core.exceptions.ConnectionException: [/192.168.3.67:9042] Pool was closed during initialization
+	at com.datastax.driver.core.HostConnectionPool$2.onSuccess(HostConnectionPool.java:173)
+	at com.datastax.driver.core.HostConnectionPool$2.onSuccess(HostConnectionPool.java:158)
+	at com.google.common.util.concurrent.Futures$CallbackListener.run(Futures.java:1062)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1138)
+	at com.google.common.util.concurrent.AbstractFuture.complete(AbstractFuture.java:958)
+	at com.google.common.util.concurrent.AbstractFuture.set(AbstractFuture.java:726)
+	at com.google.common.util.concurrent.CollectionFuture$CollectionFutureRunningState.handleAllCompleted(CollectionFuture.java:71)
+	at com.google.common.util.concurrent.AggregateFuture$RunningState.processCompleted(AggregateFuture.java:257)
+	at com.google.common.util.concurrent.AggregateFuture$RunningState.decrementCountAndMaybeComplete(AggregateFuture.java:244)
+	at com.google.common.util.concurrent.AggregateFuture$RunningState.access$300(AggregateFuture.java:92)
+	at com.google.common.util.concurrent.AggregateFuture$RunningState$1.run(AggregateFuture.java:149)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1138)
+	at com.google.common.util.concurrent.AbstractFuture.complete(AbstractFuture.java:958)
+	at com.google.common.util.concurrent.AbstractFuture.setFuture(AbstractFuture.java:789)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.setResult(AbstractCatchingFuture.java:186)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.setResult(AbstractCatchingFuture.java:162)
+	at com.google.common.util.concurrent.AbstractCatchingFuture.run(AbstractCatchingFuture.java:116)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1138)
+	at com.google.common.util.concurrent.AbstractFuture.complete(AbstractFuture.java:958)
+	at com.google.common.util.concurrent.AbstractFuture.setFuture(AbstractFuture.java:789)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.setResult(AbstractCatchingFuture.java:186)
+	at com.google.common.util.concurrent.AbstractCatchingFuture$AsyncCatchingFuture.setResult(AbstractCatchingFuture.java:162)
+	at com.google.common.util.concurrent.AbstractCatchingFuture.run(AbstractCatchingFuture.java:116)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1138)
+	at com.google.common.util.concurrent.AbstractFuture.complete(AbstractFuture.java:958)
+	at com.google.common.util.concurrent.AbstractFuture.setException(AbstractFuture.java:748)
+	at com.google.common.util.concurrent.AbstractTransformFuture.run(AbstractTransformFuture.java:100)
+	at com.google.common.util.concurrent.DirectExecutor.execute(DirectExecutor.java:30)
+	at com.google.common.util.concurrent.AbstractFuture.executeListener(AbstractFuture.java:1138)
+	at com.google.common.util.concurrent.AbstractFuture.complete(AbstractFuture.java:958)
+	at com.google.common.util.concurrent.AbstractFuture.setException(AbstractFuture.java:748)
+	at com.google.common.util.concurrent.SettableFuture.setException(SettableFuture.java:54)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:224)
+	at com.datastax.driver.core.Connection$1.operationComplete(Connection.java:192)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:512)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:505)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:484)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:425)
+	at com.datastax.shaded.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:122)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.fulfillConnectPromise(AbstractNioChannel.java:278)
+	at com.datastax.shaded.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:294)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:634)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeysPlain(NioEventLoop.java:546)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:500)
+	at com.datastax.shaded.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:460)
+	at com.datastax.shaded.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:131)
+	at com.datastax.shaded.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Failed to connect over JMX; not collecting these stats
+type                                               total ops,    op/s,    pk/s,   row/s,    mean,     med,     .95,     .99,    .999,     max,   time,   stderr, errors,  gc: #,  max ms,  sum ms,  sdv ms,      mb
+total,                                                    62,      62,      62,      62,    35.7,    23.3,    64.6,   110.0,   113.2,   113.2,    1.0,  0.00000,      0,      0,       0,       0,       0,       0
+total,                                                   179,     117,     117,     117,    34.1,    22.6,    61.3,    66.7,    69.4,    69.4,    2.0,  0.20170,      0,      0,       0,       0,       0,       0
+total,                                                   287,     108,     108,     108,    36.7,    24.0,    62.2,    70.2,    91.5,    91.5,    3.0,  0.13686,      0,      0,       0,       0,       0,       0
+total,                                                   394,     107,     107,     107,    37.7,    26.7,    61.7,    72.7,    81.7,    81.7,    4.0,  0.10258,      0,      0,       0,       0,       0,       0
+total,                                                   517,     123,     123,     123,    31.8,    21.2,    60.2,    62.0,    63.3,    63.3,    5.0,  0.08710,      0,      0,       0,       0,       0,       0
+total,                                                   640,     123,     123,     123,    32.8,    20.7,    60.8,    77.6,    82.6,    82.6,    6.0,  0.07582,      0,      0,       0,       0,       0,       0
+total,                                                   757,     117,     117,     117,    34.0,    20.7,    60.5,    69.8,    72.0,    72.0,    7.0,  0.06518,      0,      0,       0,       0,       0,       0
+total,                                                   868,     111,     111,     111,    35.9,    22.1,    61.0,    73.9,    87.2,    87.2,    8.0,  0.05693,      0,      0,       0,       0,       0,       0
+total,                                                   984,     116,     116,     116,    33.9,    21.3,    60.5,    63.3,    64.6,    64.6,    9.0,  0.05060,      0,      0,       0,       0,       0,       0
+total,                                                  1109,     125,     125,     125,    32.3,    21.4,    60.7,    66.9,    72.6,    72.6,   10.0,  0.04669,      0,      0,       0,       0,       0,       0
+total,                                                  1229,     120,     120,     120,    33.2,    20.7,    60.2,    62.3,    92.7,    92.7,   11.0,  0.04292,      0,      0,       0,       0,       0,       0
+total,                                                  1361,     132,     132,     132,    30.8,    20.4,    60.2,    73.7,    91.3,    91.3,   12.0,  0.04168,      0,      0,       0,       0,       0,       0
+total,                                                  1484,     123,     123,     123,    32.2,    20.7,    60.8,    62.3,    67.2,    67.2,   13.0,  0.03860,      0,      0,       0,       0,       0,       0
+total,                                                  1600,     116,     116,     116,    34.0,    22.1,    60.3,    62.8,    65.5,    65.5,   14.0,  0.03584,      0,      0,       0,       0,       0,       0
+total,                                                  1715,     115,     115,     115,    35.1,    21.4,    60.9,    72.9,    77.8,    77.8,   15.0,  0.03344,      0,      0,       0,       0,       0,       0
+total,                                                  1832,     117,     117,     117,    34.1,    21.7,    62.3,    75.4,    78.5,    78.5,   16.0,  0.03134,      0,      0,       0,       0,       0,       0
+total,                                                  1951,     119,     119,     119,    33.5,    21.4,    67.4,    90.1,    99.3,    99.3,   17.0,  0.02961,      0,      0,       0,       0,       0,       0
+total,                                                  2082,     131,     131,     131,    30.5,    19.9,    60.4,    65.5,    85.3,    85.3,   18.0,  0.02885,      0,      0,       0,       0,       0,       0
+total,                                                  2196,     114,     114,     114,    34.9,    20.8,    60.3,    66.2,    67.3,    67.3,   19.0,  0.02741,      0,      0,       0,       0,       0,       0
+total,                                                  2311,     115,     115,     115,    34.9,    21.1,    60.9,    63.5,    83.4,    83.4,   20.0,  0.02604,      0,      0,       0,       0,       0,       0
+total,                                                  2433,     122,     122,     122,    32.8,    20.1,    60.3,    61.0,    62.0,    62.0,   21.0,  0.02481,      0,      0,       0,       0,       0,       0
+total,                                                  2551,     118,     118,     118,    33.6,    21.4,    60.3,    63.0,    63.2,    63.2,   22.0,  0.02368,      0,      0,       0,       0,       0,       0
+total,                                                  2680,     129,     129,     129,    30.8,    20.6,    61.2,    79.2,    80.5,    80.5,   23.0,  0.02306,      0,      0,       0,       0,       0,       0
+total,                                                  2798,     118,     118,     118,    33.9,    21.0,    60.6,    65.2,    86.6,    86.6,   24.0,  0.02210,      0,      0,       0,       0,       0,       0
+total,                                                  2907,     109,     109,     109,    35.8,    21.3,    64.7,   131.2,   170.3,   170.3,   25.0,  0.02124,      0,      0,       0,       0,       0,       0
+total,                                                  3032,     125,     125,     125,    32.8,    21.1,    61.6,   121.3,   121.4,   121.4,   26.0,  0.02084,      0,      0,       0,       0,       0,       0
+total,                                                  3144,     112,     112,     112,    35.4,    22.1,    60.8,    65.2,    66.7,    66.7,   27.0,  0.02022,      0,      0,       0,       0,       0,       0
+total,                                                  3262,     118,     118,     118,    34.1,    20.6,    60.5,    63.3,    92.4,    92.4,   28.0,  0.01950,      0,      0,       0,       0,       0,       0
+total,                                                  3382,     120,     120,     120,    33.3,    20.8,    60.3,    65.8,    69.2,    69.2,   29.0,  0.01882,      0,      0,       0,       0,       0,       0
+total,                                                  3490,     108,     108,     108,    36.4,    22.7,    62.7,    75.8,    89.9,    89.9,   30.0,  0.01837,      0,      0,       0,       0,       0,       0
+total,                                                  3608,     118,     118,     118,    33.9,    21.5,    63.4,    80.5,    84.9,    84.9,   31.0,  0.01777,      0,      0,       0,       0,       0,       0
+total,                                                  3724,     116,     116,     116,    34.5,    20.7,    60.5,    68.9,    82.2,    82.2,   32.0,  0.01722,      0,      0,       0,       0,       0,       0
+total,                                                  3847,     123,     123,     123,    32.5,    21.5,    64.2,    73.1,    74.9,    74.9,   33.0,  0.01673,      0,      0,       0,       0,       0,       0
+total,                                                  3964,     117,     117,     117,    33.6,    20.5,    61.0,    66.0,    68.7,    68.7,   34.0,  0.01625,      0,      0,       0,       0,       0,       0
+total,                                                  4079,     115,     115,     115,    34.1,    20.4,    60.2,    79.8,    95.6,    95.6,   35.0,  0.01579,      0,      0,       0,       0,       0,       0
+total,                                                  4200,     121,     121,     121,    33.8,    21.4,    61.0,    66.4,    89.7,    89.7,   36.0,  0.01538,      0,      0,       0,       0,       0,       0
+total,                                                  4325,     125,     125,     125,    31.7,    21.9,    60.5,    65.2,   124.6,   124.6,   37.0,  0.01526,      0,      0,       0,       0,       0,       0
+total,                                                  4431,     106,     106,     106,    38.3,    31.6,    66.0,    83.4,    86.9,    86.9,   38.0,  0.01508,      0,      0,       0,       0,       0,       0
+total,                                                  4544,     113,     113,     113,    34.6,    23.1,    64.3,    72.2,    75.6,    75.6,   39.0,  0.01475,      0,      0,       0,       0,       0,       0
+total,                                                  4646,     102,     102,     102,    39.5,    25.3,    79.8,   166.5,   177.3,   177.3,   40.0,  0.01440,      0,      0,       0,       0,       0,       0
+total,                                                  4741,      95,      95,      95,    41.6,    30.6,    79.2,   124.5,   129.4,   129.4,   41.0,  0.01451,      0,      0,       0,       0,       0,       0
+total,                                                  4763,      22,      22,      22,    49.1,    55.3,    89.1,   104.4,   104.4,   104.4,   42.0,  0.02413,      0,      0,       0,       0,       0,       0
+total,                                                  4765,       2,       2,       2,  1629.0,  1618.0,  1641.0,  1641.0,  1641.0,  1641.0,   43.0,  0.03414,      0,      0,       0,       0,       0,       0
+total,                                                  4801,      36,      36,      36,   192.7,    54.7,   485.2,  2105.5,  2105.5,  2105.5,   44.0,  0.04518,      0,      0,       0,       0,       0,       0
+total,                                                  4901,     100,     100,     100,   125.9,    28.8,    62.8,  2353.0,  2394.9,  2394.9,   47.0,  0.06624,      0,      0,       0,       0,       0,       0
+total,                                                  5025,     124,     124,     124,    32.1,    20.1,    61.4,    75.6,    85.5,    85.5,   48.0,  0.06473,      0,      0,       0,       0,       0,       0
+total,                                                  5141,     116,     116,     116,    34.6,    20.8,    61.0,    65.8,    69.7,    69.7,   49.0,  0.06329,      0,      0,       0,       0,       0,       0
+total,                                                  5251,     110,     110,     110,    36.0,    23.0,    65.0,    81.8,   107.6,   107.6,   50.0,  0.06192,      0,      0,       0,       0,       0,       0
+total,                                                  5378,     127,     127,     127,    31.7,    20.9,    60.0,    82.2,    89.2,    89.2,   51.0,  0.06061,      0,      0,       0,       0,       0,       0
+total,                                                  5479,     101,     101,     101,    39.0,    28.8,    62.2,    72.4,   108.7,   108.7,   52.0,  0.05942,      0,      0,       0,       0,       0,       0
+total,                                                  5564,      85,      85,      85,    44.7,    35.7,    91.8,   138.9,   158.6,   158.6,   53.0,  0.05841,      0,      0,       0,       0,       0,       0
+total,                                                  5581,      17,      17,      17,   232.1,    54.0,   807.4,   828.4,   828.4,   828.4,   54.0,  0.05747,      0,      0,       0,       0,       0,       0
+total,                                                  5589,       8,       8,       8,    93.2,    57.2,   293.1,   293.1,   293.1,   293.1,   55.0,  0.05967,      0,      0,       0,       0,       0,       0
+total,                                                  5590,       1,       1,       1,  3463.4,  3464.5,  3464.5,  3464.5,  3464.5,  3464.5,   58.0,  0.06711,      0,      0,       0,       0,       0,       0
+total,                                                  5687,      97,      97,      97,   121.1,    23.1,    60.7,  4148.2,  4162.8,  4162.8,   59.0,  0.07105,      0,      0,       0,       0,       0,       0
+total,                                                  5797,     110,     110,     110,    36.6,    21.8,    63.1,    75.2,    76.0,    76.0,   60.0,  0.06972,      0,      0,       0,       0,       0,       0
+total,                                                  5914,     117,     117,     117,    33.2,    20.4,    60.0,    62.8,    94.9,    94.9,   61.0,  0.06841,      0,      0,       0,       0,       0,       0
+total,                                                  6034,     120,     120,     120,    34.3,    20.5,    61.1,    80.8,    84.8,    84.8,   62.0,  0.06716,      0,      0,       0,       0,       0,       0
+total,                                                  6162,     128,     128,     128,    31.3,    20.5,    60.2,    62.6,    70.9,    70.9,   63.0,  0.06595,      0,      0,       0,       0,       0,       0
+total,                                                  6280,     118,     118,     118,    33.4,    20.5,    62.1,    71.4,   106.3,   106.3,   64.0,  0.06479,      0,      0,       0,       0,       0,       0
+total,                                                  6396,     116,     116,     116,    33.3,    21.1,    61.0,    65.7,    85.8,    85.8,   65.0,  0.06366,      0,      0,       0,       0,       0,       0
+total,                                                  6502,     106,     106,     106,    38.9,    25.9,    71.6,   118.8,   119.0,   119.0,   66.0,  0.06259,      0,      0,       0,       0,       0,       0
+total,                                                  6615,     113,     113,     113,    35.1,    22.1,    62.3,    90.9,   110.6,   110.6,   67.0,  0.06154,      0,      0,       0,       0,       0,       0
+total,                                                  6701,      86,      86,      86,    46.0,    36.0,    97.8,   128.3,   131.7,   131.7,   68.0,  0.06068,      0,      0,       0,       0,       0,       0
+total,                                                  6744,      43,      43,      43,    91.4,    33.6,   559.9,   594.0,   594.0,   594.0,   69.0,  0.05978,      0,      0,       0,       0,       0,       0
+total,                                                  6795,      51,      51,      51,    62.2,    29.1,   155.7,   265.3,   300.9,   300.9,   70.0,  0.05933,      0,      0,       0,       0,       0,       0
+total,                                                  6810,      15,      15,      15,   126.9,    27.8,   491.3,   803.7,   803.7,   803.7,   71.0,  0.05882,      0,      0,       0,       0,       0,       0
+total,                                                  6844,      34,      34,      34,   197.5,    23.8,  1302.3,  1490.0,  1490.0,  1490.0,   72.0,  0.06392,      0,      0,       0,       0,       0,       0
+total,                                                  6882,      38,      38,      38,    67.7,    58.2,   204.1,   305.4,   305.4,   305.4,   73.0,  0.06374,      0,      0,       0,       0,       0,       0
+total,                                                  6895,      13,      13,      13,   213.7,   150.5,   611.3,   636.5,   636.5,   636.5,   74.0,  0.06402,      0,      0,       0,       0,       0,       0
+total,                                                  7015,     120,     120,     120,    45.3,    21.4,    61.2,   353.6,  1346.4,  1346.4,   75.0,  0.09237,      0,      0,       0,       0,       0,       0
+total,                                                  7142,     127,     127,     127,    31.8,    20.4,    60.0,    60.5,    60.8,    60.8,   76.0,  0.09081,      0,      0,       0,       0,       0,       0
+total,                                                  7257,     115,     115,     115,    34.0,    21.2,    60.2,    61.7,    61.8,    61.8,   77.0,  0.08936,      0,      0,       0,       0,       0,       0
+total,                                                  7383,     126,     126,     126,    32.3,    20.1,    60.1,    64.9,    72.7,    72.7,   78.0,  0.08789,      0,      0,       0,       0,       0,       0
+total,                                                  7505,     122,     122,     122,    32.8,    19.9,    60.1,    61.7,    63.0,    63.0,   79.0,  0.08650,      0,      0,       0,       0,       0,       0
+total,                                                  7622,     117,     117,     117,    33.3,    21.2,    60.0,    61.3,    61.4,    61.4,   80.0,  0.08517,      0,      0,       0,       0,       0,       0
+total,                                                  7742,     120,     120,     120,    33.6,    20.4,    60.6,    69.4,    72.5,    72.5,   81.0,  0.08386,      0,      0,       0,       0,       0,       0
+total,                                                  7857,     115,     115,     115,    35.2,    21.7,    60.4,    60.6,    63.7,    63.7,   82.0,  0.08263,      0,      0,       0,       0,       0,       0
+total,                                                  7984,     127,     127,     127,    31.2,    20.5,    59.9,    60.6,    66.6,    66.6,   83.0,  0.08138,      0,      0,       0,       0,       0,       0
+total,                                                  8114,     130,     130,     130,    30.8,    19.6,    59.9,    63.0,    63.0,    63.0,   84.0,  0.08016,      0,      0,       0,       0,       0,       0
+total,                                                  8234,     120,     120,     120,    33.0,    20.1,    60.1,    61.5,    61.9,    61.9,   85.0,  0.07901,      0,      0,       0,       0,       0,       0
+total,                                                  8354,     120,     120,     120,    33.0,    19.9,    59.9,    61.6,    72.0,    72.0,   86.0,  0.07788,      0,      0,       0,       0,       0,       0
+total,                                                  8468,     114,     114,     114,    34.9,    23.2,    60.3,    64.9,    91.1,    91.1,   87.0,  0.07681,      0,      0,       0,       0,       0,       0
+total,                                                  8600,     132,     132,     132,    30.5,    19.5,    59.8,    61.0,    70.4,    70.4,   88.0,  0.07572,      0,      0,       0,       0,       0,       0
+total,                                                  8723,     123,     123,     123,    32.1,    20.8,    59.9,    74.1,    80.7,    80.7,   89.0,  0.07467,      0,      0,       0,       0,       0,       0
+total,                                                  8838,     115,     115,     115,    35.1,    20.8,    61.7,    64.1,    75.0,    75.0,   90.0,  0.07369,      0,      0,       0,       0,       0,       0
+total,                                                  8957,     119,     119,     119,    33.4,    20.3,    60.1,   109.4,   149.2,   149.2,   91.0,  0.07269,      0,      0,       0,       0,       0,       0
+total,                                                  9067,     110,     110,     110,    35.7,    20.1,    65.1,   113.8,   137.4,   137.4,   92.0,  0.07174,      0,      0,       0,       0,       0,       0
+total,                                                  9188,     121,     121,     121,    33.7,    20.9,    59.9,    67.4,    71.3,    71.3,   93.0,  0.07082,      0,      0,       0,       0,       0,       0
+total,                                                  9289,     101,     101,     101,    38.9,    39.5,    60.1,    74.9,    82.6,    82.6,   94.0,  0.07000,      0,      0,       0,       0,       0,       0
+total,                                                  9359,      70,      70,      70,    56.7,    48.8,   273.4,   280.2,   355.7,   355.7,   95.0,  0.06921,      0,      0,       0,       0,       0,       0
+total,                                                  9452,      93,      93,      93,    42.0,    30.0,    84.7,   128.3,   136.3,   136.3,   96.0,  0.06844,      0,      0,       0,       0,       0,       0
+total,                                                  9502,      50,      50,      50,    68.3,    56.8,   184.5,   324.0,   324.0,   324.0,   97.0,  0.06798,      0,      0,       0,       0,       0,       0
+total,                                                  9550,      48,      48,      48,    81.3,    52.1,   168.3,   667.9,   667.9,   667.9,   98.0,  0.06713,      0,      0,       0,       0,       0,       0
+total,                                                  9560,      10,      10,      10,   198.8,    61.1,   495.5,   495.5,   495.5,   495.5,   99.0,  0.06749,      0,      0,       0,       0,       0,       0
+total,                                                  9632,      72,      72,      72,    91.1,    20.0,    63.6,  1097.9,  1257.2,  1257.2,  100.0,  0.07979,      0,      0,       0,       0,       0,       0
+total,                                                  9766,     134,     134,     134,    29.2,    19.5,    59.8,    60.3,    60.4,    60.4,  101.0,  0.07877,      0,      0,       0,       0,       0,       0
+total,                                                  9893,     127,     127,     127,    31.4,    19.6,    60.1,    63.7,    77.3,    77.3,  102.0,  0.07778,      0,      0,       0,       0,       0,       0
+total,                                                 10022,     129,     129,     129,    30.8,    19.7,    60.0,    61.0,    64.6,    64.6,  103.0,  0.07682,      0,      0,       0,       0,       0,       0
+total,                                                 10146,     124,     124,     124,    32.8,    19.7,    59.9,    61.1,    79.4,    79.4,  104.0,  0.07589,      0,      0,       0,       0,       0,       0
+total,                                                 10283,     137,     137,     137,    28.7,    19.4,    59.8,    60.2,    62.4,    62.4,  105.0,  0.07496,      0,      0,       0,       0,       0,       0
+total,                                                 10402,     119,     119,     119,    34.1,    20.3,    59.8,    61.7,    62.1,    62.1,  106.0,  0.07410,      0,      0,       0,       0,       0,       0
+total,                                                 10525,     123,     123,     123,    31.9,    19.7,    59.9,    60.2,    60.3,    60.3,  107.0,  0.07325,      0,      0,       0,       0,       0,       0
+total,                                                 10641,     116,     116,     116,    34.9,    20.2,    60.0,    61.7,    82.8,    82.8,  108.0,  0.07243,      0,      0,       0,       0,       0,       0
+total,                                                 10760,     119,     119,     119,    33.0,    19.9,    59.9,    60.2,    61.3,    61.3,  109.0,  0.07162,      0,      0,       0,       0,       0,       0
+total,                                                 10879,     119,     119,     119,    33.6,    19.7,    59.9,    65.5,    69.2,    69.2,  110.0,  0.07084,      0,      0,       0,       0,       0,       0
+total,                                                 11002,     123,     123,     123,    32.4,    19.5,    60.1,    69.9,   101.1,   101.1,  111.0,  0.07004,      0,      0,       0,       0,       0,       0
+total,                                                 11118,     116,     116,     116,    34.6,    20.7,    59.9,    68.2,    82.2,    82.2,  112.0,  0.06929,      0,      0,       0,       0,       0,       0
+total,                                                 11238,     120,     120,     120,    33.5,    19.7,    59.8,    60.2,    72.7,    72.7,  113.0,  0.06855,      0,      0,       0,       0,       0,       0
+total,                                                 11365,     127,     127,     127,    31.4,    19.9,    59.9,    61.1,    86.1,    86.1,  114.0,  0.06780,      0,      0,       0,       0,       0,       0
+total,                                                 11489,     124,     124,     124,    31.8,    19.6,    59.9,    60.8,    66.5,    66.5,  115.0,  0.06708,      0,      0,       0,       0,       0,       0
+total,                                                 11620,     131,     131,     131,    30.8,    19.5,    59.8,    70.5,    89.1,    89.1,  116.0,  0.06636,      0,      0,       0,       0,       0,       0
+total,                                                 11747,     127,     127,     127,    31.3,    19.6,    59.9,    66.5,    72.5,    72.5,  117.0,  0.06567,      0,      0,       0,       0,       0,       0
+total,                                                 11873,     126,     126,     126,    31.9,    19.8,    59.8,    62.7,    91.9,    91.9,  118.0,  0.06498,      0,      0,       0,       0,       0,       0
+total,                                                 11988,     115,     115,     115,    34.8,    20.4,    60.9,   104.4,   114.5,   114.5,  119.0,  0.06433,      0,      0,       0,       0,       0,       0
+total,                                                 12117,     129,     129,     129,    30.7,    20.0,    60.0,    71.7,    71.8,    71.8,  120.0,  0.06367,      0,      0,       0,       0,       0,       0
+total,                                                 12225,     108,     108,     108,    37.2,    23.3,    60.2,    81.5,    81.5,    81.5,  121.0,  0.06308,      0,      0,       0,       0,       0,       0
+total,                                                 12346,     121,     121,     121,    32.8,    19.7,    59.8,    61.8,    73.2,    73.2,  122.0,  0.06247,      0,      0,       0,       0,       0,       0
+total,                                                 12472,     126,     126,     126,    32.0,    19.4,    59.9,    61.2,    61.3,    61.3,  123.0,  0.06185,      0,      0,       0,       0,       0,       0
+total,                                                 12596,     124,     124,     124,    32.2,    19.4,    59.8,    60.3,    61.9,    61.9,  124.0,  0.06126,      0,      0,       0,       0,       0,       0
+total,                                                 12710,     114,     114,     114,    35.2,    19.7,    59.8,    59.9,    75.5,    75.5,  125.0,  0.06069,      0,      0,       0,       0,       0,       0
+total,                                                 12830,     120,     120,     120,    33.6,    20.3,    59.9,    73.2,    80.6,    80.6,  126.0,  0.06012,      0,      0,       0,       0,       0,       0
+total,                                                 12949,     119,     119,     119,    33.2,    19.6,    59.8,    60.1,    63.3,    63.3,  127.0,  0.05957,      0,      0,       0,       0,       0,       0
+total,                                                 13077,     128,     128,     128,    31.2,    19.6,    59.8,    60.3,    63.0,    63.0,  128.0,  0.05901,      0,      0,       0,       0,       0,       0
+total,                                                 13194,     117,     117,     117,    33.9,    20.1,    59.9,    70.1,    86.4,    86.4,  129.0,  0.05848,      0,      0,       0,       0,       0,       0
+total,                                                 13321,     127,     127,     127,    31.4,    19.4,    59.8,    64.9,    80.1,    80.1,  130.0,  0.05794,      0,      0,       0,       0,       0,       0
+total,                                                 13447,     126,     126,     126,    32.0,    19.4,    59.8,    66.1,    74.6,    74.6,  131.0,  0.05741,      0,      0,       0,       0,       0,       0
+total,                                                 13579,     132,     132,     132,    30.4,    19.4,    59.8,    60.5,    68.0,    68.0,  132.0,  0.05688,      0,      0,       0,       0,       0,       0
+total,                                                 13701,     122,     122,     122,    32.5,    19.3,    59.7,    61.3,    62.8,    62.8,  133.0,  0.05638,      0,      0,       0,       0,       0,       0
+total,                                                 13833,     132,     132,     132,    30.5,    19.3,    59.7,    61.8,    62.6,    62.6,  134.0,  0.05588,      0,      0,       0,       0,       0,       0
+total,                                                 13960,     127,     127,     127,    30.9,    19.3,    59.7,    59.9,    62.6,    62.6,  135.0,  0.05539,      0,      0,       0,       0,       0,       0
+total,                                                 14081,     121,     121,     121,    33.4,    19.4,    59.9,    69.8,    80.4,    80.4,  136.0,  0.05491,      0,      0,       0,       0,       0,       0
+total,                                                 14206,     125,     125,     125,    31.3,    19.6,    59.8,    60.8,    80.3,    80.3,  137.0,  0.05444,      0,      0,       0,       0,       0,       0
+total,                                                 14329,     123,     123,     123,    33.6,    19.6,    59.8,    68.2,    73.2,    73.2,  138.0,  0.05397,      0,      0,       0,       0,       0,       0
+total,                                                 14457,     128,     128,     128,    31.3,    19.4,    59.7,    59.9,    70.3,    70.3,  139.0,  0.05351,      0,      0,       0,       0,       0,       0
+total,                                                 14566,     109,     109,     109,    36.1,    20.3,    59.9,    59.9,    66.9,    66.9,  140.0,  0.05310,      0,      0,       0,       0,       0,       0
+total,                                                 14697,     131,     131,     131,    30.7,    19.5,    59.8,    62.1,    64.2,    64.2,  141.0,  0.05265,      0,      0,       0,       0,       0,       0
+total,                                                 14815,     118,     118,     118,    33.7,    19.5,    59.9,    60.6,    61.2,    61.2,  142.0,  0.05223,      0,      0,       0,       0,       0,       0
+total,                                                 14940,     125,     125,     125,    31.9,    19.5,    59.7,    60.4,    61.4,    61.4,  143.0,  0.05181,      0,      0,       0,       0,       0,       0
+total,                                                 15060,     120,     120,     120,    33.6,    19.6,    59.7,    61.5,    66.7,    66.7,  144.0,  0.05139,      0,      0,       0,       0,       0,       0
+total,                                                 15180,     120,     120,     120,    32.5,    19.8,    59.9,    66.2,    67.7,    67.7,  145.0,  0.05099,      0,      0,       0,       0,       0,       0
+total,                                                 15305,     125,     125,     125,    32.2,    19.3,    60.4,    71.0,    72.6,    72.6,  146.0,  0.05058,      0,      0,       0,       0,       0,       0
+total,                                                 15423,     118,     118,     118,    34.2,    19.7,    59.8,    77.1,    81.0,    81.0,  147.0,  0.05019,      0,      0,       0,       0,       0,       0
+total,                                                 15538,     115,     115,     115,    34.9,    19.6,    59.8,    60.0,    97.5,    97.5,  148.0,  0.04980,      0,      0,       0,       0,       0,       0
+total,                                                 15654,     116,     116,     116,    34.1,    19.7,    59.8,    59.9,    59.9,    59.9,  149.0,  0.04943,      0,      0,       0,       0,       0,       0
+total,                                                 15777,     123,     123,     123,    32.5,    19.6,    59.9,    60.9,    61.3,    61.3,  150.0,  0.04905,      0,      0,       0,       0,       0,       0
+total,                                                 15900,     123,     123,     123,    32.8,    19.5,    59.8,    65.0,    68.9,    68.9,  151.0,  0.04868,      0,      0,       0,       0,       0,       0
+total,                                                 16014,     114,     114,     114,    34.9,    20.0,    59.9,    59.9,    69.8,    69.8,  152.0,  0.04833,      0,      0,       0,       0,       0,       0
+total,                                                 16132,     118,     118,     118,    33.9,    19.5,    59.9,    60.3,    93.3,    93.3,  153.0,  0.04796,      0,      0,       0,       0,       0,       0
+total,                                                 16263,     131,     131,     131,    30.7,    19.3,    59.8,    70.8,    74.1,    74.1,  154.0,  0.04760,      0,      0,       0,       0,       0,       0
+total,                                                 16387,     124,     124,     124,    32.0,    19.6,    59.8,    60.4,    74.1,    74.1,  155.0,  0.04725,      0,      0,       0,       0,       0,       0
+total,                                                 16522,     135,     135,     135,    29.9,    19.4,    59.8,    60.0,    61.2,    61.2,  156.0,  0.04689,      0,      0,       0,       0,       0,       0
+total,                                                 16648,     126,     126,     126,    31.9,    19.3,    59.8,    62.9,    64.1,    64.1,  157.0,  0.04655,      0,      0,       0,       0,       0,       0
+total,                                                 16769,     121,     121,     121,    33.1,    19.4,    59.8,    59.8,    59.8,    59.8,  158.0,  0.04621,      0,      0,       0,       0,       0,       0
+total,                                                 16895,     126,     126,     126,    31.5,    19.3,    59.7,    59.8,    59.9,    59.9,  159.0,  0.04588,      0,      0,       0,       0,       0,       0
+total,                                                 17023,     128,     128,     128,    31.1,    19.4,    59.8,    59.8,    59.8,    59.8,  160.0,  0.04555,      0,      0,       0,       0,       0,       0
+total,                                                 17145,     122,     122,     122,    32.7,    19.5,    59.7,    60.6,    64.5,    64.5,  161.0,  0.04523,      0,      0,       0,       0,       0,       0
+total,                                                 17275,     130,     130,     130,    30.7,    19.3,    59.8,    61.4,    61.8,    61.8,  162.0,  0.04491,      0,      0,       0,       0,       0,       0
+total,                                                 17397,     122,     122,     122,    33.0,    19.6,    59.8,    60.2,    62.8,    62.8,  163.0,  0.04460,      0,      0,       0,       0,       0,       0
+total,                                                 17515,     118,     118,     118,    33.6,    19.5,    59.8,    60.4,    64.9,    64.9,  164.0,  0.04429,      0,      0,       0,       0,       0,       0
+total,                                                 17637,     122,     122,     122,    32.8,    19.5,    59.8,    62.5,    63.6,    63.6,  165.0,  0.04399,      0,      0,       0,       0,       0,       0
+total,                                                 17752,     115,     115,     115,    34.6,    19.6,    59.8,    64.6,    68.6,    68.6,  166.0,  0.04370,      0,      0,       0,       0,       0,       0
+total,                                                 17877,     125,     125,     125,    31.7,    19.4,    59.7,    59.8,    61.6,    61.6,  167.0,  0.04340,      0,      0,       0,       0,       0,       0
+total,                                                 18002,     125,     125,     125,    32.5,    19.4,    59.8,    60.6,    61.1,    61.1,  168.0,  0.04311,      0,      0,       0,       0,       0,       0
+total,                                                 18116,     114,     114,     114,    34.6,    19.5,    59.8,    66.9,    78.2,    78.2,  169.0,  0.04283,      0,      0,       0,       0,       0,       0
+total,                                                 18249,     133,     133,     133,    30.1,    19.2,    59.8,    62.7,    63.6,    63.6,  170.0,  0.04254,      0,      0,       0,       0,       0,       0
+total,                                                 18365,     116,     116,     116,    34.4,    19.9,    59.8,    63.0,    65.9,    65.9,  171.0,  0.04227,      0,      0,       0,       0,       0,       0
+total,                                                 18500,     135,     135,     135,    29.5,    19.2,    59.7,    62.2,    62.2,    62.2,  172.0,  0.04199,      0,      0,       0,       0,       0,       0
+total,                                                 18620,     120,     120,     120,    33.2,    19.4,    59.8,    65.2,    77.5,    77.5,  173.0,  0.04171,      0,      0,       0,       0,       0,       0
+total,                                                 18734,     114,     114,     114,    35.5,    20.4,    59.8,    62.7,    68.5,    68.5,  174.0,  0.04145,      0,      0,       0,       0,       0,       0
+total,                                                 18855,     121,     121,     121,    32.8,    19.7,    59.7,    60.1,    61.2,    61.2,  175.0,  0.04119,      0,      0,       0,       0,       0,       0
+total,                                                 18983,     128,     128,     128,    31.5,    19.5,    59.8,    60.2,    63.2,    63.2,  176.0,  0.04092,      0,      0,       0,       0,       0,       0
+total,                                                 19110,     127,     127,     127,    31.4,    19.3,    59.7,    60.1,    62.3,    62.3,  177.0,  0.04066,      0,      0,       0,       0,       0,       0
+total,                                                 19238,     128,     128,     128,    30.9,    19.3,    59.7,    59.8,    59.9,    59.9,  178.0,  0.04040,      0,      0,       0,       0,       0,       0
+total,                                                 19361,     123,     123,     123,    32.2,    19.4,    59.8,    64.3,    65.0,    65.0,  179.0,  0.04015,      0,      0,       0,       0,       0,       0
+total,                                                 19489,     128,     128,     128,    32.0,    19.3,    59.8,    67.1,    84.3,    84.3,  180.0,  0.03989,      0,      0,       0,       0,       0,       0
+total,                                                 19610,     121,     121,     121,    32.3,    19.3,    59.7,    60.0,    61.4,    61.4,  181.0,  0.03965,      0,      0,       0,       0,       0,       0
+total,                                                 19744,     134,     134,     134,    30.2,    19.2,    59.8,    71.0,    74.8,    74.8,  182.0,  0.03940,      0,      0,       0,       0,       0,       0
+total,                                                 19869,     125,     125,     125,    32.1,    19.5,    59.7,    59.8,    59.8,    59.8,  183.0,  0.03916,      0,      0,       0,       0,       0,       0
+total,                                                 19981,     112,     112,     112,    35.8,    19.6,    59.7,    59.8,    61.1,    61.1,  184.0,  0.03894,      0,      0,       0,       0,       0,       0
+total,                                                 20110,     129,     129,     129,    30.8,    19.4,    59.8,    60.1,    63.3,    63.3,  185.0,  0.03870,      0,      0,       0,       0,       0,       0
+total,                                                 20249,     139,     139,     139,    28.6,    19.3,    59.8,    59.9,    66.3,    66.3,  186.0,  0.03846,      0,      0,       0,       0,       0,       0
+total,                                                 20368,     119,     119,     119,    33.2,    19.4,    59.8,    60.1,    80.0,    80.0,  187.0,  0.03823,      0,      0,       0,       0,       0,       0
+total,                                                 20499,     131,     131,     131,    31.1,    19.2,    59.8,    78.2,    87.8,    87.8,  188.0,  0.03800,      0,      0,       0,       0,       0,       0
+total,                                                 20630,     131,     131,     131,    30.4,    19.3,    59.6,    59.8,    62.4,    62.4,  189.0,  0.03778,      0,      0,       0,       0,       0,       0
+total,                                                 20747,     117,     117,     117,    33.9,    19.3,    59.8,    59.9,    65.5,    65.5,  190.0,  0.03756,      0,      0,       0,       0,       0,       0
+total,                                                 20884,     137,     137,     137,    29.7,    19.3,    59.7,    60.0,    60.0,    60.0,  191.0,  0.03734,      0,      0,       0,       0,       0,       0
+total,                                                 21013,     129,     129,     129,    30.7,    19.4,    59.8,    60.8,    73.7,    73.7,  192.0,  0.03712,      0,      0,       0,       0,       0,       0
+total,                                                 21134,     121,     121,     121,    33.0,    19.5,    59.7,    59.8,    82.4,    82.4,  193.0,  0.03691,      0,      0,       0,       0,       0,       0
+total,                                                 21256,     122,     122,     122,    32.7,    19.3,    59.8,    60.2,    60.2,    60.2,  194.0,  0.03670,      0,      0,       0,       0,       0,       0
+total,                                                 21381,     125,     125,     125,    32.2,    19.3,    59.8,    61.7,    62.5,    62.5,  195.0,  0.03649,      0,      0,       0,       0,       0,       0
+total,                                                 21501,     120,     120,     120,    33.0,    19.3,    59.8,    64.3,    69.3,    69.3,  196.0,  0.03628,      0,      0,       0,       0,       0,       0
+total,                                                 21618,     117,     117,     117,    34.8,    19.9,    59.8,    65.3,    70.5,    70.5,  197.0,  0.03608,      0,      0,       0,       0,       0,       0
+total,                                                 21746,     128,     128,     128,    31.2,    19.3,    59.8,    60.2,    61.8,    61.8,  198.0,  0.03588,      0,      0,       0,       0,       0,       0
+total,                                                 21873,     127,     127,     127,    31.1,    19.3,    59.7,    59.9,    59.9,    59.9,  199.0,  0.03568,      0,      0,       0,       0,       0,       0
+total,                                                 22001,     128,     128,     128,    31.3,    19.2,    59.7,    60.1,    61.7,    61.7,  200.0,  0.03548,      0,      0,       0,       0,       0,       0
+total,                                                 22113,     112,     112,     112,    35.9,    21.1,    59.7,    60.8,    77.1,    77.1,  201.0,  0.03529,      0,      0,       0,       0,       0,       0
+total,                                                 22229,     116,     116,     116,    34.0,    19.4,    59.8,    59.8,    60.2,    60.2,  202.0,  0.03511,      0,      0,       0,       0,       0,       0
+total,                                                 22352,     123,     123,     123,    32.9,    19.6,    59.7,    60.9,    66.0,    66.0,  203.0,  0.03492,      0,      0,       0,       0,       0,       0
+total,                                                 22482,     130,     130,     130,    30.8,    19.3,    59.7,    60.2,    78.4,    78.4,  204.0,  0.03472,      0,      0,       0,       0,       0,       0
+total,                                                 22616,     134,     134,     134,    29.5,    19.2,    59.7,    59.9,    60.1,    60.1,  205.0,  0.03453,      0,      0,       0,       0,       0,       0
+total,                                                 22745,     129,     129,     129,    31.1,    19.3,    59.8,    60.0,    76.2,    76.2,  206.0,  0.03435,      0,      0,       0,       0,       0,       0
+total,                                                 22871,     126,     126,     126,    31.9,    19.3,    59.9,    61.8,    81.0,    81.0,  207.0,  0.03416,      0,      0,       0,       0,       0,       0
+total,                                                 22998,     127,     127,     127,    30.8,    19.3,    59.7,    62.2,    62.6,    62.6,  208.0,  0.03398,      0,      0,       0,       0,       0,       0
+total,                                                 23123,     125,     125,     125,    32.8,    19.3,    59.8,    68.0,    79.4,    79.4,  209.0,  0.03380,      0,      0,       0,       0,       0,       0
+total,                                                 23246,     123,     123,     123,    32.3,    19.5,    59.7,    61.6,    73.0,    73.0,  210.0,  0.03362,      0,      0,       0,       0,       0,       0
+total,                                                 23369,     123,     123,     123,    32.2,    19.3,    59.7,    59.8,    69.5,    69.5,  211.0,  0.03344,      0,      0,       0,       0,       0,       0
+total,                                                 23492,     123,     123,     123,    32.6,    19.4,    59.8,    62.6,    64.1,    64.1,  212.0,  0.03327,      0,      0,       0,       0,       0,       0
+total,                                                 23609,     117,     117,     117,    34.1,    19.3,    59.7,    66.8,    68.1,    68.1,  213.0,  0.03310,      0,      0,       0,       0,       0,       0
+total,                                                 23732,     123,     123,     123,    32.8,    19.2,    59.7,    60.1,    63.6,    63.6,  214.0,  0.03294,      0,      0,       0,       0,       0,       0
+total,                                                 23856,     124,     124,     124,    32.5,    19.3,    59.7,    60.5,    62.1,    62.1,  215.0,  0.03277,      0,      0,       0,       0,       0,       0
+total,                                                 23981,     125,     125,     125,    31.5,    19.2,    59.7,    59.7,    60.0,    60.0,  216.0,  0.03260,      0,      0,       0,       0,       0,       0
+total,                                                 24103,     122,     122,     122,    32.7,    19.3,    59.7,    60.1,    84.2,    84.2,  217.0,  0.03244,      0,      0,       0,       0,       0,       0
+total,                                                 24226,     123,     123,     123,    32.8,    19.3,    59.7,    59.8,    66.3,    66.3,  218.0,  0.03227,      0,      0,       0,       0,       0,       0
+total,                                                 24343,     117,     117,     117,    34.1,    19.3,    59.8,    64.2,    72.4,    72.4,  219.0,  0.03211,      0,      0,       0,       0,       0,       0
+total,                                                 24466,     123,     123,     123,    31.9,    19.4,    59.7,    59.8,    60.1,    60.1,  220.0,  0.03196,      0,      0,       0,       0,       0,       0
+total,                                                 24590,     124,     124,     124,    32.9,    19.4,    59.7,    78.7,    87.4,    87.4,  221.0,  0.03180,      0,      0,       0,       0,       0,       0
+total,                                                 24710,     120,     120,     120,    32.9,    19.3,    59.7,    59.8,    61.0,    61.0,  222.0,  0.03164,      0,      0,       0,       0,       0,       0
+total,                                                 24829,     119,     119,     119,    33.8,    19.4,    59.7,    59.9,    68.0,    68.0,  223.0,  0.03149,      0,      0,       0,       0,       0,       0
+total,                                                 24958,     129,     129,     129,    31.2,    19.3,    59.7,    61.0,    66.7,    66.7,  224.0,  0.03133,      0,      0,       0,       0,       0,       0
+total,                                                 25087,     129,     129,     129,    31.1,    19.3,    59.7,    59.9,    64.2,    64.2,  225.0,  0.03118,      0,      0,       0,       0,       0,       0
+total,                                                 25211,     124,     124,     124,    32.3,    19.3,    59.7,    59.8,    59.8,    59.8,  226.0,  0.03103,      0,      0,       0,       0,       0,       0
+total,                                                 25334,     123,     123,     123,    32.3,    19.4,    59.7,    60.0,    63.6,    63.6,  227.0,  0.03088,      0,      0,       0,       0,       0,       0
+total,                                                 25463,     129,     129,     129,    30.8,    19.2,    59.7,    60.0,    65.2,    65.2,  228.0,  0.03073,      0,      0,       0,       0,       0,       0
+total,                                                 25589,     126,     126,     126,    31.7,    19.2,    59.7,    59.8,    62.6,    62.6,  229.0,  0.03058,      0,      0,       0,       0,       0,       0
+total,                                                 25718,     129,     129,     129,    31.2,    19.2,    59.7,    61.4,    71.9,    71.9,  230.0,  0.03044,      0,      0,       0,       0,       0,       0
+total,                                                 25839,     121,     121,     121,    32.6,    19.2,    59.7,    59.8,    59.8,    59.8,  231.0,  0.03029,      0,      0,       0,       0,       0,       0
+total,                                                 25960,     121,     121,     121,    32.7,    19.3,    59.8,    67.7,    88.0,    88.0,  232.0,  0.03015,      0,      0,       0,       0,       0,       0
+total,                                                 26076,     116,     116,     116,    35.2,    19.6,    59.7,    64.9,    72.9,    72.9,  233.0,  0.03001,      0,      0,       0,       0,       0,       0
+total,                                                 26196,     120,     120,     120,    33.1,    19.3,    59.7,    59.8,    59.8,    59.8,  234.0,  0.02988,      0,      0,       0,       0,       0,       0
+total,                                                 26320,     124,     124,     124,    32.4,    19.4,    59.7,    59.8,    59.9,    59.9,  235.0,  0.02974,      0,      0,       0,       0,       0,       0
+total,                                                 26449,     129,     129,     129,    30.9,    19.3,    59.7,    59.8,    59.9,    59.9,  236.0,  0.02960,      0,      0,       0,       0,       0,       0
+total,                                                 26565,     116,     116,     116,    34.9,    19.9,    59.7,    60.6,    64.6,    64.6,  237.0,  0.02947,      0,      0,       0,       0,       0,       0
+total,                                                 26697,     132,     132,     132,    29.9,    19.3,    59.7,    60.1,    61.3,    61.3,  238.0,  0.02933,      0,      0,       0,       0,       0,       0
+total,                                                 26811,     114,     114,     114,    35.0,    19.9,    59.8,    61.5,    76.7,    76.7,  239.0,  0.02921,      0,      0,       0,       0,       0,       0
+total,                                                 26935,     124,     124,     124,    32.3,    20.5,    60.6,    69.8,    74.3,    74.3,  240.0,  0.02907,      0,      0,       0,       0,       0,       0
+total,                                                 27059,     124,     124,     124,    32.5,    20.1,    59.9,    64.1,    77.2,    77.2,  241.0,  0.02894,      0,      0,       0,       0,       0,       0
+total,                                                 27181,     122,     122,     122,    32.7,    20.5,    60.0,    61.8,    64.0,    64.0,  242.0,  0.02881,      0,      0,       0,       0,       0,       0
+total,                                                 27305,     124,     124,     124,    32.4,    20.3,    59.7,    60.1,    60.5,    60.5,  243.0,  0.02868,      0,      0,       0,       0,       0,       0
+total,                                                 27421,     116,     116,     116,    34.1,    20.3,    59.7,    60.8,    64.2,    64.2,  244.0,  0.02856,      0,      0,       0,       0,       0,       0
+total,                                                 27546,     125,     125,     125,    32.0,    19.4,    59.7,    60.1,    60.6,    60.6,  245.0,  0.02843,      0,      0,       0,       0,       0,       0
+total,                                                 27670,     124,     124,     124,    32.2,    19.3,    59.7,    60.1,    60.9,    60.9,  246.0,  0.02831,      0,      0,       0,       0,       0,       0
+total,                                                 27793,     123,     123,     123,    32.3,    19.2,    59.7,    59.8,    59.8,    59.8,  247.0,  0.02818,      0,      0,       0,       0,       0,       0
+total,                                                 27919,     126,     126,     126,    31.9,    19.3,    59.7,    60.1,    68.6,    68.6,  248.0,  0.02806,      0,      0,       0,       0,       0,       0
+total,                                                 28051,     132,     132,     132,    30.4,    19.2,    59.7,    60.4,    63.1,    63.1,  249.0,  0.02794,      0,      0,       0,       0,       0,       0
+total,                                                 28185,     134,     134,     134,    30.2,    19.2,    59.7,    59.9,    66.8,    66.8,  250.0,  0.02781,      0,      0,       0,       0,       0,       0
+total,                                                 28309,     124,     124,     124,    31.5,    19.2,    59.7,    59.8,    59.9,    59.9,  251.0,  0.02769,      0,      0,       0,       0,       0,       0
+total,                                                 28440,     131,     131,     131,    31.0,    19.2,    59.7,    62.9,    63.3,    63.3,  252.0,  0.02757,      0,      0,       0,       0,       0,       0
+total,                                                 28575,     135,     135,     135,    29.7,    19.2,    59.7,    59.9,    60.3,    60.3,  253.0,  0.02745,      0,      0,       0,       0,       0,       0
+total,                                                 28693,     118,     118,     118,    33.7,    19.2,    59.7,    59.8,    67.6,    67.6,  254.0,  0.02734,      0,      0,       0,       0,       0,       0
+total,                                                 28814,     121,     121,     121,    33.3,    19.3,    59.7,    59.7,    59.8,    59.8,  255.0,  0.02723,      0,      0,       0,       0,       0,       0
+total,                                                 28926,     112,     112,     112,    35.2,    19.9,    59.7,    59.7,    59.8,    59.8,  256.0,  0.02712,      0,      0,       0,       0,       0,       0
+total,                                                 29049,     123,     123,     123,    32.5,    19.4,    59.7,    59.9,    60.9,    60.9,  257.0,  0.02701,      0,      0,       0,       0,       0,       0
+total,                                                 29170,     121,     121,     121,    33.1,    19.2,    59.7,    59.9,    60.9,    60.9,  258.0,  0.02689,      0,      0,       0,       0,       0,       0
+total,                                                 29299,     129,     129,     129,    30.8,    19.1,    59.7,    59.7,    59.7,    59.7,  259.0,  0.02678,      0,      0,       0,       0,       0,       0
+total,                                                 29434,     135,     135,     135,    30.1,    19.2,    59.7,    59.8,    60.2,    60.2,  260.0,  0.02667,      0,      0,       0,       0,       0,       0
+total,                                                 29550,     116,     116,     116,    34.5,    19.3,    59.7,    59.8,    59.9,    59.9,  261.0,  0.02656,      0,      0,       0,       0,       0,       0
+total,                                                 29696,     146,     146,     146,    27.3,    19.1,    59.7,    59.7,    59.9,    59.9,  262.0,  0.02646,      0,      0,       0,       0,       0,       0
+total,                                                 29821,     125,     125,     125,    32.0,    19.3,    59.7,    60.0,    60.3,    60.3,  263.0,  0.02635,      0,      0,       0,       0,       0,       0
+total,                                                 29937,     116,     116,     116,    34.1,    19.6,    59.7,    59.7,    59.8,    59.8,  264.0,  0.02624,      0,      0,       0,       0,       0,       0
+total,                                                 30066,     129,     129,     129,    31.2,    19.2,    59.7,    59.8,    60.3,    60.3,  265.0,  0.02614,      0,      0,       0,       0,       0,       0
+total,                                                 30194,     128,     128,     128,    31.2,    19.3,    59.7,    60.8,    61.9,    61.9,  266.0,  0.02603,      0,      0,       0,       0,       0,       0
+total,                                                 30328,     134,     134,     134,    29.2,    19.2,    59.7,    59.8,    59.8,    59.8,  267.0,  0.02592,      0,      0,       0,       0,       0,       0
+total,                                                 30450,     122,     122,     122,    33.4,    19.3,    59.7,    62.2,    77.1,    77.1,  268.0,  0.02582,      0,      0,       0,       0,       0,       0
+total,                                                 30568,     118,     118,     118,    33.3,    19.3,    59.7,    59.9,    63.7,    63.7,  269.0,  0.02572,      0,      0,       0,       0,       0,       0
+total,                                                 30688,     120,     120,     120,    33.4,    19.3,    59.7,    62.9,    68.0,    68.0,  270.0,  0.02562,      0,      0,       0,       0,       0,       0
+total,                                                 30816,     128,     128,     128,    31.8,    19.2,    59.8,    72.5,    95.9,    95.9,  271.0,  0.02552,      0,      0,       0,       0,       0,       0
+total,                                                 30939,     123,     123,     123,    32.4,    19.3,    59.7,    59.8,    71.7,    71.7,  272.0,  0.02541,      0,      0,       0,       0,       0,       0
+total,                                                 31072,     133,     133,     133,    30.2,    19.2,    59.7,    59.7,    59.7,    59.7,  273.0,  0.02531,      0,      0,       0,       0,       0,       0
+total,                                                 31204,     132,     132,     132,    30.3,    19.3,    59.7,    59.7,    60.9,    60.9,  274.0,  0.02521,      0,      0,       0,       0,       0,       0
+total,                                                 31326,     122,     122,     122,    32.8,    19.3,    59.7,    59.8,    65.7,    65.7,  275.0,  0.02512,      0,      0,       0,       0,       0,       0
+total,                                                 31448,     122,     122,     122,    32.6,    19.3,    59.7,    64.4,    68.8,    68.8,  276.0,  0.02502,      0,      0,       0,       0,       0,       0
+total,                                                 31558,     110,     110,     110,    35.8,    19.4,    59.7,    59.7,    59.8,    59.8,  277.0,  0.02493,      0,      0,       0,       0,       0,       0
+total,                                                 31678,     120,     120,     120,    33.5,    19.3,    59.7,    60.7,    70.6,    70.6,  278.0,  0.02483,      0,      0,       0,       0,       0,       0
+total,                                                 31800,     122,     122,     122,    32.9,    19.3,    59.7,    59.8,    69.2,    69.2,  279.0,  0.02474,      0,      0,       0,       0,       0,       0
+total,                                                 31933,     133,     133,     133,    30.2,    19.2,    59.7,    59.8,    84.8,    84.8,  280.0,  0.02464,      0,      0,       0,       0,       0,       0
+total,                                                 32055,     122,     122,     122,    32.5,    19.3,    59.7,    59.9,    61.9,    61.9,  281.0,  0.02455,      0,      0,       0,       0,       0,       0
+total,                                                 32176,     121,     121,     121,    33.3,    19.3,    59.7,    59.8,    60.7,    60.7,  282.0,  0.02446,      0,      0,       0,       0,       0,       0
+total,                                                 32295,     119,     119,     119,    33.4,    19.4,    59.7,    60.2,    60.3,    60.3,  283.0,  0.02437,      0,      0,       0,       0,       0,       0
+total,                                                 32427,     132,     132,     132,    30.4,    19.2,    59.7,    59.7,    60.0,    60.0,  284.0,  0.02428,      0,      0,       0,       0,       0,       0
+total,                                                 32557,     130,     130,     130,    30.3,    19.2,    59.7,    59.7,    59.8,    59.8,  285.0,  0.02418,      0,      0,       0,       0,       0,       0
+total,                                                 32678,     121,     121,     121,    33.7,    19.3,    59.7,    59.8,    69.7,    69.7,  286.0,  0.02409,      0,      0,       0,       0,       0,       0
+total,                                                 32818,     140,     140,     140,    27.9,    19.3,    59.7,    61.6,    62.8,    62.8,  287.0,  0.02400,      0,      0,       0,       0,       0,       0
+total,                                                 32944,     126,     126,     126,    32.0,    19.3,    59.7,    59.8,    60.1,    60.1,  288.0,  0.02391,      0,      0,       0,       0,       0,       0
+total,                                                 33074,     130,     130,     130,    30.7,    19.1,    59.7,    59.8,    69.7,    69.7,  289.0,  0.02383,      0,      0,       0,       0,       0,       0
+total,                                                 33195,     121,     121,     121,    33.5,    19.3,    59.7,    59.8,    59.8,    59.8,  290.0,  0.02374,      0,      0,       0,       0,       0,       0
+total,                                                 33320,     125,     125,     125,    31.5,    19.2,    59.7,    61.4,    63.1,    63.1,  291.0,  0.02365,      0,      0,       0,       0,       0,       0
+total,                                                 33449,     129,     129,     129,    31.4,    19.3,    59.7,    62.2,    63.0,    63.0,  292.0,  0.02356,      0,      0,       0,       0,       0,       0
+total,                                                 33566,     117,     117,     117,    34.0,    19.2,    59.7,    59.8,    59.9,    59.9,  293.0,  0.02348,      0,      0,       0,       0,       0,       0
+total,                                                 33697,     131,     131,     131,    30.6,    19.3,    59.7,    60.0,    61.0,    61.0,  294.0,  0.02339,      0,      0,       0,       0,       0,       0
+total,                                                 33832,     135,     135,     135,    29.2,    19.2,    59.7,    60.5,    60.9,    60.9,  295.0,  0.02331,      0,      0,       0,       0,       0,       0
+total,                                                 33951,     119,     119,     119,    33.9,    19.2,    59.7,    60.1,    61.9,    61.9,  296.0,  0.02323,      0,      0,       0,       0,       0,       0
+total,                                                 34060,     109,     109,     109,    35.6,    19.3,    59.7,    59.7,    59.8,    59.8,  297.0,  0.02315,      0,      0,       0,       0,       0,       0
+total,                                                 34181,     121,     121,     121,    33.2,    19.2,    59.7,    60.1,    66.9,    66.9,  298.0,  0.02307,      0,      0,       0,       0,       0,       0
+total,                                                 34320,     139,     139,     139,    29.2,    19.2,    59.7,    65.2,    68.6,    68.6,  299.0,  0.02299,      0,      0,       0,       0,       0,       0
+total,                                                 34449,     129,     129,     129,    31.4,    19.2,    59.7,    60.4,    71.6,    71.6,  300.0,  0.02291,      0,      0,       0,       0,       0,       0
+total,                                                 34576,     127,     127,     127,    31.0,    19.3,    59.7,    63.0,    71.2,    71.2,  301.0,  0.02282,      0,      0,       0,       0,       0,       0
+total,                                                 34705,     129,     129,     129,    31.3,    19.2,    59.7,    59.9,    60.1,    60.1,  302.0,  0.02274,      0,      0,       0,       0,       0,       0
+total,                                                 34832,     127,     127,     127,    31.9,    19.2,    59.7,    59.7,    59.8,    59.8,  303.0,  0.02266,      0,      0,       0,       0,       0,       0
+total,                                                 34956,     124,     124,     124,    31.9,    19.2,    59.7,    59.8,    59.9,    59.9,  304.0,  0.02258,      0,      0,       0,       0,       0,       0
+total,                                                 35084,     128,     128,     128,    31.3,    19.2,    59.7,    59.9,    60.8,    60.8,  305.0,  0.02250,      0,      0,       0,       0,       0,       0
+total,                                                 35202,     118,     118,     118,    33.8,    19.2,    59.7,    59.8,    59.8,    59.8,  306.0,  0.02243,      0,      0,       0,       0,       0,       0
+total,                                                 35331,     129,     129,     129,    30.7,    19.2,    59.7,    59.7,    59.8,    59.8,  307.0,  0.02235,      0,      0,       0,       0,       0,       0
+total,                                                 35449,     118,     118,     118,    34.1,    19.3,    59.7,    59.8,    64.3,    64.3,  308.0,  0.02227,      0,      0,       0,       0,       0,       0
+total,                                                 35579,     130,     130,     130,    30.6,    19.2,    59.7,    59.8,    78.4,    78.4,  309.0,  0.02220,      0,      0,       0,       0,       0,       0
+total,                                                 35712,     133,     133,     133,    30.4,    19.2,    59.7,    60.3,    66.2,    66.2,  310.0,  0.02212,      0,      0,       0,       0,       0,       0
+total,                                                 35839,     127,     127,     127,    31.8,    19.2,    59.7,    59.8,    62.5,    62.5,  311.0,  0.02204,      0,      0,       0,       0,       0,       0
+total,                                                 35965,     126,     126,     126,    31.3,    19.2,    59.7,    59.8,    59.8,    59.8,  312.0,  0.02197,      0,      0,       0,       0,       0,       0
+total,                                                 36096,     131,     131,     131,    30.5,    19.2,    59.7,    59.8,    60.4,    60.4,  313.0,  0.02189,      0,      0,       0,       0,       0,       0
+total,                                                 36219,     123,     123,     123,    32.4,    19.2,    59.7,    59.9,    60.1,    60.1,  314.0,  0.02182,      0,      0,       0,       0,       0,       0
+total,                                                 36343,     124,     124,     124,    31.7,    19.2,    59.7,    60.3,    61.3,    61.3,  315.0,  0.02174,      0,      0,       0,       0,       0,       0
+total,                                                 36467,     124,     124,     124,    32.7,    19.2,    59.7,    63.9,    75.8,    75.8,  316.0,  0.02167,      0,      0,       0,       0,       0,       0
+total,                                                 36594,     127,     127,     127,    31.5,    19.3,    59.7,    62.4,    62.8,    62.8,  317.0,  0.02160,      0,      0,       0,       0,       0,       0
+total,                                                 36715,     121,     121,     121,    32.9,    19.2,    59.6,    59.7,    71.0,    71.0,  318.0,  0.02153,      0,      0,       0,       0,       0,       0
+total,                                                 36836,     121,     121,     121,    33.1,    19.2,    59.6,    59.7,    59.7,    59.7,  319.0,  0.02146,      0,      0,       0,       0,       0,       0
+total,                                                 36960,     124,     124,     124,    32.2,    19.2,    59.7,    59.7,    60.0,    60.0,  320.0,  0.02138,      0,      0,       0,       0,       0,       0
+total,                                                 37082,     122,     122,     122,    32.9,    19.1,    59.7,    59.7,    60.8,    60.8,  321.0,  0.02131,      0,      0,       0,       0,       0,       0
+total,                                                 37217,     135,     135,     135,    29.6,    19.1,    59.7,    59.7,    61.9,    61.9,  322.0,  0.02124,      0,      0,       0,       0,       0,       0
+total,                                                 37347,     130,     130,     130,    30.9,    19.2,    59.7,    59.7,    59.8,    59.8,  323.0,  0.02117,      0,      0,       0,       0,       0,       0
+total,                                                 37475,     128,     128,     128,    31.3,    19.2,    59.7,    59.8,    60.2,    60.2,  324.0,  0.02110,      0,      0,       0,       0,       0,       0
+total,                                                 37605,     130,     130,     130,    30.7,    19.2,    59.7,    59.7,    59.8,    59.8,  325.0,  0.02103,      0,      0,       0,       0,       0,       0
+total,                                                 37731,     126,     126,     126,    31.8,    19.3,    59.7,    59.8,    60.7,    60.7,  326.0,  0.02097,      0,      0,       0,       0,       0,       0
+total,                                                 37854,     123,     123,     123,    32.6,    19.2,    59.7,    59.7,    61.4,    61.4,  327.0,  0.02090,      0,      0,       0,       0,       0,       0
+total,                                                 37983,     129,     129,     129,    30.3,    19.1,    59.6,    59.7,    59.7,    59.7,  328.0,  0.02083,      0,      0,       0,       0,       0,       0
+total,                                                 38104,     121,     121,     121,    33.6,    19.2,    59.7,    61.9,    65.6,    65.6,  329.0,  0.02076,      0,      0,       0,       0,       0,       0
+total,                                                 38234,     130,     130,     130,    30.8,    19.1,    59.7,    62.9,    67.6,    67.6,  330.0,  0.02070,      0,      0,       0,       0,       0,       0
+total,                                                 38356,     122,     122,     122,    32.3,    19.3,    59.7,    59.8,    61.2,    61.2,  331.0,  0.02063,      0,      0,       0,       0,       0,       0
+total,                                                 38491,     135,     135,     135,    30.0,    19.2,    59.6,    59.7,    59.7,    59.7,  332.0,  0.02056,      0,      0,       0,       0,       0,       0
+total,                                                 38622,     131,     131,     131,    30.2,    19.2,    59.7,    60.3,    62.0,    62.0,  333.0,  0.02050,      0,      0,       0,       0,       0,       0
+total,                                                 38746,     124,     124,     124,    32.6,    19.2,    59.7,    59.8,    70.9,    70.9,  334.0,  0.02043,      0,      0,       0,       0,       0,       0
+total,                                                 38873,     127,     127,     127,    31.3,    19.2,    59.7,    59.7,    59.8,    59.8,  335.0,  0.02037,      0,      0,       0,       0,       0,       0
+total,                                                 38992,     119,     119,     119,    33.4,    19.2,    59.7,    60.0,    63.3,    63.3,  336.0,  0.02030,      0,      0,       0,       0,       0,       0
+total,                                                 39117,     125,     125,     125,    31.7,    19.2,    59.7,    59.8,    59.8,    59.8,  337.0,  0.02024,      0,      0,       0,       0,       0,       0
+total,                                                 39236,     119,     119,     119,    34.1,    19.3,    59.7,    61.9,    69.9,    69.9,  338.0,  0.02018,      0,      0,       0,       0,       0,       0
+total,                                                 39358,     122,     122,     122,    32.8,    19.2,    59.6,    60.1,    70.6,    70.6,  339.0,  0.02012,      0,      0,       0,       0,       0,       0
+total,                                                 39477,     119,     119,     119,    33.9,    19.2,    59.7,    59.8,    61.8,    61.8,  340.0,  0.02006,      0,      0,       0,       0,       0,       0
+total,                                                 39597,     120,     120,     120,    32.7,    19.2,    59.7,    59.8,    59.8,    59.8,  341.0,  0.01999,      0,      0,       0,       0,       0,       0
+total,                                                 39739,     142,     142,     142,    28.5,    19.1,    59.7,    59.9,    64.7,    64.7,  342.0,  0.01993,      0,      0,       0,       0,       0,       0
+total,                                                 39865,     126,     126,     126,    32.0,    19.2,    59.7,    59.7,    61.2,    61.2,  343.0,  0.01987,      0,      0,       0,       0,       0,       0
+total,                                                 39984,     119,     119,     119,    33.1,    19.3,    59.7,    60.0,    60.4,    60.4,  344.0,  0.01981,      0,      0,       0,       0,       0,       0
+total,                                                 40114,     130,     130,     130,    30.8,    19.2,    59.7,    60.1,    60.7,    60.7,  345.0,  0.01975,      0,      0,       0,       0,       0,       0
+total,                                                 40249,     135,     135,     135,    29.3,    19.2,    59.7,    59.8,    61.0,    61.0,  346.0,  0.01969,      0,      0,       0,       0,       0,       0
+total,                                                 40374,     125,     125,     125,    32.2,    19.2,    59.7,    59.8,    59.8,    59.8,  347.0,  0.01963,      0,      0,       0,       0,       0,       0
+total,                                                 40495,     121,     121,     121,    33.4,    19.4,    59.7,    60.0,    60.4,    60.4,  348.0,  0.01957,      0,      0,       0,       0,       0,       0
+total,                                                 40628,     133,     133,     133,    29.7,    19.2,    59.7,    59.8,    59.8,    59.8,  349.0,  0.01951,      0,      0,       0,       0,       0,       0
+total,                                                 40749,     121,     121,     121,    32.9,    19.2,    59.7,    59.8,    61.6,    61.6,  350.0,  0.01945,      0,      0,       0,       0,       0,       0
+total,                                                 40874,     125,     125,     125,    32.3,    19.3,    59.7,    59.7,    60.1,    60.1,  351.0,  0.01940,      0,      0,       0,       0,       0,       0
+total,                                                 40995,     121,     121,     121,    32.6,    19.2,    59.7,    59.8,    60.0,    60.0,  352.0,  0.01934,      0,      0,       0,       0,       0,       0
+total,                                                 41121,     126,     126,     126,    31.9,    19.2,    59.7,    66.7,    69.1,    69.1,  353.0,  0.01928,      0,      0,       0,       0,       0,       0
+total,                                                 41245,     124,     124,     124,    33.0,    19.4,    59.7,    60.1,    69.1,    69.1,  354.0,  0.01922,      0,      0,       0,       0,       0,       0
+total,                                                 41361,     116,     116,     116,    33.2,    19.3,    59.7,    59.8,    60.0,    60.0,  355.0,  0.01917,      0,      0,       0,       0,       0,       0
+total,                                                 41487,     126,     126,     126,    32.2,    19.2,    59.7,    60.0,    66.4,    66.4,  356.0,  0.01911,      0,      0,       0,       0,       0,       0
+total,                                                 41615,     128,     128,     128,    31.7,    19.1,    59.7,    59.8,    64.0,    64.0,  357.0,  0.01905,      0,      0,       0,       0,       0,       0
+total,                                                 41741,     126,     126,     126,    31.6,    19.2,    59.7,    59.7,    59.7,    59.7,  358.0,  0.01900,      0,      0,       0,       0,       0,       0
+total,                                                 41874,     133,     133,     133,    29.7,    19.2,    59.7,    59.8,    59.9,    59.9,  359.0,  0.01894,      0,      0,       0,       0,       0,       0
+total,                                                 42000,     126,     126,     126,    32.0,    19.2,    59.7,    59.7,    59.9,    59.9,  360.0,  0.01889,      0,      0,       0,       0,       0,       0
+total,                                                 42141,     141,     141,     141,    28.2,    19.1,    59.7,    60.5,    61.1,    61.1,  361.0,  0.01883,      0,      0,       0,       0,       0,       0
+total,                                                 42264,     123,     123,     123,    32.5,    19.2,    59.7,    60.0,    62.7,    62.7,  362.0,  0.01878,      0,      0,       0,       0,       0,       0
+total,                                                 42385,     121,     121,     121,    33.1,    19.3,    59.7,    59.7,    59.8,    59.8,  363.0,  0.01872,      0,      0,       0,       0,       0,       0
+total,                                                 42521,     136,     136,     136,    29.6,    19.2,    59.7,    59.7,    59.8,    59.8,  364.0,  0.01867,      0,      0,       0,       0,       0,       0
+total,                                                 42637,     116,     116,     116,    34.4,    19.4,    59.7,    59.8,    59.8,    59.8,  365.0,  0.01862,      0,      0,       0,       0,       0,       0
+total,                                                 42773,     136,     136,     136,    29.5,    19.2,    59.7,    59.7,    59.7,    59.7,  366.0,  0.01857,      0,      0,       0,       0,       0,       0
+total,                                                 42896,     123,     123,     123,    32.1,    19.1,    59.7,    59.8,    60.9,    60.9,  367.0,  0.01851,      0,      0,       0,       0,       0,       0
+total,                                                 43020,     124,     124,     124,    32.3,    19.2,    59.7,    60.1,    60.1,    60.1,  368.0,  0.01846,      0,      0,       0,       0,       0,       0
+total,                                                 43143,     123,     123,     123,    32.1,    19.2,    59.7,    60.1,    63.3,    63.3,  369.0,  0.01841,      0,      0,       0,       0,       0,       0
+total,                                                 43267,     124,     124,     124,    32.2,    19.2,    59.7,    60.0,    60.6,    60.6,  370.0,  0.01835,      0,      0,       0,       0,       0,       0
+total,                                                 43378,     111,     111,     111,    36.5,    22.6,    59.7,    63.2,    72.8,    72.8,  371.0,  0.01831,      0,      0,       0,       0,       0,       0
+total,                                                 43500,     122,     122,     122,    33.2,    19.2,    59.7,    59.8,    59.9,    59.9,  372.0,  0.01826,      0,      0,       0,       0,       0,       0
+total,                                                 43638,     138,     138,     138,    28.8,    19.1,    59.7,    59.7,    59.8,    59.8,  373.0,  0.01820,      0,      0,       0,       0,       0,       0
+total,                                                 43764,     126,     126,     126,    32.1,    19.2,    59.7,    60.8,    61.1,    61.1,  374.0,  0.01815,      0,      0,       0,       0,       0,       0
+total,                                                 43901,     137,     137,     137,    28.6,    19.1,    59.7,    59.7,    59.7,    59.7,  375.0,  0.01810,      0,      0,       0,       0,       0,       0
+total,                                                 44029,     128,     128,     128,    31.7,    19.2,    59.7,    59.8,    64.1,    64.1,  376.0,  0.01805,      0,      0,       0,       0,       0,       0
+total,                                                 44157,     128,     128,     128,    31.1,    19.2,    59.7,    59.7,    60.1,    60.1,  377.0,  0.01800,      0,      0,       0,       0,       0,       0
+total,                                                 44286,     129,     129,     129,    30.6,    19.2,    59.7,    60.0,    60.0,    60.0,  378.0,  0.01795,      0,      0,       0,       0,       0,       0
+total,                                                 44420,     134,     134,     134,    30.1,    19.2,    59.6,    59.8,    61.3,    61.3,  379.0,  0.01790,      0,      0,       0,       0,       0,       0
+total,                                                 44557,     137,     137,     137,    29.4,    19.2,    59.7,    59.7,    60.5,    60.5,  380.0,  0.01785,      0,      0,       0,       0,       0,       0
+total,                                                 44678,     121,     121,     121,    32.6,    19.2,    59.7,    59.7,    59.8,    59.8,  381.0,  0.01780,      0,      0,       0,       0,       0,       0
+total,                                                 44804,     126,     126,     126,    31.6,    19.3,    59.7,    59.8,    59.9,    59.9,  382.0,  0.01775,      0,      0,       0,       0,       0,       0
+total,                                                 44933,     129,     129,     129,    31.8,    19.2,    59.7,    63.7,    67.6,    67.6,  383.0,  0.01770,      0,      0,       0,       0,       0,       0
+total,                                                 45059,     126,     126,     126,    31.4,    19.2,    59.7,    59.7,    60.0,    60.0,  384.0,  0.01766,      0,      0,       0,       0,       0,       0
+total,                                                 45186,     127,     127,     127,    31.6,    19.2,    59.7,    59.7,    59.8,    59.8,  385.0,  0.01761,      0,      0,       0,       0,       0,       0
+total,                                                 45307,     121,     121,     121,    32.7,    19.2,    59.7,    59.7,    59.7,    59.7,  386.0,  0.01756,      0,      0,       0,       0,       0,       0
+total,                                                 45439,     132,     132,     132,    30.4,    19.1,    59.7,    60.3,    63.2,    63.2,  387.0,  0.01751,      0,      0,       0,       0,       0,       0
+total,                                                 45570,     131,     131,     131,    30.8,    19.2,    59.7,    59.8,    60.0,    60.0,  388.0,  0.01746,      0,      0,       0,       0,       0,       0
+total,                                                 45702,     132,     132,     132,    30.2,    19.2,    59.7,    59.7,    59.8,    59.8,  389.0,  0.01742,      0,      0,       0,       0,       0,       0
+total,                                                 45830,     128,     128,     128,    30.7,    19.2,    59.7,    59.8,    60.0,    60.0,  390.0,  0.01737,      0,      0,       0,       0,       0,       0
+total,                                                 45948,     118,     118,     118,    34.1,    19.2,    59.7,    60.1,    64.0,    64.0,  391.0,  0.01732,      0,      0,       0,       0,       0,       0
+total,                                                 46062,     114,     114,     114,    34.7,    19.3,    59.7,    59.8,    60.5,    60.5,  392.0,  0.01728,      0,      0,       0,       0,       0,       0
+total,                                                 46193,     131,     131,     131,    31.2,    19.2,    59.7,    60.8,    63.3,    63.3,  393.0,  0.01723,      0,      0,       0,       0,       0,       0
+total,                                                 46316,     123,     123,     123,    32.1,    19.2,    59.7,    59.8,    60.5,    60.5,  394.0,  0.01719,      0,      0,       0,       0,       0,       0
+total,                                                 46446,     130,     130,     130,    31.0,    19.2,    59.7,    59.7,    59.8,    59.8,  395.0,  0.01714,      0,      0,       0,       0,       0,       0
+total,                                                 46582,     136,     136,     136,    29.3,    19.2,    59.7,    59.7,    59.7,    59.7,  396.0,  0.01710,      0,      0,       0,       0,       0,       0
+total,                                                 46708,     126,     126,     126,    32.2,    19.2,    59.7,    59.7,    59.7,    59.7,  397.0,  0.01705,      0,      0,       0,       0,       0,       0
+total,                                                 46832,     124,     124,     124,    31.9,    19.1,    59.7,    59.8,    59.8,    59.8,  398.0,  0.01701,      0,      0,       0,       0,       0,       0
+total,                                                 46956,     124,     124,     124,    32.2,    19.1,    59.7,    59.7,    59.7,    59.7,  399.0,  0.01696,      0,      0,       0,       0,       0,       0
+total,                                                 47074,     118,     118,     118,    33.3,    19.2,    59.7,    59.7,    60.0,    60.0,  400.0,  0.01692,      0,      0,       0,       0,       0,       0
+total,                                                 47204,     130,     130,     130,    31.2,    19.1,    59.7,    59.8,    62.0,    62.0,  401.0,  0.01688,      0,      0,       0,       0,       0,       0
+total,                                                 47323,     119,     119,     119,    33.6,    19.2,    59.7,    59.8,    62.3,    62.3,  402.0,  0.01683,      0,      0,       0,       0,       0,       0
+total,                                                 47453,     130,     130,     130,    30.2,    19.1,    59.7,    59.7,    74.3,    74.3,  403.0,  0.01679,      0,      0,       0,       0,       0,       0
+total,                                                 47580,     127,     127,     127,    32.4,    19.2,    59.7,    59.8,    63.8,    63.8,  404.0,  0.01674,      0,      0,       0,       0,       0,       0
+total,                                                 47710,     130,     130,     130,    30.4,    19.1,    59.7,    59.7,    59.7,    59.7,  405.0,  0.01670,      0,      0,       0,       0,       0,       0
+total,                                                 47840,     130,     130,     130,    30.7,    19.1,    59.7,    59.7,    63.5,    63.5,  406.0,  0.01666,      0,      0,       0,       0,       0,       0

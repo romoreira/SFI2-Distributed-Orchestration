@@ -106,13 +106,24 @@ def apply_mean_by_date(input_file):
     df_final.to_csv(working_dir+'/cassandra_stress.csv', index=False)
     print(f"Mean applied successfully in cassandra-stress CSV at:",{working_dir+'/cassandra_stress.csv'})
 
+def shift_three_hours(df):
+
+    # Converter a coluna de timestamps para datetime
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')  # 's' representa segundos
+
+    # Subtrair três horas da coluna de timestamps
+    df['timestamp'] = df['timestamp'] - pd.Timedelta(hours=3)
+    df['timestamp'] = (df['timestamp'] - pd.Timestamp("1970-01-01")) // pd.Timedelta(seconds=1)
+
+    return df
+
 def merge_csvs(cassandra, netflow):
     # Leitura dos arquivos CSV
     df1 = pd.read_csv(working_dir+"/"+cassandra)
     df2 = pd.read_csv(working_dir+"/"+netflow)
 
     #Change column name
-    df2 = df2.rename(columns={'Timestamp': 'time'})
+    df2 = df2.rename(columns={'timestamp': 'time'})
 
     # Mescla dos dataframes com base na coluna 'data_hora'
     merged_df = pd.merge(df1, df2, on='time', how='inner')
@@ -188,7 +199,7 @@ def combine_flows_csvs():
         merged_df = dataframes_list[0]
 
         for df in dataframes_list[1:]:
-            merged_df = pd.concat([merged_df, df.loc[df['Timestamp'] != merged_df['Timestamp'].iloc[-1]]])
+            merged_df = pd.concat([merged_df, df.loc[df['timestamp'] != merged_df['timestamp'].iloc[-1]]])
     else:
         return None
 
@@ -196,9 +207,10 @@ def combine_flows_csvs():
     output_file = working_dir+'/cassandra_flows.csv'
     #merged_df['Timestamp'] = merged_df['Timestamp'].apply(convert_to_unix_epoch)
     columns=['Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Label']
-    merged_df = merged_df.groupby('Timestamp').mean().reset_index()
+    merged_df = merged_df.groupby('timestamp').mean().reset_index()
     merged_df[columns] = np.nan
-    merged_df['Timestamp'] = pd.to_datetime(merged_df['Timestamp']).astype(int) // 10 ** 9
+    merged_df['timestamp'] = pd.to_datetime(merged_df['timestamp']).astype(int) // 10 ** 9
+    merged_df = shift_three_hours(merged_df)
     merged_df.to_csv(output_file, index=False)
     print(f"Final file (cassandra_flows.csv) created at: {output_file}")
 
