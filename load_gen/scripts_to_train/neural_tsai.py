@@ -8,7 +8,7 @@ print('fastcore   :', fastcore.__version__)
 print('torch      :', torch.__version__)
 print('matplotlib :', matplotlib.__version__)
 
-#print(torch.cuda.get_device_name(0))
+print(torch.cuda.get_device_name(0))
 
 import pandas as pd
 import numpy as np
@@ -54,8 +54,6 @@ def feature_importance(df, X, y):
 def check_feature_importance(df, X, y):
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
-    print(df.columns)
-    exit()
     colunas_desejadas_cassandra = ['ops', 'op/s', 'pk/s', 'row/s', 'target', 'med',
                          '.95', '.99', '.999', 'max', 'stderr',
                          'errors', 'gc: #', 'max ms', 'sum ms', 'sdv ms']
@@ -78,7 +76,7 @@ def check_feature_importance(df, X, y):
     sorted_correlation_flowmeter = correlation_with_target_flowmeter.abs().sort_values(ascending=False)
     print("\nFlowmeter Features Most Relevant:\n " + str(sorted_correlation_flowmeter))
 
-    with open(str(".") + str(operation) + f'_FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
+    with open(str(".")+str(operation)+f'_FEATURE_IMPORTANCE_DATASET.txt', 'w') as f:
         f.write(str(sorted_correlation_cassandra))
         f.write(str(sorted_correlation_flowmeter))
 
@@ -101,10 +99,10 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "ResNet"
+    model_name = "XCMPlus"
 
 experiment = '/cassandra'
-operation = '/write'
+operation = '/read'
 directory = './results_paper'+str(experiment)+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
@@ -169,7 +167,8 @@ import pickle
 from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_error
 
-file_name = '.'+str(operation)+'_sinusoidal/arquivo_final.csv'
+file_name = '../reports_to_merge'+str(operation)+'_sinusoidal/arquivo_final.csv'
+
 
 test_ratio = 0.1  # testing data ratio
 max_evals = 50  # maximal trials for hyper parameter tuning
@@ -218,27 +217,26 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 
 
-
 data.rename(columns={'mean': 'target'}, inplace=True)
-columns = ['med', 'ops', '.95', '.99', 'stderr', 'max', 'target']
+columns = ['med', '.95', '.99', 'stderr', 'max', 'target']
 #columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
 #columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
 
 df = data[columns]
 
-df = normalize_all_dataframe(df)
+#df = normalize_all_dataframe(df)
 #df = normalize_target(df)
 
 #print(df)
 n_vars = len(columns)
 columns=[f'{columns[i]}' for i in range(n_vars-1)]+['target']
-X, y = SlidingWindow(1, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
-splits = TrainValidTestSplitter(valid_size=.1, shuffle=False)(y)
-#print(X.shape)
-#print(y.shape)
-#print(splits)
+X, y = SlidingWindow(50, stride=1, horizon=1, get_x=columns[:-1], get_y='target', seq_first=True)(df)
+splits = TimeSplitter(test_length)(y)
+print("X_shape: "+str(X.shape))
+print("Y_shape: "+str(y.shape))
+#print(len(splits))
 #plot_splits(splits)
-X.shape, y.shape, splits
+#X.shape, y.shape, splits
 
 
 
@@ -324,7 +322,9 @@ def create_model_hypopt(params):
         batch_size = params["batch_size"]
 
         # Create data loader
-        tfms = [None, [TSRegression()]]
+        tfms = [None, TSRegression()]
+        batch_tfms = TSStandardize(by_sample=True)
+
         dsets = TSDatasets(X, y, tfms=tfms, splits=splits, inplace=True)
         # set num_workers for memory bottleneck
         dls = TSDataLoaders.from_dsets(dsets.train, dsets.valid, bs=[batch_size, batch_size], num_workers=0)
@@ -339,8 +339,7 @@ def create_model_hypopt(params):
         model = create_model(arch, d=False, dls=dls)
         print(model.__class__.__name__)
 
-        # Add a Sigmoid layer
-        #model = nn.Sequential(model, nn.Sigmoid())
+
 
         # Training the model
         learn = Learner(dls, model, metrics=[mae, rmse, mse, mape], opt_func=params['optimizer'])
@@ -379,13 +378,17 @@ params = space_eval(search_space, best)
 with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
     f.write(str(space_eval(search_space, best)))
 
-#params = {'batch_size': 16, 'bidirectional': False, 'epochs': 20, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 50}
+#params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 100}
 
 
 for i in range(10):
-    batch_size = params["batch_size"]
-    tfms = [None, [TSRegression()]]
+    tfms = [None, TSRegression()]
     dsets = TSDatasets(X, y, tfms=tfms, splits=splits, inplace=True)
+
+    batch_size = params["batch_size"]
+    print("Len Train: "+str(len(dsets.train)))
+    print("Len Validation: " + str(len(dsets.valid)))
+
     dls = TSDataLoaders.from_dsets(dsets.train, dsets.valid, bs=[batch_size, batch_size], num_workers=0)
     k = {
         'n_layers': params['n_layers'],
@@ -410,19 +413,21 @@ for i in range(10):
 
     #Prediction
 
-    raw_preds, target, preds = learn.get_X_preds(X[splits[1]], y[splits[1]])
+    preds,target = learn.get_preds()
+
+
+    preds = preds.tolist()
+    target = target.tolist()
 
     # Plot the target and predicted values
     plt.figure(figsize=(10, 6))
     plt.plot(target, label='Real')
     plt.plot(preds, label='Predicted', linestyle='dashed')
     plt.xlabel('Time Steps')
-    plt.ylabel('Cassandra Write (Latency) ms')
-    plt.title('Cassandra Latency Estimation (ms)')
+    plt.ylabel('Cassandra Write (Latency)')
+    plt.title('Cassandra Latency Estimation')
     plt.legend()
     plt.grid(False)
     plt.savefig(directory+str(i)+str("_")+str(model_name)+str("_")+f'FINAL_PREDICTION.pdf', bbox_inches = 'tight', pad_inches = 0.1)
     #plt.show()
     check_error(target, preds, index=i)
-
-
