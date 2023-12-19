@@ -207,7 +207,7 @@ plt.plot(data.index[train_length:], data['mean'][train_length:], label='Test', c
 plt.axvspan(data.index[train_length:][0], data.index[train_length:][-1],  facecolor='g', alpha=0.1)
 
 plt.xlabel('Time')
-plt.ylabel('Cassandra Write (Latency)')
+plt.ylabel('Cassandra Read (Latency)')
 plt.legend(loc='best')
 plt.grid(False)
 #plt.show()
@@ -424,7 +424,7 @@ for i in range(10):
     plt.plot(target, label='Real')
     plt.plot(preds, label='Predicted', linestyle='dashed')
     plt.xlabel('Time Steps')
-    plt.ylabel('Cassandra Write (Latency)')
+    plt.ylabel('Cassandra Read (Latency)')
     plt.title('Cassandra Latency Estimation')
     plt.legend()
     plt.grid(False)
