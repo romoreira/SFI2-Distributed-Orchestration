@@ -1,0 +1,151 @@
+******************** Stress Settings ********************
+Command:
+  Type: read
+  Count: 50,000
+  No Warmup: true
+  Consistency Level: LOCAL_ONE
+  Target Uncertainty: not applicable
+  Key Size (bytes): 10
+  Counter Increment Distibution: add=fixed(1)
+Rate:
+  Auto: true
+  Min Threads: 4
+  Max Threads: 1000
+Population:
+  Distribution: Gaussian:  min=1,max=50000,mean=25000.500000,stdev=8333.166667
+  Order: ARBITRARY
+  Wrap: false
+Insert:
+  Revisits: Uniform:  min=1,max=1000000
+  Visits: Fixed:  key=1
+  Row Population Ratio: Ratio: divisor=1.000000;delegate=Fixed:  key=1
+  Batch Type: not batching
+Columns:
+  Max Columns Per Key: 5
+  Column Names: [C0, C1, C2, C3, C4]
+  Comparator: AsciiType
+  Timestamp: null
+  Variable Column Count: false
+  Slice: false
+  Size Distribution: Fixed:  key=34
+  Count Distribution: Fixed:  key=5
+Errors:
+  Ignore: false
+  Tries: 10
+Log:
+  No Summary: false
+  No Settings: false
+  File: read_output.txt
+  Interval Millis: 1000
+  Level: NORMAL
+Mode:
+  API: JAVA_DRIVER_NATIVE
+  Connection Style: CQL_PREPARED
+  CQL Version: CQL3
+  Protocol Version: V3
+  Username: null
+  Password: null
+  Auth Provide Class: null
+  Max Pending Per Connection: 128
+  Connections Per Host: 8
+  Compression: NONE
+Node:
+  Nodes: [cassandra]
+  Is White List: false
+  Datacenter: null
+Schema:
+  Keyspace: keyspace1
+  Replication Strategy: org.apache.cassandra.locator.SimpleStrategy
+  Replication Strategy Options: {replication_factor=2}
+  Table Compression: null
+  Table Compaction Strategy: null
+  Table Compaction Strategy Options: {}
+Transport:
+  truststore=null; truststore-password=null; keystore=null; keystore-password=null; ssl-protocol=TLS; ssl-alg=null; ssl-ciphers=TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA; 
+Port:
+  Native Port: 9042
+  JMX Port: 7199
+Graph:
+  File: null
+  Revision: unknown
+  Title: null
+  Operation: READ
+TokenRange:
+  Wrap: false
+  Split Factor: 1
+
+Sleeping 2s...
+Thread count was not specified
+
+Running with 4 threadCount
+Running READ with 4 threads for 50000 iteration
+Connected to cluster: Cassandra, max pending requests per connection 128, max connections per host 8
+Datacenter: DC1; Host: /192.168.135.3:9042; Rack: Rack1
+Datacenter: DC1; Host: /192.168.104.4:9042; Rack: Rack1
+Datacenter: DC1; Host: cassandra/192.168.3.68:9042; Rack: Rack1
+Failed to connect over JMX; not collecting these stats
+type                                               total ops,    op/s,    pk/s,   row/s,    mean,     med,     .95,     .99,    .999,     max,   time,   stderr, errors,  gc: #,  max ms,  sum ms,  sdv ms,      mb
+total,                                                    49,      49,      49,      49,    21.2,    15.0,    71.6,    77.6,    77.6,    77.6,    1.0,  0.00000,      0,      0,       0,       0,       0,       0
+total,                                                   239,     190,     190,     190,    21.1,    15.9,    37.1,    39.3,    49.7,    49.7,    2.0,  0.41023,      0,      0,       0,       0,       0,       0
+total,                                                   428,     189,     189,     189,    20.9,    15.0,    37.2,    39.6,    40.6,    40.6,    3.0,  0.26373,      0,      0,       0,       0,       0,       0
+total,                                                   616,     188,     188,     188,    21.3,    14.7,    38.5,    46.1,    61.4,    61.4,    4.0,  0.19440,      0,      0,       0,       0,       0,       0
+total,                                                   805,     189,     189,     189,    21.0,    14.4,    39.5,    60.9,    87.6,    87.6,    5.0,  0.15459,      0,      0,       0,       0,       0,       0
+total,                                                  1000,     195,     195,     195,    20.5,    14.2,    37.5,    38.5,    56.2,    56.2,    6.0,  0.12816,      0,      0,       0,       0,       0,       0
+total,                                                  1210,     210,     210,     210,    19.2,    14.0,    37.8,    43.0,    47.4,    47.4,    7.0,  0.11062,      0,      0,       0,       0,       0,       0
+total,                                                  1396,     186,     186,     186,    21.3,    14.2,    41.5,    58.6,    82.2,    82.2,    8.0,  0.09630,      0,      0,       0,       0,       0,       0
+total,                                                  1573,     177,     177,     177,    22.4,    15.1,    39.7,    44.7,    50.0,    50.0,    9.0,  0.08558,      0,      0,       0,       0,       0,       0
+total,                                                  1767,     194,     194,     194,    20.7,    14.6,    38.7,    45.4,    57.7,    57.7,   10.0,  0.07687,      0,      0,       0,       0,       0,       0
+total,                                                  1962,     195,     195,     195,    20.6,    14.6,    38.8,    41.8,    53.6,    53.6,   11.0,  0.06976,      0,      0,       0,       0,       0,       0
+total,                                                  2135,     173,     173,     173,    22.9,    14.6,    40.8,    54.5,   104.1,   104.1,   12.0,  0.06387,      0,      0,       0,       0,       0,       0
+total,                                                  2338,     203,     203,     203,    19.7,    14.0,    37.9,    42.6,    49.9,    49.9,   13.0,  0.05911,      0,      0,       0,       0,       0,       0
+total,                                                  2492,     154,     154,     154,    25.9,    18.9,    41.9,   127.7,   174.2,   174.2,   14.0,  0.05503,      0,      0,       0,       0,       0,       0
+total,                                                  2705,     213,     213,     213,    18.9,    14.1,    36.5,    39.5,    69.7,    69.7,   15.0,  0.05221,      0,      0,       0,       0,       0,       0
+total,                                                  2927,     222,     222,     222,    18.0,    14.0,    37.0,    39.1,    42.0,    42.0,   16.0,  0.04975,      0,      0,       0,       0,       0,       0
+total,                                                  3104,     177,     177,     177,    22.3,    14.2,    42.1,   109.1,   162.7,   162.7,   17.0,  0.04682,      0,      0,       0,       0,       0,       0
+total,                                                  3319,     215,     215,     215,    18.5,    14.2,    37.7,    41.5,    45.6,    45.6,   18.0,  0.04453,      0,      0,       0,       0,       0,       0
+total,                                                  3539,     220,     220,     220,    18.5,    14.1,    38.0,    44.2,    50.2,    50.2,   19.0,  0.04266,      0,      0,       0,       0,       0,       0
+total,                                                  3734,     195,     195,     195,    20.4,    14.3,    37.5,    40.8,    43.5,    43.5,   20.0,  0.04050,      0,      0,       0,       0,       0,       0
+total,                                                  3925,     191,     191,     191,    20.9,    14.6,    38.3,    41.5,    97.5,    97.5,   21.0,  0.03856,      0,      0,       0,       0,       0,       0
+total,                                                  4115,     190,     190,     190,    20.8,    14.2,    37.2,    45.8,    78.0,    78.0,   22.0,  0.03678,      0,      0,       0,       0,       0,       0
+total,                                                  4322,     207,     207,     207,    19.4,    14.3,    37.3,    40.9,    45.8,    45.8,   23.0,  0.03522,      0,      0,       0,       0,       0,       0
+total,                                                  4526,     204,     204,     204,    19.0,    14.0,    38.5,    44.5,    46.1,    46.1,   24.0,  0.03375,      0,      0,       0,       0,       0,       0
+total,                                                  4704,     178,     178,     178,    21.6,    14.6,    37.9,    70.8,    75.8,    75.8,   25.0,  0.03252,      0,      0,       0,       0,       0,       0
+total,                                                  4923,     219,     219,     219,    19.4,    14.1,    37.4,    81.8,   125.4,   125.4,   26.0,  0.03225,      0,      0,       0,       0,       0,       0
+total,                                                  5125,     202,     202,     202,    19.8,    14.4,    37.6,    52.0,    69.7,    69.7,   27.0,  0.03107,      0,      0,       0,       0,       0,       0
+total,                                                  5335,     210,     210,     210,    19.0,    14.5,    37.0,    39.7,    59.1,    59.1,   28.0,  0.03003,      0,      0,       0,       0,       0,       0
+total,                                                  5522,     187,     187,     187,    21.3,    14.2,    38.8,    52.1,   107.1,   107.1,   29.0,  0.02898,      0,      0,       0,       0,       0,       0
+total,                                                  5736,     214,     214,     214,    18.8,    14.1,    37.1,    59.2,    62.1,    62.1,   30.0,  0.02815,      0,      0,       0,       0,       0,       0
+total,                                                  5922,     186,     186,     186,    21.6,    14.7,    37.6,    54.4,    88.3,    88.3,   31.0,  0.02725,      0,      0,       0,       0,       0,       0
+total,                                                  6109,     187,     187,     187,    21.2,    14.3,    39.3,    46.0,   150.3,   150.3,   32.0,  0.02643,      0,      0,       0,       0,       0,       0
+total,                                                  6314,     205,     205,     205,    19.4,    14.3,    36.7,    40.9,    44.5,    44.5,   33.0,  0.02562,      0,      0,       0,       0,       0,       0
+total,                                                  6503,     189,     189,     189,    21.4,    14.3,    38.9,    53.6,   118.7,   118.7,   34.0,  0.02487,      0,      0,       0,       0,       0,       0
+total,                                                  6702,     199,     199,     199,    20.0,    14.3,    36.8,    47.3,    70.3,    70.3,   35.0,  0.02415,      0,      0,       0,       0,       0,       0
+total,                                                  6922,     220,     220,     220,    18.0,    14.1,    36.6,    38.4,    39.9,    39.9,   36.0,  0.02359,      0,      0,       0,       0,       0,       0
+total,                                                  7110,     188,     188,     188,    21.5,    14.3,    39.2,    66.0,   145.9,   145.9,   37.0,  0.02297,      0,      0,       0,       0,       0,       0
+total,                                                  7303,     193,     193,     193,    20.7,    14.7,    37.6,    46.7,    73.1,    73.1,   38.0,  0.02237,      0,      0,       0,       0,       0,       0
+total,                                                  7500,     197,     197,     197,    20.1,    14.2,    37.1,    46.6,    71.2,    71.2,   39.0,  0.02179,      0,      0,       0,       0,       0,       0
+total,                                                  7696,     196,     196,     196,    20.5,    14.2,    36.4,    39.6,    42.6,    42.6,   40.0,  0.02126,      0,      0,       0,       0,       0,       0
+total,                                                  7880,     184,     184,     184,    21.6,    14.7,    37.9,    40.5,    73.5,    73.5,   41.0,  0.02079,      0,      0,       0,       0,       0,       0
+total,                                                  8064,     184,     184,     184,    21.8,    14.5,    38.3,    81.7,    89.5,    89.5,   42.0,  0.02032,      0,      0,       0,       0,       0,       0
+total,                                                  8279,     215,     215,     215,    18.5,    14.1,    35.9,    37.7,    42.6,    42.6,   43.0,  0.01990,      0,      0,       0,       0,       0,       0
+total,                                                  8472,     193,     193,     193,    20.5,    14.1,    37.3,    44.6,    57.7,    57.7,   44.0,  0.01945,      0,      0,       0,       0,       0,       0
+total,                                                  8649,     177,     177,     177,    22.8,    14.9,    38.9,    90.9,   107.7,   107.7,   45.0,  0.01907,      0,      0,       0,       0,       0,       0
+total,                                                  8866,     217,     217,     217,    18.3,    14.0,    37.3,    43.6,    64.7,    64.7,   46.0,  0.01877,      0,      0,       0,       0,       0,       0
+total,                                                  9052,     186,     186,     186,    21.4,    14.3,    39.8,    70.9,   142.6,   142.6,   47.0,  0.01838,      0,      0,       0,       0,       0,       0
+total,                                                  9255,     203,     203,     203,    20.0,    14.2,    37.1,    47.8,    66.7,    66.7,   48.0,  0.01800,      0,      0,       0,       0,       0,       0
+total,                                                  9445,     190,     190,     190,    20.8,    14.0,    38.0,    92.9,   110.2,   110.2,   49.0,  0.01763,      0,      0,       0,       0,       0,       0
+total,                                                  9631,     186,     186,     186,    21.4,    14.4,    38.5,    58.1,    84.4,    84.4,   50.0,  0.01730,      0,      0,       0,       0,       0,       0
+java.io.IOException: Operation x0 on key(s) [32503450324e4f4e3830]: Data returned was not validated
+
+	at org.apache.cassandra.stress.Operation.error(Operation.java:127)
+	at org.apache.cassandra.stress.Operation.timeWithRetry(Operation.java:105)
+	at org.apache.cassandra.stress.operations.predefined.CqlOperation.run(CqlOperation.java:91)
+	at org.apache.cassandra.stress.operations.predefined.CqlOperation.run(CqlOperation.java:99)
+	at org.apache.cassandra.stress.operations.predefined.CqlOperation.run(CqlOperation.java:248)
+	at org.apache.cassandra.stress.StressAction$Consumer.run(StressAction.java:468)
+total,                                                  9821,     195,     194,     194,    20.6,    14.3,    37.1,    40.8,    64.8,    64.8,   51.0,  0.01696,      1,      0,       0,       0,       0,       0
+FAILURE
+java.lang.RuntimeException: Failed to execute stress action
+	at org.apache.cassandra.stress.StressAction.run(StressAction.java:101)
+	at org.apache.cassandra.stress.Stress.run(Stress.java:101)
+	at org.apache.cassandra.stress.Stress.main(Stress.java:54)

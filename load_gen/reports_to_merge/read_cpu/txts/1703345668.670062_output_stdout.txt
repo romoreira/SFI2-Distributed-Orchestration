@@ -1,0 +1,117 @@
+******************** Stress Settings ********************
+Command:
+  Type: read
+  Count: 50,000
+  No Warmup: true
+  Consistency Level: LOCAL_ONE
+  Target Uncertainty: not applicable
+  Key Size (bytes): 10
+  Counter Increment Distibution: add=fixed(1)
+Rate:
+  Auto: true
+  Min Threads: 4
+  Max Threads: 1000
+Population:
+  Distribution: Gaussian:  min=1,max=50000,mean=25000.500000,stdev=8333.166667
+  Order: ARBITRARY
+  Wrap: false
+Insert:
+  Revisits: Uniform:  min=1,max=1000000
+  Visits: Fixed:  key=1
+  Row Population Ratio: Ratio: divisor=1.000000;delegate=Fixed:  key=1
+  Batch Type: not batching
+Columns:
+  Max Columns Per Key: 5
+  Column Names: [C0, C1, C2, C3, C4]
+  Comparator: AsciiType
+  Timestamp: null
+  Variable Column Count: false
+  Slice: false
+  Size Distribution: Fixed:  key=34
+  Count Distribution: Fixed:  key=5
+Errors:
+  Ignore: false
+  Tries: 10
+Log:
+  No Summary: false
+  No Settings: false
+  File: read_output.txt
+  Interval Millis: 1000
+  Level: NORMAL
+Mode:
+  API: JAVA_DRIVER_NATIVE
+  Connection Style: CQL_PREPARED
+  CQL Version: CQL3
+  Protocol Version: V3
+  Username: null
+  Password: null
+  Auth Provide Class: null
+  Max Pending Per Connection: 128
+  Connections Per Host: 8
+  Compression: NONE
+Node:
+  Nodes: [cassandra]
+  Is White List: false
+  Datacenter: null
+Schema:
+  Keyspace: keyspace1
+  Replication Strategy: org.apache.cassandra.locator.SimpleStrategy
+  Replication Strategy Options: {replication_factor=2}
+  Table Compression: null
+  Table Compaction Strategy: null
+  Table Compaction Strategy Options: {}
+Transport:
+  truststore=null; truststore-password=null; keystore=null; keystore-password=null; ssl-protocol=TLS; ssl-alg=null; ssl-ciphers=TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA; 
+Port:
+  Native Port: 9042
+  JMX Port: 7199
+Graph:
+  File: null
+  Revision: unknown
+  Title: null
+  Operation: READ
+TokenRange:
+  Wrap: false
+  Split Factor: 1
+
+Sleeping 2s...
+Thread count was not specified
+
+Running with 4 threadCount
+Running READ with 4 threads for 50000 iteration
+Connected to cluster: Cassandra, max pending requests per connection 128, max connections per host 8
+Datacenter: DC1; Host: cassandra/192.168.135.3:9042; Rack: Rack1
+Datacenter: DC1; Host: /192.168.104.4:9042; Rack: Rack1
+Datacenter: DC1; Host: /192.168.3.68:9042; Rack: Rack1
+Failed to connect over JMX; not collecting these stats
+type                                               total ops,    op/s,    pk/s,   row/s,    mean,     med,     .95,     .99,    .999,     max,   time,   stderr, errors,  gc: #,  max ms,  sum ms,  sdv ms,      mb
+total,                                                   166,     166,     166,     166,    22.6,    16.3,    40.1,    88.6,   104.7,   104.7,    2.0,  0.70711,      0,      0,       0,       0,       0,       0
+total,                                                   347,     181,     181,     181,    22.1,    15.4,    39.1,    53.6,   110.8,   110.8,    3.0,  0.40958,      0,      0,       0,       0,       0,       0
+total,                                                   485,     138,     138,     138,    28.1,    16.5,    75.2,   110.0,   136.1,   136.1,    4.0,  0.29420,      0,      0,       0,       0,       0,       0
+total,                                                   666,     181,     181,     181,    22.1,    15.4,    39.1,    54.1,    79.4,    79.4,    5.0,  0.22803,      0,      0,       0,       0,       0,       0
+total,                                                   858,     192,     192,     192,    20.5,    15.6,    38.1,    40.2,    43.3,    43.3,    6.0,  0.18644,      0,      0,       0,       0,       0,       0
+total,                                                  1034,     176,     176,     176,    22.3,    15.1,    41.0,    63.1,   110.5,   110.5,    7.0,  0.15758,      0,      0,       0,       0,       0,       0
+total,                                                  1220,     186,     186,     186,    21.9,    14.7,    39.2,    96.5,   107.9,   107.9,    8.0,  0.13689,      0,      0,       0,       0,       0,       0
+total,                                                  1404,     184,     184,     184,    21.4,    14.8,    39.0,    49.2,    81.0,    81.0,    9.0,  0.12073,      0,      0,       0,       0,       0,       0
+total,                                                  1583,     179,     179,     179,    22.7,    16.6,    38.2,    43.8,    45.2,    45.2,   10.0,  0.10803,      0,      0,       0,       0,       0,       0
+total,                                                  1758,     175,     175,     175,    22.7,    15.6,    42.0,    94.0,   155.3,   155.3,   11.0,  0.09789,      0,      0,       0,       0,       0,       0
+total,                                                  1947,     189,     189,     189,    20.9,    15.1,    38.1,    42.3,    53.1,    53.1,   12.0,  0.08936,      0,      0,       0,       0,       0,       0
+total,                                                  2142,     195,     195,     195,    20.8,    15.4,    40.1,    51.5,    78.4,    78.4,   13.0,  0.08243,      0,      0,       0,       0,       0,       0
+total,                                                  2314,     172,     172,     172,    23.0,    15.6,    41.4,    64.3,   117.4,   117.4,   14.0,  0.07630,      0,      0,       0,       0,       0,       0
+total,                                                  2505,     191,     191,     191,    21.1,    14.7,    38.4,    42.7,    53.0,    53.0,   15.0,  0.07104,      0,      0,       0,       0,       0,       0
+total,                                                  2687,     182,     182,     182,    21.8,    16.3,    41.0,    44.1,    70.1,    70.1,   16.0,  0.06645,      0,      0,       0,       0,       0,       0
+total,                                                  2860,     173,     173,     173,    23.0,    16.5,    39.4,    99.4,   128.9,   128.9,   17.0,  0.06241,      0,      0,       0,       0,       0,       0
+java.io.IOException: Operation x0 on key(s) [32503450324e4f4e3830]: Data returned was not validated
+
+	at org.apache.cassandra.stress.Operation.error(Operation.java:127)
+	at org.apache.cassandra.stress.Operation.timeWithRetry(Operation.java:105)
+	at org.apache.cassandra.stress.operations.predefined.CqlOperation.run(CqlOperation.java:91)
+	at org.apache.cassandra.stress.operations.predefined.CqlOperation.run(CqlOperation.java:99)
+	at org.apache.cassandra.stress.operations.predefined.CqlOperation.run(CqlOperation.java:248)
+	at org.apache.cassandra.stress.StressAction$Consumer.run(StressAction.java:468)
+total,                                                  2971,     166,     164,     164,    24.4,    15.5,    43.4,    71.8,   286.3,   286.3,   17.7,  0.06408,      1,      0,       0,       0,       0,       0
+FAILURE
+java.lang.RuntimeException: Failed to execute stress action
+	at org.apache.cassandra.stress.StressAction.run(StressAction.java:101)
+	at org.apache.cassandra.stress.Stress.run(Stress.java:101)
+	at org.apache.cassandra.stress.Stress.main(Stress.java:54)
