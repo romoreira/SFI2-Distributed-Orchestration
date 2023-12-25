@@ -99,10 +99,10 @@ def create_experiments_dir(directory, model_name):
 if len(sys.argv) > 1:
     model_name = str(sys.argv[1])
 else:
-    model_name = "XCMPlus"
+    model_name = "OmniScaleCNN"
 
 experiment = '/cassandra'
-operation = '/read'
+operation = '/write'
 directory = './results_paper'+str(experiment)+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
@@ -167,7 +167,7 @@ import pickle
 from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_error
 
-file_name = '../reports_to_merge'+str(operation)+'_sinusoidal/arquivo_final.csv'
+file_name = 'write.csv'
 
 
 test_ratio = 0.1  # testing data ratio
@@ -176,7 +176,7 @@ max_evals = 50  # maximal trials for hyper parameter tuning
 
 
 data = pd.read_csv(file_name)
-data = data.drop(columns=['type total', 'Src IP', 'Dst IP', 'Label', 'Src Port', 'Dst Port'])
+data = data.drop(columns=['type total'])
 data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
@@ -207,7 +207,7 @@ plt.plot(data.index[train_length:], data['mean'][train_length:], label='Test', c
 plt.axvspan(data.index[train_length:][0], data.index[train_length:][-1],  facecolor='g', alpha=0.1)
 
 plt.xlabel('Time')
-plt.ylabel('Cassandra Read (Latency)')
+plt.ylabel('Cassandra Write (Latency)')
 plt.legend(loc='best')
 plt.grid(False)
 #plt.show()
@@ -224,8 +224,8 @@ columns = ['med', '.95', '.99', 'stderr', 'max', 'target']
 
 df = data[columns]
 
-#df = normalize_all_dataframe(df)
-#df = normalize_target(df)
+df = normalize_all_dataframe(df)
+df = normalize_target(df)
 
 #print(df)
 n_vars = len(columns)
@@ -424,7 +424,7 @@ for i in range(10):
     plt.plot(target, label='Real')
     plt.plot(preds, label='Predicted', linestyle='dashed')
     plt.xlabel('Time Steps')
-    plt.ylabel('Cassandra Read (Latency)')
+    plt.ylabel('Cassandra Write (Latency)')
     plt.title('Cassandra Latency Estimation')
     plt.legend()
     plt.grid(False)
