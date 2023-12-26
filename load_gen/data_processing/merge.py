@@ -249,8 +249,8 @@ def join_netdata_cassandra():
 
 
 
-#extract_csv_pattern(input_directory, phrase_pattern, output_directory)
-#combine_csvs()
+extract_csv_pattern(input_directory, phrase_pattern, output_directory)
+combine_csvs()
 join_netdata_cassandra()
 apply_mean_by_date("cassandra-stress_combined.csv")
 merge_csvs("cassandra_stress.csv","netdata.csv")
