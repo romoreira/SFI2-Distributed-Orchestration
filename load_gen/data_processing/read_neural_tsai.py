@@ -181,6 +181,7 @@ data['time'] = pd.to_datetime(data['time'], unit='s')
 data.index = data['time']
 data.set_index('time', inplace=True)
 
+df = normalize_all_dataframe(data)
 
 #data =  reduce_dataframe(data)
 print("Dataset SIZE> "+str(data.shape))
