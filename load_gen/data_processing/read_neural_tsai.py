@@ -102,7 +102,7 @@ else:
     model_name = "OmniScaleCNN"
 
 experiment = '/cassandra'
-operation = '/write'
+operation = '/read'
 directory = './results_paper'+str(experiment)+str(operation)+'/'
 directory = create_experiments_dir(directory, model_name)
 
@@ -167,7 +167,7 @@ import pickle
 from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_error
 
-file_name = 'write.csv'
+file_name = 'read.csv'
 
 
 test_ratio = 0.1  # testing data ratio
@@ -207,7 +207,7 @@ plt.plot(data.index[train_length:], data['mean'][train_length:], label='Test', c
 plt.axvspan(data.index[train_length:][0], data.index[train_length:][-1],  facecolor='g', alpha=0.1)
 
 plt.xlabel('Time')
-plt.ylabel('Cassandra Write (Latency)')
+plt.ylabel('Cassandra Read (Latency)')
 plt.legend(loc='best')
 plt.grid(False)
 #plt.show()
