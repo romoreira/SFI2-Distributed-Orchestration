@@ -215,7 +215,7 @@ plt.grid(False)
 plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 'tight', pad_inches = 0.1)
 #print(data)
 
-
+exit()
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
