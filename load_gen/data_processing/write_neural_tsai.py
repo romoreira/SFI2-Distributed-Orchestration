@@ -218,14 +218,22 @@ plt.savefig(directory+str(model_name)+'_training_test_split.pdf', bbox_inches = 
 
 
 data.rename(columns={'mean': 'target'}, inplace=True)
-columns = ['med', '.95', '.99', 'stderr', 'max', 'target']
+#columns = ['med', '.95', '.99', 'stderr', 'max', 'target']
 #columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
 #columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
+columns = ['target',
+    'node1_guest_nice', 'node1_guest', 'node1_steal', 'node1_softirq', 'node1_irq', 'node1_user', 'node1_system', 'node1_nice', 'node1_iowait', 'node1_avail', 'node1_received', 'node1_sent', 'node1_forwarded', 'node1_delivered',
+    'node2_guest_nice', 'node2_guest', 'node2_steal', 'node2_softirq', 'node2_irq', 'node2_user', 'node2_system', 'node2_nice', 'node2_iowait', 'node2_avail', 'node2_received', 'node2_sent', 'node2_forwarded', 'node2_delivered',
+    'node3_guest_nice', 'node3_guest', 'node3_steal', 'node3_softirq', 'node3_irq', 'node3_user', 'node3_system', 'node3_nice', 'node3_iowait', 'node3_avail', 'node3_received', 'node3_sent', 'node3_forwarded', 'node3_delivered',
+    'node4_guest_nice', 'node4_guest', 'node4_steal', 'node4_softirq', 'node4_irq', 'node4_user', 'node4_system', 'node4_nice', 'node4_iowait', 'node4_avail', 'node4_received', 'node4_sent', 'node4_forwarded', 'node4_delivered'
+]
 
 df = data[columns]
 
 df = normalize_all_dataframe(df)
 df = normalize_target(df)
+df = df.dropna(axis=1)
+columns = df.columns
 
 #print(df)
 n_vars = len(columns)
