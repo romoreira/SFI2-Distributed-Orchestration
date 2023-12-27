@@ -1,7 +1,7 @@
 3
           
           
-BIAS  0.00
+BIAS  0.01
 MSE   0.00
 RMSE  0.05
 MAE   0.04
