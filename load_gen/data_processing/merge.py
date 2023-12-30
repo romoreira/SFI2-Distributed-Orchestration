@@ -204,6 +204,7 @@ def join_netdata_cassandra():
     diretorio = "netdata"  # Substitua pelo seu diretório real
     locais = ["rn", "rs", "sc"]
 
+
     final_df = pd.DataFrame()
 
     for local in locais:
