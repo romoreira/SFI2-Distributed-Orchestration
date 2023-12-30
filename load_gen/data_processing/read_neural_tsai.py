@@ -219,10 +219,10 @@ data.rename(columns={'mean': 'target'}, inplace=True)
 #columns = ['Fwd Bulk Rate Avg','FWD Init Win Bytes','Idle Mean','Idle Std','Idle Max','Bwd Init Win Bytes', 'target']
 #columns = ['ops', 'op/s', 'pk/s', 'row/s', 'med', '.95', '.99', '.999', 'max', 'stderr', 'target']
 columns = ["target",
-    "node-whx-pb_guest_nice", "node-whx-pb_guest", "node-whx-pb_steal", "node-whx-pb_softirq",
-    "node-whx-pb_irq", "node-whx-pb_user", "node-whx-pb_system", "node-whx-pb_nice",
-    "node-whx-pb_iowait", "node-whx-pb_avail", "node-whx-pb_received", "node-whx-pb_sent",
-    "node-whx-pb_forwarded", "node-whx-pb_delivered", "node-whx-rs_guest_nice", "node-whx-rs_guest",
+    "node-whx-rn_guest_nice", "node-whx-rn_guest", "node-whx-rn_steal", "node-whx-rn_softirq",
+    "node-whx-rn_irq", "node-whx-rn_user", "node-whx-rn_system", "node-whx-rn_nice",
+    "node-whx-rn_iowait", "node-whx-rn_avail", "node-whx-rn_received", "node-whx-rn_sent",
+    "node-whx-rn_forwarded", "node-whx-rn_delivered", "node-whx-rs_guest_nice", "node-whx-rs_guest",
     "node-whx-rs_steal", "node-whx-rs_softirq", "node-whx-rs_irq", "node-whx-rs_user",
     "node-whx-rs_system", "node-whx-rs_nice", "node-whx-rs_iowait", "node-whx-rs_avail",
     "node-whx-rs_received", "node-whx-rs_sent", "node-whx-rs_forwarded", "node-whx-rs_delivered",

@@ -202,7 +202,7 @@ def combine_flows_csvs():
 
 def join_netdata_cassandra():
     diretorio = "netdata"  # Substitua pelo seu diretório real
-    locais = ["pb", "rs", "sc"]
+    locais = ["rn", "rs", "sc"]
 
     final_df = pd.DataFrame()
 
