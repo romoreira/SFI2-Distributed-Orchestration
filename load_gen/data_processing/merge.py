@@ -13,11 +13,11 @@ output_directory = working_dir+"csvs"
 def write_to_csv(df, output_file):
     df.to_csv(output_file, index=False)
 def extract_csv_pattern(input_directory, phrase_pattern, output_directory):
-    print("Extracting CSVs from TXTs...")
+    #print("Extracting CSVs from TXTs...")
     amount_files = 0
     for filename in os.listdir(input_directory):
         if filename.endswith(".txt"):
-            #print("FILE NAME: "+str(filename))
+            print("FILE NAME: "+str(filename))
             with open(str(input_directory)+str("/")+filename, 'r') as file:
                 content = file.readlines()
 
@@ -202,7 +202,7 @@ def combine_flows_csvs():
 
 def join_netdata_cassandra():
     diretorio = "netdata"  # Substitua pelo seu diretório real
-    locais = ["pb", "rs", "sc"]
+    locais = ["rn", "rs", "sc"]
 
     final_df = pd.DataFrame()
 
