@@ -201,30 +201,25 @@ def combine_flows_csvs():
     print(f"Final file (cassandra_flows.csv) created at: {output_file}")
 
 def join_netdata_cassandra():
-    diretorio = "netdata"
-    # Lista dos números dos nós
-    numeros_nos = [1, 2, 3, 4]
+    diretorio = "netdata"  # Substitua pelo seu diretório real
+    locais = ["pb", "rs", "sc"]
 
-    # Inicializar o DataFrame final
     final_df = pd.DataFrame()
 
-    # Iterar pelos números dos nós
-    for num in numeros_nos:
-        # Ler os arquivos CPU, Memória e IPv4
-        df_cpu = pd.read_csv(os.path.join(diretorio, f"node{num}_cpu.csv"))
-        df_mem = pd.read_csv(os.path.join(diretorio, f"node{num}_mem.csv"))
-        df_ipv4 = pd.read_csv(os.path.join(diretorio, f"node{num}_ipv4.csv"))
+    for local in locais:
+        df_cpu = pd.read_csv(os.path.join(diretorio, f"node-whx-{local}_cpu.csv"))
+        df_mem = pd.read_csv(os.path.join(diretorio, f"node-whx-{local}_mem.csv"))
+        df_ipv4 = pd.read_csv(os.path.join(diretorio, f"node-whx-{local}_ipv4.csv"))
 
         # Renomear colunas dos arquivos lidos
-        cpu_columns = {col: f"node{num}_{col}" for col in df_cpu.columns if col != 'time'}
-        mem_columns = {col: f"node{num}_{col}" for col in df_mem.columns if col != 'time'}
-        ipv4_columns = {col: f"node{num}_{col}" for col in df_ipv4.columns if col != 'time'}
+        cpu_columns = {col: f"node-whx-{local}_{col}" for col in df_cpu.columns if col != 'time'}
+        mem_columns = {col: f"node-whx-{local}_{col}" for col in df_mem.columns if col != 'time'}
+        ipv4_columns = {col: f"node-whx-{local}_{col}" for col in df_ipv4.columns if col != 'time'}
 
         df_cpu = df_cpu.rename(columns=cpu_columns)
         df_mem = df_mem.rename(columns=mem_columns)
         df_ipv4 = df_ipv4.rename(columns=ipv4_columns)
 
-        # Mesclar DataFrames
         if final_df.empty:
             final_df = pd.concat([df_cpu, df_mem.drop(columns='time'), df_ipv4.drop(columns='time')], axis=1)
         else:
