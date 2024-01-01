@@ -301,6 +301,7 @@ def save_default_metrics(learn, index):
             f.write(line)  # Escreve a linha no arquivo
 
 def save_metrics_plot(learn, X, y, index):
+    print(directory+str(index)+str("_")+str(model_name)+str("_")+f'FINAL_METRICS.pdf')
     learn.plot_metrics(path=directory+str(index)+str("_")+str(model_name)+str("_")+f'FINAL_METRICS.pdf')
     #learn.plot_top_losses(X[splits[1]], y[splits[1]], largest=True)
     #learn.top_losses(X[splits[1]], y[splits[1]], largest=True)
@@ -378,20 +379,20 @@ def create_model_hypopt(params):
         return {'loss': None, 'status': STATUS_FAIL}
 
 
-trials = Trials()
-best = fmin(create_model_hypopt,
-    space=search_space,
-    algo=tpe.suggest,
-    max_evals=max_evals,  # test trials
-    trials=trials)
-print("Best parameters:")
-print(space_eval(search_space, best))
-params = space_eval(search_space, best)
+#trials = Trials()
+#best = fmin(create_model_hypopt,
+#    space=search_space,
+#    algo=tpe.suggest,
+#    max_evals=max_evals,  # test trials
+#    trials=trials)
+#print("Best parameters:")
+#print(space_eval(search_space, best))
+#params = space_eval(search_space, best)
 
-with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
-    f.write(str(space_eval(search_space, best)))
+#with open(directory+str(model_name)+f'_best_params.txt', 'w') as f:
+#    f.write(str(space_eval(search_space, best)))
 
-#params = {'batch_size': 32, 'bidirectional': False, 'epochs': 100, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 100}
+params = {'batch_size': 32, 'bidirectional': False, 'epochs': 20, 'hidden_size': 100, 'lr': 0.001, 'n_layers': 3, 'optimizer': Adam, 'patience': 100}
 
 
 for i in range(10):
