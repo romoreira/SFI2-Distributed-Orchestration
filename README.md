@@ -1,3 +1,5 @@
-## SFI2 Project Branch of Reinforcement Learning (RL) enhancements 
+## SFI2 Project 
 
-### This branch came with FGCS paper revision.
+### Branch of Reinforcement Learning (RL) enhancements 
+
+#### This branch came with FGCS paper revision.
