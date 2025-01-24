@@ -11,7 +11,19 @@ from hyperopt import Trials, STATUS_OK, tpe
 from hyperopt.fmin import fmin
 from hyperopt.hp import choice, uniform
 
-df = pd.read_csv("write.csv")
+import os
+import argparse
+
+import csv
+
+
+# Configura o argparse para receber o argumento --file-name
+parser = argparse.ArgumentParser(description="Ler um arquivo CSV especificado pelo usuário.")
+parser.add_argument("--file-name", type=str, required=True, help="Nome do arquivo CSV a ser lido")
+args = parser.parse_args()
+# Caminho completo do arquivo
+csv_path = os.path.join(os.getcwd(), args.file_name)
+df = pd.read_csv(csv_path)
 
 # Visualizar as primeiras linhas
 print("Dados carregados:")
@@ -110,7 +122,34 @@ y_pred_non_zero = y_pred[non_zero_mask]
 mape = np.mean(np.abs((y_test_non_zero - y_pred_non_zero) / y_test_non_zero)) * 100
 
 # Exibir os resultados
-print(f"\nMean Squared Error (MSE): {mse}")
-print(f"Mean Absolute Error (MAE): {mae}")
-print(f"Root Mean Squared Error (RMSE): {rmse}")
-print(f"Mean Absolute Percentage Error (MAPE): {mape}")
+print(f"\nMean Squared Error (MSE): {mse:.10f}")
+print(f"Mean Absolute Error (MAE): {mae:.10f}")
+print(f"Root Mean Squared Error (RMSE): {rmse:.10f}")
+print(f"Mean Absolute Percentage Error (MAPE): {mape:.10f}")
+
+
+# Nome do arquivo CSV
+csv_file = str(args.file_name).split('.')[0]+"_resultados_basic_algorithms-LSTM+HPO-.csv"
+
+csv_file = os.path.join("results", csv_file)
+# Verificar se o arquivo já existe, para adicionar o cabeçalho apenas na primeira vez
+header = ["MSE", "MAE", "RMSE", "MAPE"]
+
+try:
+    # Tentar abrir o arquivo no modo append
+    with open(csv_file, mode="a", newline="") as file:
+        writer = csv.writer(file)
+
+        # Se o arquivo está vazio, adicionar o cabeçalho
+        if file.tell() == 0:
+            writer.writerow(header)
+
+        # Formatar os resultados para evitar notação científica
+        formatted_results = [f"{value:.10f}" if isinstance(value, float) else value for value in [mse, mae, rmse, mape]]
+        
+        # Adicionar os resultados no arquivo
+        writer.writerow(formatted_results)
+
+    print(f"Resultados salvos no arquivo '{csv_file}'.")
+except Exception as e:
+    print(f"Erro ao salvar resultados no arquivo: {e}")
