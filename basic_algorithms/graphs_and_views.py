@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 df = pd.read_csv("view_and_graph_view.csv")
 
 # Filter only data where Testbed == 'Fabric'
-df_fabric = df[df["Testbed"] == "Fabric"]
+df_fabric = df[df["Testbed"] == "FIBRE-NG"]
 
 # Manually calculate the average to ensure correct values
 grouped = df_fabric.groupby(["Algorithm", "Operation"])["MAPE"].mean().reset_index()
@@ -51,7 +51,7 @@ for i, row in grouped.iterrows():
 # Customizing the plot
 plt.xlabel("Algorithm", fontsize=16)
 plt.ylabel("MAPE", fontsize=16)
-plt.title("MAPE by Algorithm in Fabric", fontsize=16)
+plt.title("MAPE by Algorithm in FIBRE-NG", fontsize=16)
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 
@@ -63,4 +63,4 @@ ax.grid(True, which='major', axis='y', linestyle='--')
 ax.grid(False, which='major', axis='x')
 
 # Save the plot
-plt.savefig("mape_fabric_basic_algorithms.pdf")  # Also save as PDF
+plt.savefig("mape_fibre-ng_basic_algorithms.pdf")  # Also save as PDF
